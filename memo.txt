@@ -7,7 +7,7 @@
 
 -----
 
-# Настройка проекта :
+# Настройка взаимодействия MUI и TailwindCss :
 
   // tailwind.config.ts :
 
@@ -18,3 +18,9 @@
 	/* @tailwind base; */
      @tailwind components;
      @tailwind utilities;
+
+	// layout.tsx - добавить id :
+
+		id='__next'	 
+
+		

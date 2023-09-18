@@ -5,7 +5,7 @@ const pacifico = Pacifico({ subsets: ['cyrillic'], weight: '400' })
 
 const QuizzesPage = () => {
 	return (
-		<div className='mt-6'>
+		<div className='min-w-full min-h-screen pt-16'>
 			<span className={`text-3xl mr-3 ${neucha.className}`}>
 				Добро пожаловать в
 			</span>

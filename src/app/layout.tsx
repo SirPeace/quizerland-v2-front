@@ -4,6 +4,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { darkTheme, lightTheme } from '../theme/themes'
+import MenuDrawer from '@/components/navigation/Drawer/Drawer'
 
 import {
 	ThemeProvider,
@@ -53,18 +54,25 @@ export default function RootLayout({
 					id='__next'
 					className={inter.className}
 				>
-					<CssBaseline />
-					<FormControlLabel
-						control={
-							<Switch
-								checked={useDarkTheme}
-								inputProps={{ 'aria-label': 'Dark Mode' }}
-								onChange={(target, value) => changeThemeHandler(target, value)}
-							></Switch>
-						}
-						label='Dark Mode'
-						labelPlacement='end'
-					/>
+					<div>
+						<CssBaseline />
+						<MenuDrawer />
+						<FormControlLabel
+							control={
+								<Switch
+									checked={useDarkTheme}
+									inputProps={{ 'aria-label': 'Dark Mode' }}
+									onChange={(target, value) =>
+										changeThemeHandler(target, value)
+									}
+								></Switch>
+							}
+							label={useDarkTheme ? 'Светлый режим' : 'Темный режим'}
+							labelPlacement='end'
+							className='rounded-full fixed top-3 right-3'
+						/>
+					</div>
+
 					{children}
 				</body>
 			</ThemeProvider>
