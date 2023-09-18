@@ -23,4 +23,8 @@
 
 		id='__next'	 
 
-		
+# Настройка EsLint & Prettier :
+
+  $ npm init @eslint/config
+	$ npm i -D prettier eslint-config-prettier eslint-plugin-prettier
+	$ npm install eslint-plugin-react-hooks --save-dev

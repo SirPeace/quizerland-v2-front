@@ -1,18 +1,22 @@
 'use client'
 
 import './globals.css'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import { darkTheme, lightTheme } from '../theme/themes'
-import MenuDrawer from '@/components/navigation/Drawer/Drawer'
-
 import {
 	ThemeProvider,
 	CssBaseline,
 	Switch,
 	FormControlLabel,
 } from '@mui/material'
-import { ChangeEvent, useState } from 'react'
+import { Inter } from 'next/font/google'
+
+import { useState } from 'react'
+
+import MenuDrawer from '@/components/navigation/Drawer/Drawer'
+
+import { darkTheme, lightTheme } from '../theme/themes'
+
+import type { Metadata } from 'next'
+import type { ChangeEvent } from 'react'
 
 const inter = Inter({ subsets: ['cyrillic'] })
 
@@ -38,22 +42,22 @@ export default function RootLayout({
 	children,
 }: {
 	children: React.ReactNode
-}) {
-	let [useDarkTheme, setUseDarkTheme] = useState(false)
-	let [theme, setTheme] = useState(useDarkTheme ? darkTheme : lightTheme)
+}): JSX.Element {
+	const [useDarkTheme, setUseDarkTheme] = useState(false)
+	const [theme, setTheme] = useState(useDarkTheme ? darkTheme : lightTheme)
 
-	const changeThemeHandler = (target: ChangeEvent, currentValue: boolean) => {
+	const changeThemeHandler = (
+		target: ChangeEvent,
+		currentValue: boolean,
+	): void => {
 		setUseDarkTheme(currentValue)
 		setTheme(currentValue ? darkTheme : lightTheme)
 	}
 
 	return (
-		<html lang='ru'>
+		<html lang="ru">
 			<ThemeProvider theme={theme}>
-				<body
-					id='__next'
-					className={inter.className}
-				>
+				<body id="__next" className={inter.className}>
 					<div>
 						<CssBaseline />
 						<MenuDrawer />
@@ -62,14 +66,14 @@ export default function RootLayout({
 								<Switch
 									checked={useDarkTheme}
 									inputProps={{ 'aria-label': 'Dark Mode' }}
-									onChange={(target, value) =>
+									onChange={(target, value) => {
 										changeThemeHandler(target, value)
-									}
-								></Switch>
+									}}
+								/>
 							}
 							label={useDarkTheme ? 'Светлый режим' : 'Темный режим'}
-							labelPlacement='end'
-							className='rounded-full fixed top-3 right-3'
+							labelPlacement="end"
+							className="rounded-full fixed top-3 right-3"
 						/>
 					</div>
 

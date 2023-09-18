@@ -1,14 +1,15 @@
-import * as React from 'react'
-import Drawer from '@mui/material/Drawer'
-import Button from '@mui/material/Button'
-import LinksList from './LinksList/LinksList'
 import MenuIcon from '@mui/icons-material/Menu'
+import Button from '@mui/material/Button'
+import Drawer from '@mui/material/Drawer'
+import { useState } from 'react'
 
-const MenuDrawer = () => {
-	const [isOpen, setIsOpen] = React.useState<boolean>(false)
+import LinksList from './LinksList/LinksList'
+
+const MenuDrawer = (): JSX.Element => {
+	const [isOpen, setIsOpen] = useState<boolean>(false)
 
 	const toggleDrawer =
-		(open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+		() => (event: React.KeyboardEvent | React.MouseEvent) => {
 			if (
 				event.type === 'keydown' &&
 				((event as React.KeyboardEvent).key === 'Tab' ||
@@ -23,21 +24,14 @@ const MenuDrawer = () => {
 	return (
 		<>
 			<Button
-				onClick={toggleDrawer(isOpen)}
-				className='rounded-full fixed top-3 left-3'
-				size='large'
+				onClick={toggleDrawer()}
+				className="rounded-full fixed top-3 left-3"
+				size="large"
 			>
 				<MenuIcon />
 			</Button>
-			<Drawer
-				anchor={'left'}
-				open={isOpen}
-				onClose={toggleDrawer(isOpen)}
-			>
-				<LinksList
-					open={isOpen}
-					toggleDrawer={toggleDrawer}
-				/>
+			<Drawer anchor={'left'} open={isOpen} onClose={toggleDrawer()}>
+				<LinksList toggleDrawer={toggleDrawer} />
 			</Drawer>
 		</>
 	)

@@ -1,25 +1,24 @@
-import List from '@mui/material/List'
+import CloseIcon from '@mui/icons-material/Close'
+import MailIcon from '@mui/icons-material/Mail'
+import InboxIcon from '@mui/icons-material/MoveToInbox'
+import { Button } from '@mui/material'
+import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
+import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
-import MailIcon from '@mui/icons-material/Mail'
-import Box from '@mui/material/Box'
-import CloseIcon from '@mui/icons-material/Close'
-import { Button } from '@mui/material'
 
 interface IDrawerProps {
-	open: boolean
 	toggleDrawer: (
 		open: boolean,
 	) => (event: React.KeyboardEvent | React.MouseEvent) => void
 }
 
-const LinksList: React.FC<IDrawerProps> = ({ open, toggleDrawer }) => (
+const LinksList: React.FC<IDrawerProps> = ({ toggleDrawer }) => (
 	<Box
-		role='presentation'
+		role="presentation"
 		onClick={toggleDrawer(false)}
 		onKeyDown={toggleDrawer(false)}
 		sx={{ width: 300 }}
@@ -27,8 +26,8 @@ const LinksList: React.FC<IDrawerProps> = ({ open, toggleDrawer }) => (
 		<List>
 			<Button
 				onClick={toggleDrawer(false)}
-				className='rounded-full'
-				size='large'
+				className="rounded-full"
+				size="large"
 			>
 				<CloseIcon />
 			</Button>
@@ -37,10 +36,7 @@ const LinksList: React.FC<IDrawerProps> = ({ open, toggleDrawer }) => (
 
 		<List>
 			{['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-				<ListItem
-					key={text}
-					disablePadding
-				>
+				<ListItem key={text} disablePadding>
 					<ListItemButton>
 						<ListItemIcon>
 							{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -53,10 +49,7 @@ const LinksList: React.FC<IDrawerProps> = ({ open, toggleDrawer }) => (
 		<Divider />
 		<List>
 			{['All mail', 'Trash', 'Spam'].map((text, index) => (
-				<ListItem
-					key={text}
-					disablePadding
-				>
+				<ListItem key={text} disablePadding>
 					<ListItemButton>
 						<ListItemIcon>
 							{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
