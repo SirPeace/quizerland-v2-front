@@ -46,6 +46,19 @@
 
 -----
 
-
+	title: 'Quizerland',
+	description: 'Приложение Nextjs для создания тестов',
+	viewport: {
+		width: 'device-width',
+		initialScale: 1,
+	},
+	icons: [
+		{
+			rel: 'icon',
+			type: 'image/ico',
+			sizes: '32x32',
+			url: './public/favicon.ico',
+		},
+	],
 
 
