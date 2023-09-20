@@ -11,7 +11,7 @@ import { Inter } from 'next/font/google'
 
 import { useState } from 'react'
 
-import MenuDrawer from '@/components/navigation/Drawer/Drawer'
+import Drawer from '@/components/navigation/Drawer/Drawer'
 
 import { darkTheme, lightTheme } from '../theme/themes'
 
@@ -48,24 +48,24 @@ export default function RootLayout({
 			</head>
 			<ThemeProvider theme={theme}>
 				<body id="__next" className={inter.className}>
-					<div>
-						<CssBaseline />
-						<MenuDrawer />
-						<FormControlLabel
-							control={
-								<Switch
-									checked={useDarkTheme}
-									inputProps={{ 'aria-label': 'Dark Mode' }}
-									onChange={(target, value) => {
-										changeThemeHandler(target, value)
-									}}
-								/>
-							}
-							label={useDarkTheme ? 'Светлый режим' : 'Темный режим'}
-							labelPlacement="end"
-							className="rounded-full fixed top-3 right-3"
-						/>
-					</div>
+					<CssBaseline />
+
+					<Drawer />
+
+					<FormControlLabel
+						className="rounded-full fixed top-6 right-3"
+						control={
+							<Switch
+								checked={useDarkTheme}
+								inputProps={{ 'aria-label': 'Dark Mode' }}
+								onChange={(target, value) => {
+									changeThemeHandler(target, value)
+								}}
+							/>
+						}
+						label={useDarkTheme ? 'Светлый режим' : 'Темный режим'}
+						labelPlacement="end"
+					/>
 
 					{children}
 				</body>

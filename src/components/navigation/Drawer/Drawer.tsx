@@ -1,40 +1,41 @@
 import MenuIcon from '@mui/icons-material/Menu'
-import Button from '@mui/material/Button'
+import { IconButton } from '@mui/material'
 import Drawer from '@mui/material/Drawer'
 import { useState } from 'react'
 
-import LinksList from './LinksList/LinksList'
+import MenuDrawer from './Drawer/MenuDrawer'
 
-const MenuDrawer = (): JSX.Element => {
+const SlidingDrawer = (): JSX.Element => {
 	const [isOpen, setIsOpen] = useState<boolean>(false)
 
-	const toggleDrawer =
-		() => (event: React.KeyboardEvent | React.MouseEvent) => {
-			if (
-				event.type === 'keydown' &&
-				((event as React.KeyboardEvent).key === 'Tab' ||
-					(event as React.KeyboardEvent).key === 'Shift')
-			) {
-				return
-			}
-
-			setIsOpen(!isOpen)
-		}
+	const toggleDrawer = (): void => {
+		setIsOpen(!isOpen)
+	}
 
 	return (
 		<>
-			<Button
-				onClick={toggleDrawer()}
-				className="rounded-full fixed top-3 left-3"
+			<IconButton
+				onClick={() => {
+					toggleDrawer()
+				}}
+				className="rounded-full fixed top-3 left-3 w-14 h-14"
 				size="large"
+				color="inherit"
+				sx={{ padding: 0 }}
 			>
-				<MenuIcon />
-			</Button>
-			<Drawer anchor={'left'} open={isOpen} onClose={toggleDrawer()}>
-				<LinksList toggleDrawer={toggleDrawer} />
+				<MenuIcon className="w-8 h-8" />
+			</IconButton>
+			<Drawer
+				anchor={'left'}
+				open={isOpen}
+				onClose={() => {
+					toggleDrawer()
+				}}
+			>
+				<MenuDrawer toggleDrawer={toggleDrawer} />
 			</Drawer>
 		</>
 	)
 }
 
-export default MenuDrawer
+export default SlidingDrawer

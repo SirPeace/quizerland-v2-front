@@ -31,7 +31,8 @@
 		"postcss.config.js",
 		"next.config.mjs",
 		"postcss.config.js",
-		"next.config.js"
+		"next.config.js",
+		"src/components/navigation/Drawer/Drawer/LinksList/LinkItem"
 	],
 	"exclude": ["node_modules"]
 }
