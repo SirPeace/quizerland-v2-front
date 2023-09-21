@@ -17,7 +17,7 @@ import { darkTheme, lightTheme } from '../theme/themes'
 
 import type { ChangeEvent } from 'react'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['cyrillic'] })
 
 export default function RootLayout({
 	children,
@@ -38,7 +38,7 @@ export default function RootLayout({
 	return (
 		<html lang="ru">
 			<head>
-				<title>Welcome to Quizerland</title>
+				<title>Quizzes | Quizzerland</title>
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<meta
 					name="description"
@@ -53,7 +53,7 @@ export default function RootLayout({
 					<Drawer />
 
 					<FormControlLabel
-						className="rounded-full fixed top-6 right-3"
+						className="rounded-full fixed top-6 right-3 m-0"
 						control={
 							<Switch
 								checked={useDarkTheme}

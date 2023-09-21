@@ -1,5 +1,3 @@
-'use client'
-
 import QuizzesPage from './quizzes/page'
 
 export default function Home(): JSX.Element {
