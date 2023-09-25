@@ -1,3 +1,5 @@
+'use client'
+
 import MenuIcon from '@mui/icons-material/Menu'
 import { IconButton } from '@mui/material'
 import Drawer from '@mui/material/Drawer'
@@ -18,7 +20,7 @@ const SlidingDrawer = (): JSX.Element => {
 				onClick={() => {
 					toggleDrawer()
 				}}
-				className="rounded-full fixed top-3 left-3 w-14 h-14"
+				className="rounded-full fixed top-3 left-3 w-14 h-14 z-50"
 				size="large"
 				color="inherit"
 				sx={{ padding: 0 }}

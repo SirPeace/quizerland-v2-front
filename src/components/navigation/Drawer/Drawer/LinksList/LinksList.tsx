@@ -47,8 +47,15 @@ const LinksList = (): JSX.Element => {
 							}}
 						>
 							<ListItemButton>
-								<ListItemIcon className="my-auto">{link.muiIcon}</ListItemIcon>
-								<ListItemText className="my-auto" primary={link.query.name} />
+								<ListItemIcon
+									className={`m-auto ${isActive && 'text-blue-700'}`}
+								>
+									{link.muiIcon}
+								</ListItemIcon>
+								<ListItemText
+									className={`m-auto ${isActive && 'text-blue-700'}`}
+									primary={link.query.name}
+								/>
 							</ListItemButton>
 						</ListItem>
 

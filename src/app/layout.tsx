@@ -1,21 +1,8 @@
-'use client'
-
 import './globals.css'
-import {
-	ThemeProvider,
-	CssBaseline,
-	Switch,
-	FormControlLabel,
-} from '@mui/material'
+import { CssBaseline } from '@mui/material'
 import { Inter } from 'next/font/google'
 
-import { useState } from 'react'
-
 import Drawer from '@/components/navigation/Drawer/Drawer'
-
-import { darkTheme, lightTheme } from '../theme/themes'
-
-import type { ChangeEvent } from 'react'
 
 const inter = Inter({ subsets: ['cyrillic'] })
 
@@ -24,17 +11,6 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode
 }): JSX.Element {
-	const [useDarkTheme, setUseDarkTheme] = useState(false)
-	const [theme, setTheme] = useState(useDarkTheme ? darkTheme : lightTheme)
-
-	const changeThemeHandler = (
-		_target: ChangeEvent,
-		currentValue: boolean,
-	): void => {
-		setUseDarkTheme(currentValue)
-		setTheme(currentValue ? darkTheme : lightTheme)
-	}
-
 	return (
 		<html lang="ru">
 			<head>
@@ -46,30 +22,14 @@ export default function RootLayout({
 				/>
 				<link rel="icon" href="/favicon.ico" sizes="32x32" />
 			</head>
-			<ThemeProvider theme={theme}>
-				<body id="__next" className={inter.className}>
-					<CssBaseline />
 
-					<Drawer />
+			<body id="__next" className={inter.className}>
+				<CssBaseline />
 
-					<FormControlLabel
-						className="rounded-full fixed top-6 right-3 m-0"
-						control={
-							<Switch
-								checked={useDarkTheme}
-								inputProps={{ 'aria-label': 'Dark Mode' }}
-								onChange={(target, value) => {
-									changeThemeHandler(target, value)
-								}}
-							/>
-						}
-						label={useDarkTheme ? 'Светлый режим' : 'Темный режим'}
-						labelPlacement="end"
-					/>
+				<Drawer />
 
-					{children}
-				</body>
-			</ThemeProvider>
+				<main className="text-gray-700 bg-orange-200">{children}</main>
+			</body>
 		</html>
 	)
 }
