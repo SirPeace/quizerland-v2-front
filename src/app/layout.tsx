@@ -2,9 +2,11 @@ import './globals.css'
 import { CssBaseline } from '@mui/material'
 import { Inter } from 'next/font/google'
 
-import Drawer from '@/components/navigation/Drawer/Drawer'
+import { ReduxProvider } from '@/redux/ReduxProvider'
 
-const inter = Inter({ subsets: ['cyrillic'] })
+import Drawer from '../components/navigation/Drawer/Drawer'
+
+const inter = Inter({ subsets: ['cyrillic'], preload: true })
 
 export default function RootLayout({
 	children,
@@ -23,13 +25,15 @@ export default function RootLayout({
 				<link rel="icon" href="/favicon.ico" sizes="32x32" />
 			</head>
 
-			<body id="__next" className={inter.className}>
-				<CssBaseline />
+			<ReduxProvider>
+				<body id="__next" className={inter.className}>
+					<CssBaseline />
 
-				<Drawer />
+					<Drawer />
 
-				<main className="text-gray-700 bg-orange-200">{children}</main>
-			</body>
+					<main className="text-gray-700">{children}</main>
+				</body>
+			</ReduxProvider>
 		</html>
 	)
 }

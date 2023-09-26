@@ -17,7 +17,7 @@ const LinksList = (): JSX.Element => {
 
 	const links: ILink[] = [
 		{
-			pathname: '/',
+			pathname: '/quizzes',
 			query: { name: 'Тесты' },
 			muiIcon: <FormatListNumberedRtlIcon />,
 		},
@@ -39,9 +39,8 @@ const LinksList = (): JSX.Element => {
 				const isActive = pathname === link.pathname
 
 				return (
-					<>
+					<div key={`${link.query.name}${idx}`}>
 						<ListItem
-							key={`${link.query.name}${idx}`}
 							onClick={() => {
 								router.push(link.pathname)
 							}}
@@ -62,7 +61,7 @@ const LinksList = (): JSX.Element => {
 						{link.query.name === 'Создание тестов' && (
 							<Divider className="w-64 mx-auto my-2" />
 						)}
-					</>
+					</div>
 				)
 			})}
 		</>

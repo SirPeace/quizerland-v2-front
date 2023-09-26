@@ -5,6 +5,18 @@
  $ npm install @mui/material @emotion/react @emotion/styled
  $ npm install @mui/icons-material
 
+----- 
+
+# Установка Redux : 
+
+ Вместе с проектом :
+
+ $ npx create-next-app --example with-redux with-redux-app
+
+ В уже установленное приложение :
+
+ $ npm i @reduxjs/toolkit react-redux
+
 -----
 
 # Настройка взаимодействия MUI и TailwindCss :
@@ -46,6 +58,9 @@
 
 -----
 
+# Настройка metadata :
+
+export const metadata: Metadata = {
 	title: 'Quizerland',
 	description: 'Приложение Nextjs для создания тестов',
 	viewport: {
@@ -60,5 +75,6 @@
 			url: './public/favicon.ico',
 		},
 	],
+}
 
 

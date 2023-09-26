@@ -15,7 +15,7 @@ export async function generateMetadata({
 }
 
 const QuizPage = ({ params: { quiz } }: Props): JSX.Element => (
-	<h1 className="text-center">Страница {quiz}</h1>
+	<h1 className=" pt-16 pb-6 my-0 sty sticky top-0 bg-white z-10">{quiz}</h1>
 )
 
 export default QuizPage

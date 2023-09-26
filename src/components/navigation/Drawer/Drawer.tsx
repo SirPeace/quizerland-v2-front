@@ -5,7 +5,7 @@ import { IconButton } from '@mui/material'
 import Drawer from '@mui/material/Drawer'
 import { useState } from 'react'
 
-import MenuDrawer from './Drawer/MenuDrawer'
+import MenuDrawer from './MenuDrawer/MenuDrawer'
 
 const SlidingDrawer = (): JSX.Element => {
 	const [isOpen, setIsOpen] = useState<boolean>(false)

@@ -1,9 +1,14 @@
-import QuizzesPage from './quizzes/page'
+'use client'
 
-export default function Home(): JSX.Element {
-	return (
-		<main className="text-center">
-			<QuizzesPage />
-		</main>
-	)
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+
+const Home = (): void => {
+	const router = useRouter()
+
+	useEffect(() => {
+		router.push('/quizzes')
+	}, [router])
 }
+
+export default Home
