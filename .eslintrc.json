@@ -50,7 +50,8 @@
 				"semi": false,
 				"bracketSpacing": true,
 				"printWidth": 80,
-				"endOfLine": "auto"
+				"endOfLine": "auto",
+				"tabWidth": 2
 			}
 		],
 		"import/order": [

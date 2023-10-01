@@ -16,8 +16,8 @@ const QuizzesPage = (): JSX.Element => {
 	const router = useRouter()
 
 	return (
-		<div className="max-w-4xl min-h-screen mx-auto pb-1 text-center">
-			<h1 className=" pt-16 pb-6 my-0 sty sticky top-0 bg-white z-10">
+		<div className="max-w-4xl min-h-screen mx-auto pb-1 text-center ">
+			<h1 className="pt-16 pb-6 my-0 sty sticky top-0 bg-white z-10">
 				<span className={`sm:text-3xl text-2xl ${neucha.className}`}>
 					Добро пожаловать в{' '}
 				</span>
@@ -39,12 +39,12 @@ const QuizzesPage = (): JSX.Element => {
 					</div>
 
 					<Divider className="mx-2" />
-					<p className="px-4 text-justify indent-4 text-sky-600">
+					<p className="px-4 text-justify line-clamp-3 hover:line-clamp-none indent-4 text-sky-600">
 						{quiz.description}
 					</p>
 
 					<div className="flex justify-between px-4">
-						<p className="text-sm antialiased font-semibold text-gray-400 ">
+						<p className="text-sm font-semibold text-gray-400 ">
 							тест из {quiz.questions.length} вопросов
 						</p>
 						<Button
