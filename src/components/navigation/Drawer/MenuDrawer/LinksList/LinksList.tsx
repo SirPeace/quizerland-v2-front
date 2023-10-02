@@ -9,7 +9,7 @@ import ListItemText from '@mui/material/ListItemText'
 
 import { usePathname, useRouter } from 'next/navigation'
 
-import type { ILink } from './link.interface'
+import type { ILink } from './types'
 
 const LinksList = (): JSX.Element => {
 	const pathname = usePathname()

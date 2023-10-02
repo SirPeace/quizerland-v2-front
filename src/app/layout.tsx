@@ -2,9 +2,8 @@ import './globals.css'
 import { CssBaseline } from '@mui/material'
 import { Inter } from 'next/font/google'
 
+import Drawer from '@/components/Navigation/Drawer/Drawer'
 import { ReduxProvider } from '@/redux/ReduxProvider'
-
-import Drawer from '../components/navigation/Drawer/Drawer'
 
 const inter = Inter({ subsets: ['cyrillic'], preload: true })
 
@@ -16,7 +15,7 @@ export default function RootLayout({
 	return (
 		<html lang="ru">
 			<head>
-				<title>Quizzes | Quizzerland</title>
+				<title>Quizzes | Quizerland</title>
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<meta
 					name="description"
