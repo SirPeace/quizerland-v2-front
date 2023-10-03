@@ -3,7 +3,6 @@
 import { Divider } from '@mui/material'
 import Button from '@mui/material/Button'
 import FormControl from '@mui/material/FormControl'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import FormHelperText from '@mui/material/FormHelperText'
 
 import RadioGroup from '@mui/material/RadioGroup'
@@ -14,6 +13,7 @@ import { match } from 'ts-pattern'
 
 import type { IAnswer } from '@/redux/quiz/types'
 
+import AnswerItem from './AnswerItem/AnswerItem'
 import {
 	correctAnswerStyles,
 	defaultAnswerStyles,
@@ -30,6 +30,8 @@ const AnswersRadioGroup = ({ quiz }: IQuizProps): JSX.Element => {
 
 	const [selected, setSelected] = useState<IAnswer | null>(null)
 	const [attempts, setAttempts] = useState<Record<number, boolean>>({})
+
+	const AnswerItemMemo = useMemo(() => AnswerItem, [])
 
 	const isZeroAttempts = useMemo(
 		() => Object.keys(attempts).length === 0,
@@ -86,22 +88,14 @@ const AnswersRadioGroup = ({ quiz }: IQuizProps): JSX.Element => {
 			<form>
 				<FormControl className="w-full p-3" variant="standard">
 					<RadioGroup>
-						{currentQuestion?.answers.map((answer, idx) => (
-							<Button
-								key={`${idx}${answer.text}`}
-								className="normal-case disabled:opacity-60"
-								onClick={() => {
-									setSelected(answer)
-								}}
-								disabled={isCorrect}
-							>
-								<FormControlLabel
-									value={answer.id}
-									control={getAnswerStyles(answer).icon}
-									label={answer.text}
-									className={`w-full m-0 ${getAnswerStyles(answer).text}`}
-								/>
-							</Button>
+						{currentQuestion?.answers.map((answer) => (
+							<AnswerItemMemo
+								key={answer.id}
+								answer={answer}
+								isCorrect={isCorrect}
+								getAnswerStyles={getAnswerStyles}
+								setSelected={setSelected}
+							/>
 						))}
 					</RadioGroup>
 

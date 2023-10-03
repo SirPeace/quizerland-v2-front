@@ -2,8 +2,6 @@
 
 import { Neucha, Pacifico } from 'next/font/google'
 
-import { v4 as uuidv4 } from 'uuid'
-
 import Quiz from '@/components/Quiz/Quiz'
 import { useAppSelector } from '@/redux/reduxHooks'
 
@@ -25,7 +23,7 @@ const QuizzesPage = (): JSX.Element => {
 			</h1>
 
 			{quizzes.map((quiz) => (
-				<Quiz key={uuidv4()} quiz={quiz} />
+				<Quiz key={quiz.id} quiz={quiz} />
 			))}
 		</div>
 	)
