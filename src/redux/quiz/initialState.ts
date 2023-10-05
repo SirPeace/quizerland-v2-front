@@ -1,6 +1,6 @@
 import type { IQuizState } from './types'
 
-export const quizInitialState: IQuizState = {
+export const quizState: IQuizState = {
 	activeQuizId: 1,
 	quizzes: [
 		{
@@ -187,7 +187,7 @@ export const quizInitialState: IQuizState = {
 						},
 						{
 							id: 3,
-							text: 'Иван Петрович Кулыбин',
+							text: 'Иван Петрович Кулибин',
 						},
 						{
 							id: 4,
@@ -206,7 +206,7 @@ export const quizInitialState: IQuizState = {
 			currentQuestionId: 1,
 			title: 'Тест по музыке',
 			description:
-				'Му́зыка — вид искусства, в котором определённым образом организованные звуки используются для создания некоторого сочетания формы, гармонии, мелодии, ритма или иного выразительного содержания',
+				'Музыка — вид искусства, в котором определённым образом организованные звуки используются для создания некоторого сочетания формы, гармонии, мелодии, ритма или иного выразительного содержания',
 
 			questions: [
 				{
@@ -272,12 +272,12 @@ export const quizInitialState: IQuizState = {
 			currentQuestionId: 1,
 			title: 'Тест по изобразительному искусству',
 			description:
-				'Изобрази́тельное искусство или изобразительные искусства — класс пространственных искусств, объединяющий живопись, скульптуру, графику, монументальное искусство и фотоискусство.',
+				'Изобразительное искусство или изобразительные искусства — класс пространственных искусств, объединяющий живопись, скульптуру, графику, монументальное искусство и фотоискусство.',
 
 			questions: [
 				{
 					id: 1,
-					text: "Кто нарисовал картину 'Девятый Вал' ?",
+					text: "Кто написал картину 'Девятый Вал' ?",
 					correctAnswerId: 4,
 
 					answers: [
@@ -402,4 +402,4 @@ export const quizInitialState: IQuizState = {
 	],
 }
 
-export default quizInitialState
+export default quizState

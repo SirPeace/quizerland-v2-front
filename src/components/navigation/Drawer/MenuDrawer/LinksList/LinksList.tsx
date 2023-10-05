@@ -17,7 +17,7 @@ const LinksList = (): JSX.Element => {
 
 	const links: ILink[] = [
 		{
-			pathname: '/quizzes',
+			pathname: '/',
 			query: { name: 'Тесты' },
 			muiIcon: <FormatListNumberedRtlIcon />,
 		},

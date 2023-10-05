@@ -34,7 +34,7 @@ const Quiz = ({ quiz }: IQuizProp): JSX.Element => {
 					variant="contained"
 					size="small"
 					onClick={() => {
-						router.push(`quizzes/quiz-${quiz.id}`)
+						router.push(`quiz-${quiz.id}`)
 					}}
 				>
 					перейти к тесту

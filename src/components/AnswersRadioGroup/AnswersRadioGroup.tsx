@@ -11,7 +11,10 @@ import { useMemo, useState } from 'react'
 
 import { match } from 'ts-pattern'
 
+import { nextQuestion } from '@/redux/quiz/quizSlice'
 import type { IAnswer } from '@/redux/quiz/types'
+
+import { useAppDispatch } from '@/redux/reduxHooks'
 
 import AnswerItem from './AnswerItem/AnswerItem'
 import {
@@ -23,6 +26,8 @@ import {
 import type { IFormControlStyles, IQuizProps, IHelperText } from './types'
 
 const AnswersRadioGroup = ({ quiz }: IQuizProps): JSX.Element => {
+	const dispatch = useAppDispatch()
+
 	const currentQuestion = quiz?.questions.find(
 		(question) => question.id === quiz.currentQuestionId,
 	)
@@ -69,6 +74,12 @@ const AnswersRadioGroup = ({ quiz }: IQuizProps): JSX.Element => {
 			...attempts,
 			[selected.id]: selected.id === correctAnswer,
 		}))
+
+		if (isCorrect && quiz !== undefined) {
+			setAttempts({})
+			setSelected(null)
+			dispatch(nextQuestion())
+		}
 	}
 
 	function getAnswerStyles(answer: IAnswer): IFormControlStyles {
