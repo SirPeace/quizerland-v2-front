@@ -1,7 +1,7 @@
 import type { IQuiz } from '@/redux/quiz/types'
 
 export interface IQuizProps {
-	quiz: IQuiz | undefined
+	quizItem: IQuiz | undefined
 }
 
 export interface IFormControlStyles {

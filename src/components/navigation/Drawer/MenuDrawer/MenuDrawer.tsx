@@ -23,7 +23,7 @@ const MenuDrawer: React.FC<IDrawerProps> = ({ toggleDrawer }) => (
 		sx={{ width: 300 }}
 	>
 		<List>
-			<div className="flex justify-between mb-2 h-16 ">
+			<span className="flex justify-between mb-2 h-16">
 				<span className={`text-3xl m-auto ${pacifico.className}`}>
 					Quizerland
 				</span>
@@ -37,7 +37,7 @@ const MenuDrawer: React.FC<IDrawerProps> = ({ toggleDrawer }) => (
 				>
 					<CloseIcon />
 				</IconButton>
-			</div>
+			</span>
 
 			<Divider className="w-64 mx-auto" />
 			<LinksList />
