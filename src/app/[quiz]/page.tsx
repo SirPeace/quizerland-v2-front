@@ -30,7 +30,7 @@ const QuizPage = ({ params: { quiz } }: Props): JSX.Element => {
 			<h1 className="text-center pt-16 my-0">{quizItem?.title}</h1>
 
 			<div className="mx-4 mt-[10%] mb-auto bg-white rounded-xl shadow-[2px_2px_15px_2px_rgba(0,0,0,0.2)]">
-				<AnswersRadioGroup quiz={quizItem} />
+				<AnswersRadioGroup quizItem={quizItem} />
 			</div>
 		</div>
 	)

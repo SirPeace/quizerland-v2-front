@@ -1,11 +1,24 @@
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined'
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked'
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined'
-import Radio from '@mui/material/Radio'
 
 import type { IFormControlStyles } from './types'
 
 export const defaultAnswerStyles: IFormControlStyles = {
-	icon: <Radio className="text-blue-500" />,
+	icon: (
+		<RadioButtonUncheckedIcon
+			className="text-blue-500"
+			sx={{ margin: '9px' }}
+		/>
+	),
+	text: 'text-blue-400',
+}
+
+export const checkedAnswerStyles: IFormControlStyles = {
+	icon: (
+		<RadioButtonCheckedIcon className="text-blue-500" sx={{ margin: '9px' }} />
+	),
 	text: 'text-blue-400',
 }
 

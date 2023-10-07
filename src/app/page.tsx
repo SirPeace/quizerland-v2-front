@@ -3,6 +3,7 @@
 import { Neucha, Pacifico } from 'next/font/google'
 
 import Quiz from '@/components/Quiz/Quiz'
+import type { IQuiz } from '@/redux/quiz/types'
 import { useAppSelector } from '@/redux/reduxHooks'
 
 const neucha = Neucha({ subsets: ['cyrillic'], weight: '400', preload: true })
@@ -22,7 +23,7 @@ const HomePage = (): JSX.Element => {
 				</span>
 			</h1>
 
-			{quizzes.map((quiz) => (
+			{quizzes.map((quiz: IQuiz) => (
 				<Quiz key={quiz.id} quiz={quiz} />
 			))}
 		</div>
