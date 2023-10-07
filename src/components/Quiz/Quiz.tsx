@@ -20,7 +20,7 @@ const Quiz = ({ quiz }: IQuizProp): JSX.Element => {
 			</div>
 
 			<Divider className="mx-2" />
-			<p className="px-4 text-justify line-clamp-3 hover:line-clamp-none indent-4 text-sky-600">
+			<p className="px-4 text-justify line-clamp-3 indent-4 text-sky-600 ">
 				{quiz.description}
 			</p>
 
@@ -34,7 +34,7 @@ const Quiz = ({ quiz }: IQuizProp): JSX.Element => {
 					variant="contained"
 					size="small"
 					onClick={() => {
-						router.push(`quiz-${quiz.id}`)
+						router.push(`/quizzes/${quiz.id}`)
 					}}
 				>
 					перейти к тесту

@@ -7,7 +7,7 @@ import FormHelperText from '@mui/material/FormHelperText'
 
 import RadioGroup from '@mui/material/RadioGroup'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { match } from 'ts-pattern'
 
@@ -22,47 +22,35 @@ import {
 	wrongAnswerStyles,
 } from './styles'
 
-import type { IFormControlStyles, IHelperText, IQuizProps } from './types'
+import type {
+	IFormControlStyles,
+	IHelperText,
+	IQuestionCardProps,
+} from './types'
 
-const AnswersRadioGroup = ({ quizItem }: IQuizProps): JSX.Element => {
-	// Получили при переходе по на страницу (quiz) данные задачи ( quizItem )
+const QuestionCard = ({
+	question,
+	questionsLength,
+}: IQuestionCardProps): JSX.Element => {
+	const dispatch = useAppDispatch()
 
 	const [selected, setSelected] = useState<IAnswer | null>(null)
 	const [attempts, setAttempts] = useState<Record<number, boolean>>({})
 
-	const dispatch = useAppDispatch()
-
-	const currentQuestion = quizItem?.questions.find(
-		(question) => quizItem.currentQuestionId === question.id,
+	const correctAnswer = useMemo(() => question.correctAnswerId, [question])
+	const isSelectedAnswerCorrect = useMemo(
+		() => Object.values(attempts).includes(true),
+		[attempts],
 	)
-	const correctAnswer = currentQuestion?.correctAnswerId
-	const isCorrectAnswer = Object.values(attempts).includes(true)
-
-	function getAnswerStyles(answer: IAnswer): IFormControlStyles {
-		if (selected === null || (selected !== null && selected.id !== answer.id)) {
-			return defaultAnswerStyles
-		}
-
-		if (!Object.hasOwn(attempts, answer.id) && selected.id === answer.id) {
-			return checkedAnswerStyles
-		}
-
-		if (!attempts[answer.id]) return wrongAnswerStyles
-
-		return correctAnswerStyles
-	}
-
-	const helperText = (): IHelperText => {
-		const isZeroAttempts = Object.keys(attempts).length === 0
-
-		if (isZeroAttempts) {
+	const helperText = useMemo((): IHelperText => {
+		if (Object.keys(attempts).length === 0) {
 			return {
 				text: 'Выбирайте с умом!',
 				style: `text-gray-500 font-bold`,
 			}
 		}
 
-		return match(isCorrectAnswer)
+		return match(isSelectedAnswerCorrect)
 			.with(true, () => ({
 				text: 'Отлично, правильный ответ!',
 				style: 'text-green-500 font-bold',
@@ -71,12 +59,24 @@ const AnswersRadioGroup = ({ quizItem }: IQuizProps): JSX.Element => {
 				text: 'Неверный ответ!',
 				style: 'text-red-500 font-bold',
 			}))
+	}, [attempts, isSelectedAnswerCorrect])
+
+	const getStylesForAnswer = (answer: IAnswer): IFormControlStyles => {
+		const isSelected = selected?.id === answer.id
+		const isAttempted = Object.hasOwn(attempts, answer.id)
+		const isCorrect = attempts[answer.id]
+
+		return match<boolean>(true)
+			.with(!isSelected && !isAttempted, () => defaultAnswerStyles)
+			.with(!isAttempted && isSelected, () => checkedAnswerStyles)
+			.with(isCorrect, () => correctAnswerStyles)
+			.otherwise(() => wrongAnswerStyles)
 	}
 
-	const checkAnswer = (): void => {
+	function checkAnswer(): void {
 		if (selected === null) return
 
-		setAttempts((attempts) => ({
+		setAttempts(attempts => ({
 			...attempts,
 			[selected.id]: selected.id === correctAnswer,
 		}))
@@ -92,24 +92,26 @@ const AnswersRadioGroup = ({ quizItem }: IQuizProps): JSX.Element => {
 
 	return (
 		<>
-			<h3 className="m-0 p-3">{currentQuestion?.text}</h3>
+			<h3 className="m-0 p-3">{question.text}</h3>
 
 			<Divider className="mx-2" />
 
 			<form>
 				<FormControl className="w-full p-3" variant="standard">
 					<RadioGroup>
-						{currentQuestion?.answers.map((answer) => (
+						{question.answers.map(answer => (
 							<Button
 								key={answer.id}
 								className="normal-case disabled:opacity-60"
-								disabled={isCorrectAnswer}
+								disabled={
+									isSelectedAnswerCorrect || Object.hasOwn(attempts, answer.id)
+								}
 							>
 								<FormControlLabel
 									value={answer.id}
-									control={getAnswerStyles(answer).icon}
+									control={getStylesForAnswer(answer).icon}
 									label={answer.text}
-									className={`w-full m-0 ${getAnswerStyles(answer).text}`}
+									className={`w-full m-0 ${getStylesForAnswer(answer).text}`}
 									onClick={() => {
 										setSelected(answer)
 									}}
@@ -119,14 +121,13 @@ const AnswersRadioGroup = ({ quizItem }: IQuizProps): JSX.Element => {
 					</RadioGroup>
 
 					<FormHelperText
-						className={`text-center text-base ${helperText().style}`}
+						className={`text-center text-base ${helperText.style}`}
 					>
-						{helperText().text}
+						{helperText.text}
 					</FormHelperText>
 					<div className="flex justify-between">
 						<p className="text-sm font-semibold pl-5 text-gray-400">
-							вопрос {quizItem?.currentQuestionId} из{' '}
-							{quizItem?.questions.length}
+							вопрос {question.id} из {questionsLength}
 						</p>
 						<Button
 							className="w-40 h-10 my-auto text"
@@ -142,4 +143,4 @@ const AnswersRadioGroup = ({ quizItem }: IQuizProps): JSX.Element => {
 		</>
 	)
 }
-export default AnswersRadioGroup
+export default QuestionCard

@@ -1,7 +1,8 @@
-import type { IQuiz } from '@/redux/quiz/types'
+import type { IQuestion } from '@/redux/quiz/types'
 
-export interface IQuizProps {
-	quizItem: IQuiz | undefined
+export interface IQuestionCardProps {
+	question: IQuestion
+	questionsLength: number
 }
 
 export interface IFormControlStyles {

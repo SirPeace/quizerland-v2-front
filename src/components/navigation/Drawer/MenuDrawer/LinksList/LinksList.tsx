@@ -35,7 +35,7 @@ const LinksList = (): JSX.Element => {
 
 	return (
 		<>
-			{links.map((link) => {
+			{links.map(link => {
 				const isActive = pathname === link.pathname
 
 				return (
