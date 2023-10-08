@@ -58,13 +58,6 @@
 
 -----
 
-# UUID - библиотека для генерации ID: 
-
-  $ npm i uuid
-	$ npm i @types/uuid  
-
------
-
 # ts-pattern - библиотека сопоставления шаблонов в TypeScript 
 
   $ npm i ts-pattern

@@ -17,7 +17,7 @@ const LinksList = (): JSX.Element => {
 
 	const links: ILink[] = [
 		{
-			pathname: '/quizzes',
+			pathname: '/',
 			query: { name: 'Тесты' },
 			muiIcon: <FormatListNumberedRtlIcon />,
 		},
@@ -35,11 +35,11 @@ const LinksList = (): JSX.Element => {
 
 	return (
 		<>
-			{links.map((link, idx) => {
+			{links.map((link) => {
 				const isActive = pathname === link.pathname
 
 				return (
-					<div key={`${link.query.name}${idx}`}>
+					<div key={link.pathname}>
 						<ListItem
 							onClick={() => {
 								router.push(link.pathname)
