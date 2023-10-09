@@ -6,6 +6,8 @@ export interface IQuizState {
 export interface IQuiz {
 	id: number
 	currentQuestionId: number
+	rightAttempt: number
+	isFinished: boolean
 	title: string
 	description: string
 	questions: IQuestion[]
