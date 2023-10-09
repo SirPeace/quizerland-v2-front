@@ -11,7 +11,7 @@ import { useMemo, useState } from 'react'
 
 import { match } from 'ts-pattern'
 
-import { nextQuestion } from '@/redux/quiz/quizSlice'
+import { nextQuestion, setRightAttempts } from '@/redux/quiz/quizSlice'
 import type { IAnswer } from '@/redux/quiz/types'
 import { useAppDispatch } from '@/redux/reduxHooks'
 
@@ -84,6 +84,12 @@ const QuestionCard = ({
 		}))
 
 		if (isCorrectAnswer) {
+			const isSelectedAnswerWrong = Object.values(attempts).includes(false)
+
+			if (!isSelectedAnswerWrong) {
+				dispatch(setRightAttempts())
+			}
+
 			setTimeout(() => {
 				setSelected(null)
 				setAttempts({})

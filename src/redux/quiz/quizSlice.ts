@@ -27,7 +27,7 @@ export const quizSlice = createSlice({
 				activeQuiz.isFinished = true
 			}
 		},
-		setCurrentQuestion: (state, action: PayloadAction<number>) => {
+		resetCurrentQuestion: (state, action: PayloadAction<number>) => {
 			const activeQuiz = state.quizzes.find(
 				(quiz) => quiz.id === state.activeQuizId,
 			)
@@ -41,6 +41,22 @@ export const quizSlice = createSlice({
 				state.activeQuizId = availableQuiz.id
 			}
 		},
+		setRightAttempts: (state) => {
+			const activeQuiz = state.quizzes.find(
+				(quiz) => quiz.id === state.activeQuizId,
+			)
+			if (activeQuiz !== undefined) {
+				activeQuiz.rightAttempts += 1
+			}
+		},
+		resetRightAttempts: (state) => {
+			const activeQuiz = state.quizzes.find(
+				(quiz) => quiz.id === state.activeQuizId,
+			)
+			if (activeQuiz !== undefined) {
+				activeQuiz.rightAttempts = 0
+			}
+		},
 	},
 })
 
@@ -48,7 +64,9 @@ export const {
 	nextQuestion,
 	setActiveQuiz,
 	setIsFinishedQuiz,
-	setCurrentQuestion,
+	resetCurrentQuestion,
 	goToAvailableQuiz,
+	setRightAttempts,
+	resetRightAttempts,
 } = quizSlice.actions
 export default quizSlice.reducer

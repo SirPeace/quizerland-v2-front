@@ -6,7 +6,7 @@ export const quizState: IQuizState = {
 		{
 			id: 1,
 			currentQuestionId: 1,
-			rightAttempt: 0,
+			rightAttempts: 0,
 			isFinished: false,
 			title: 'Тест по географии',
 			description:
@@ -74,7 +74,7 @@ export const quizState: IQuizState = {
 		{
 			id: 2,
 			currentQuestionId: 1,
-			rightAttempt: 0,
+			rightAttempts: 0,
 			isFinished: false,
 			title: 'Тест по истории РФ',
 			description:
@@ -142,7 +142,7 @@ export const quizState: IQuizState = {
 		{
 			id: 3,
 			currentQuestionId: 1,
-			rightAttempt: 0,
+			rightAttempts: 0,
 			isFinished: false,
 			title: 'Тест по автомобильной тематике',
 			description:
@@ -210,7 +210,7 @@ export const quizState: IQuizState = {
 		{
 			id: 4,
 			currentQuestionId: 1,
-			rightAttempt: 0,
+			rightAttempts: 0,
 			isFinished: false,
 			title: 'Тест по музыке',
 			description:
@@ -278,7 +278,7 @@ export const quizState: IQuizState = {
 		{
 			id: 5,
 			currentQuestionId: 1,
-			rightAttempt: 0,
+			rightAttempts: 0,
 			isFinished: false,
 			title: 'Тест по изобразительному искусству',
 			description:
@@ -346,7 +346,7 @@ export const quizState: IQuizState = {
 		{
 			id: 6,
 			currentQuestionId: 1,
-			rightAttempt: 0,
+			rightAttempts: 0,
 			isFinished: false,
 			title: 'Тест о космосе',
 			description:

@@ -12,11 +12,34 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import RadioGroup from '@mui/material/RadioGroup'
 import Typography from '@mui/material/Typography'
 
-import { goToAvailableQuiz, setCurrentQuestion } from '@/redux/quiz/quizSlice'
-import { useAppDispatch } from '@/redux/reduxHooks'
+import {
+	goToAvailableQuiz,
+	resetRightAttempts,
+	resetCurrentQuestion,
+} from '@/redux/quiz/quizSlice'
+import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 const QuizResultCard = (): JSX.Element => {
+	const { correctAnswersCount, wrongAnswersCount } = useAppSelector(
+		({ quizState }) => {
+			const quiz = quizState.quizzes.find(
+				(quiz) => quiz.id === quizState.activeQuizId,
+			)
+
+			const questionsCount = quiz?.questions.length ?? 0
+			const correctAnswersCount = quiz?.rightAttempts ?? 0
+			const wrongAnswersCount = questionsCount - correctAnswersCount
+
+			return { wrongAnswersCount, correctAnswersCount }
+		},
+	)
+
 	const dispatch = useAppDispatch()
+
+	const goToNextQuiz = (): void => {
+		dispatch(resetRightAttempts())
+		dispatch(goToAvailableQuiz())
+	}
 
 	return (
 		<Card className="rounded-xl shadow-[2px_2px_15px_2px_rgba(0,0,0,0.2)]">
@@ -35,7 +58,7 @@ const QuizResultCard = (): JSX.Element => {
 							/>
 						}
 						className="text-red-400"
-						label="Неверные ответы :"
+						label={`Неверные ответы : ${wrongAnswersCount}`}
 					/>
 					<div className="h-2" />
 					<FormControlLabel
@@ -46,7 +69,7 @@ const QuizResultCard = (): JSX.Element => {
 							/>
 						}
 						className="text-green-600"
-						label="Правильные ответы :"
+						label={`Правильные ответы : ${correctAnswersCount}`}
 					/>
 				</RadioGroup>
 			</CardContent>
@@ -54,11 +77,11 @@ const QuizResultCard = (): JSX.Element => {
 				<Button
 					size="small"
 					className="mr-3"
-					onClick={() => dispatch(setCurrentQuestion(1))}
+					onClick={() => dispatch(resetCurrentQuestion(1))}
 				>
 					Повторить
 				</Button>
-				<Button size="small" onClick={() => dispatch(goToAvailableQuiz())}>
+				<Button size="small" onClick={goToNextQuiz}>
 					К следующему тесту
 				</Button>
 			</CardActions>
