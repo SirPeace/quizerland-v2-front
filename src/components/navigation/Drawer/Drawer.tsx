@@ -3,9 +3,18 @@
 import MenuIcon from '@mui/icons-material/Menu'
 import { IconButton } from '@mui/material'
 import Drawer from '@mui/material/Drawer'
-import { useState } from 'react'
+import { useState, createContext } from 'react'
 
 import MenuDrawer from './MenuDrawer/MenuDrawer'
+
+interface IDrawerContext {
+	closeDrawer: () => void
+	toggleDrawer: () => void
+}
+export const DrawerContext = createContext<IDrawerContext>({
+	closeDrawer() {},
+	toggleDrawer() {},
+})
 
 const SlidingDrawer = (): JSX.Element => {
 	const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -13,9 +22,17 @@ const SlidingDrawer = (): JSX.Element => {
 	const toggleDrawer = (): void => {
 		setIsOpen(!isOpen)
 	}
+	const closeDrawer = (): void => {
+		setIsOpen(false)
+	}
+
+	const context = {
+		toggleDrawer,
+		closeDrawer,
+	}
 
 	return (
-		<>
+		<DrawerContext.Provider value={context}>
 			<IconButton
 				onClick={() => {
 					toggleDrawer()
@@ -27,16 +44,10 @@ const SlidingDrawer = (): JSX.Element => {
 			>
 				<MenuIcon className="w-8 h-8" />
 			</IconButton>
-			<Drawer
-				anchor={'left'}
-				open={isOpen}
-				onClose={() => {
-					toggleDrawer()
-				}}
-			>
-				<MenuDrawer toggleDrawer={toggleDrawer} />
+			<Drawer anchor={'left'} open={isOpen} keepMounted onClose={closeDrawer}>
+				<MenuDrawer />
 			</Drawer>
-		</>
+		</DrawerContext.Provider>
 	)
 }
 

@@ -8,12 +8,17 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 
 import { usePathname, useRouter } from 'next/navigation'
+import { useContext } from 'react'
+
+import { DrawerContext } from '../../Drawer'
 
 import type { ILink } from './types'
 
 const LinksList = (): JSX.Element => {
 	const pathname = usePathname()
 	const router = useRouter()
+
+	const { closeDrawer } = useContext(DrawerContext)
 
 	const links: ILink[] = [
 		{
@@ -43,6 +48,7 @@ const LinksList = (): JSX.Element => {
 						<ListItem
 							onClick={() => {
 								router.push(link.pathname)
+								closeDrawer()
 							}}
 						>
 							<ListItemButton>
