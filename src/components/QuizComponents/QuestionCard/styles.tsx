@@ -26,7 +26,7 @@ export const correctAnswerStyles: IFormControlStyles = {
 	icon: (
 		<VerifiedOutlinedIcon className="text-green-700" sx={{ margin: '9px' }} />
 	),
-	text: 'text-green-700',
+	text: 'text-green-600',
 }
 
 export const wrongAnswerStyles: IFormControlStyles = {

@@ -68,7 +68,7 @@ const QuestionCard = ({
 
 		return match<boolean>(true)
 			.with(!isSelected && !isAttempted, () => defaultAnswerStyles)
-			.with(!isAttempted && isSelected, () => checkedAnswerStyles)
+			.with(isSelected && !isAttempted, () => checkedAnswerStyles)
 			.with(isCorrect, () => correctAnswerStyles)
 			.otherwise(() => wrongAnswerStyles)
 	}
@@ -76,12 +76,14 @@ const QuestionCard = ({
 	function checkAnswer(): void {
 		if (selected === null) return
 
+		const isCorrectAnswer = selected.id === correctAnswer
+
 		setAttempts((attempts) => ({
 			...attempts,
-			[selected.id]: selected.id === correctAnswer,
+			[selected.id]: isCorrectAnswer,
 		}))
 
-		if (selected.id === correctAnswer) {
+		if (isCorrectAnswer) {
 			setTimeout(() => {
 				setSelected(null)
 				setAttempts({})

@@ -1,5 +1,6 @@
 import { Divider } from '@mui/material'
 import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/navigation'
 
 import type { IQuiz } from '@/redux/quiz/types'
@@ -13,7 +14,10 @@ const Quiz = ({ quiz }: IQuizProp): JSX.Element => {
 	return (
 		<div className="bg-white my-4 mx-6 rounded-xl shadow-[2px_2px_15px_2px_rgba(0,0,0,0.2)]">
 			<div className="flex justify-between p-3">
-				<h4 className="m-0">{quiz.title}</h4>
+				<Typography gutterBottom variant="h6" component="div" margin={0}>
+					{quiz.title}
+				</Typography>
+
 				<p className="text-sm antialiased font-semibold m-0 text-gray-400">
 					тест № {quiz.id}
 				</p>
