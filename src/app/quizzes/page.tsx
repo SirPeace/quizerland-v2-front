@@ -14,7 +14,7 @@ const QuizzesPage = (): JSX.Element => {
 
 	return (
 		<div className="max-w-4xl min-h-screen mx-auto pb-1 text-center">
-			<h1 className="pt-16 pb-6 my-0 sty sticky top-0 bg-white z-10">
+			<h1 className="pt-16 pb-6 my-0 sticky top-0 bg-white z-10">
 				<span className={`sm:text-3xl text-2xl ${neucha.className}`}>
 					Добро пожаловать в{' '}
 				</span>

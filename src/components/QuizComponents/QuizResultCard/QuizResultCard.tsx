@@ -5,7 +5,6 @@ import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined'
 
 import { Divider } from '@mui/material'
 import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -42,7 +41,7 @@ const QuizResultCard = (): JSX.Element => {
 	}
 
 	return (
-		<Card className="rounded-xl shadow-[2px_2px_15px_2px_rgba(0,0,0,0.2)]">
+		<>
 			<CardContent sx={{ pb: 0 }}>
 				<Typography gutterBottom variant="h6" component="div">
 					Результат теста
@@ -85,7 +84,7 @@ const QuizResultCard = (): JSX.Element => {
 					К следующему тесту
 				</Button>
 			</CardActions>
-		</Card>
+		</>
 	)
 }
 export default QuizResultCard

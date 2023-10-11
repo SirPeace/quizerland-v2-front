@@ -1,5 +1,6 @@
 'use client'
 
+import { Paper } from '@mui/material'
 import { useEffect } from 'react'
 
 import GoToHomePageButton from '@/components/Navigation/GoToHomePageButton/GoToHomePageButton'
@@ -60,7 +61,7 @@ const QuizPage = ({ params: { quiz: quizId } }: Props): JSX.Element => {
 			<h1 className="text-center pt-16 my-0">{quiz.title}</h1>
 			<div className="mt-[10%] mb-auto">
 				<GoToHomePageButton />
-				<div className="mx-4 mt-3 bg-white rounded-xl shadow-[2px_2px_15px_2px_rgba(0,0,0,0.2)]">
+				<Paper elevation={8} className="mx-4 mt-3 rounded-xl">
 					{currentQuestion === undefined ? (
 						<QuizResultCard />
 					) : (
@@ -69,7 +70,7 @@ const QuizPage = ({ params: { quiz: quizId } }: Props): JSX.Element => {
 							questionsLength={quiz.questions.length ?? 0}
 						/>
 					)}
-				</div>
+				</Paper>
 			</div>
 		</div>
 	)

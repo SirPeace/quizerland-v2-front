@@ -1,4 +1,4 @@
-import { Divider } from '@mui/material'
+import { Divider, Paper } from '@mui/material'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/navigation'
@@ -12,7 +12,7 @@ const Quiz = ({ quiz }: IQuizProp): JSX.Element => {
 	const router = useRouter()
 
 	return (
-		<div className="bg-white my-4 mx-6 rounded-xl shadow-[2px_2px_15px_2px_rgba(0,0,0,0.2)]">
+		<Paper elevation={8} className="bg-white my-4 mx-6 rounded-xl">
 			<div className="flex justify-between p-3">
 				<Typography gutterBottom variant="h6" component="div" margin={0}>
 					{quiz.title}
@@ -44,7 +44,7 @@ const Quiz = ({ quiz }: IQuizProp): JSX.Element => {
 					перейти к тесту
 				</Button>
 			</div>
-		</div>
+		</Paper>
 	)
 }
 
