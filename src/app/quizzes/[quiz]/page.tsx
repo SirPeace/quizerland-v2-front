@@ -4,8 +4,8 @@ import { Paper } from '@mui/material'
 import { useEffect } from 'react'
 
 import GoToHomePageButton from '@/components/Navigation/GoToHomePageButton/GoToHomePageButton'
-import QuestionCard from '@/components/QuizComponents/QuestionCard/QuestionCard'
-import QuizResultCard from '@/components/QuizComponents/QuizResultCard/QuizResultCard'
+import QuestionCard from '@/components/Quiz/QuestionCard/QuestionCard'
+import QuizResultCard from '@/components/Quiz/QuizResultCard/QuizResultCard'
 import { setActiveQuiz, setIsFinishedQuiz } from '@/redux/quiz/quizSlice'
 
 import type { IQuestion } from '@/redux/quiz/types'

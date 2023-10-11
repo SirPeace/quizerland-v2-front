@@ -1,20 +1,27 @@
+'use client'
+
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail'
+import HowToRegIcon from '@mui/icons-material/HowToReg'
+import LockIcon from '@mui/icons-material/Lock'
 import LoginIcon from '@mui/icons-material/Login'
-import MailLockIcon from '@mui/icons-material/MailLock'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { IconButton } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
 import Checkbox from '@mui/material/Checkbox'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 const SignInForm = (): JSX.Element => {
 	const [showPassword, setShowPassword] = useState(false)
+
+	const router = useRouter()
 
 	const handleClickShowPassword = (): void => {
 		setShowPassword((show) => !show)
@@ -30,16 +37,9 @@ const SignInForm = (): JSX.Element => {
 	}
 
 	return (
-		<Box
-			sx={{
-				marginTop: 8,
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'center',
-			}}
-		>
+		<Card raised className="flex flex-col items-center p-10">
 			<Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-				<LoginIcon />
+				<HowToRegIcon />
 			</Avatar>
 			<Typography component="h1" variant="h5">
 				Авторизация
@@ -68,7 +68,7 @@ const SignInForm = (): JSX.Element => {
 						/>
 					</Box>
 					<Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-						<MailLockIcon sx={{ color: 'action.active', mr: 1, my: 1.5 }} />
+						<LockIcon sx={{ color: 'action.active', mr: 1, my: 1.5 }} />
 						<TextField
 							variant="standard"
 							margin="normal"
@@ -83,8 +83,8 @@ const SignInForm = (): JSX.Element => {
 						/>
 						<IconButton
 							aria-label="toggle password visibility"
+							onClick={handleClickShowPassword}
 							onMouseDown={handleClickShowPassword}
-							onMouseUp={handleClickShowPassword}
 							sx={{ color: 'action.active', my: 0.5 }}
 						>
 							{showPassword ? <Visibility /> : <VisibilityOff />}
@@ -111,12 +111,15 @@ const SignInForm = (): JSX.Element => {
 						fullWidth
 						variant="text"
 						className="mt-2 mb-2 normal-case"
+						onClick={() => {
+							router.push('auth/registration')
+						}}
 					>
 						Нет аккаунта? Заведи новый.
 					</Button>
 				</div>
 			</Box>
-		</Box>
+		</Card>
 	)
 }
 

@@ -2,7 +2,7 @@
 
 import { Neucha, Pacifico } from 'next/font/google'
 
-import Quiz from '@/components/QuizComponents/Quiz/Quiz'
+import Quiz from '@/components/Quiz/QuizCard/QuizCard'
 import type { IQuiz } from '@/redux/quiz/types'
 import { useAppSelector } from '@/redux/reduxHooks'
 

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
 	title: 'Create quiz | Quizerland',
-	description: 'Страница тестов',
+	description: 'Страница создания теста',
 }
 
 const CreateQuizPage = (): JSX.Element => (
