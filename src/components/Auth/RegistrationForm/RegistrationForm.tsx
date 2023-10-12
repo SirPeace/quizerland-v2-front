@@ -6,7 +6,6 @@ import EnhancedEncryptionIcon from '@mui/icons-material/EnhancedEncryption'
 import LockIcon from '@mui/icons-material/Lock'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded'
-import PersonSearchRoundedIcon from '@mui/icons-material/PersonSearchRounded'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { IconButton } from '@mui/material'
@@ -42,19 +41,14 @@ const RegistrationForm = (): JSX.Element => {
 	}
 
 	return (
-		<Card raised className="flex flex-col items-center p-10">
+		<Card raised className="flex flex-col items-center p-10 rounded-xl">
 			<Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
 				<PersonAddIcon />
 			</Avatar>
 			<Typography component="h1" variant="h5">
 				Регистрация
 			</Typography>
-			<Box
-				component="form"
-				onSubmit={handleSubmit}
-				noValidate
-				className="w-full mt-8"
-			>
+			<Box component="form" onSubmit={handleSubmit} className="w-full mt-8">
 				<div className="mb-10">
 					<Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
 						<AccountCircleIcon
@@ -71,29 +65,6 @@ const RegistrationForm = (): JSX.Element => {
 							name="nickname"
 							autoComplete="nickname"
 							autoFocus
-						/>
-					</Box>
-
-					<Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-						<PersonSearchRoundedIcon
-							sx={{
-								color: 'action.active',
-								mr: 1,
-								my: 1.5,
-								width: 25,
-								height: 25,
-							}}
-						/>
-						<TextField
-							type="text"
-							variant="standard"
-							margin="normal"
-							required
-							fullWidth
-							id="full name"
-							label="Полное имя"
-							name="full name"
-							autoComplete="full name"
 						/>
 					</Box>
 

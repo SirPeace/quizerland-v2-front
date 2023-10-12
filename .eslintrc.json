@@ -28,6 +28,12 @@
 		"react/prop-types": "off",
 		"arrow-body-style": ["error", "as-needed"],
 		"react-hooks/exhaustive-deps": "error",
+		"@typescript-eslint/no-misused-promises": [
+			"error",
+			{
+				"checksVoidReturn": false
+			}
+		],
 		"react/self-closing-comp": [
 			"error",
 			{

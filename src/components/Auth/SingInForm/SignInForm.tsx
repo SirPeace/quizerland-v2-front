@@ -18,6 +18,12 @@ import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import { Controller, useForm } from 'react-hook-form'
+
+import type { ISingInForm } from './types'
+
+import type { SubmitHandler } from 'react-hook-form'
+
 const SignInForm = (): JSX.Element => {
 	const [showPassword, setShowPassword] = useState(false)
 
@@ -27,17 +33,22 @@ const SignInForm = (): JSX.Element => {
 		setShowPassword((show) => !show)
 	}
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-		event.preventDefault()
-		const data = new FormData(event.currentTarget)
-		console.log({
-			email: data.get('email'),
-			password: data.get('password'),
-		})
+	const {
+		register,
+		control,
+		handleSubmit,
+		formState: { errors, isSubmitting },
+		reset,
+	} = useForm<ISingInForm>()
+
+	const onSubmit: SubmitHandler<ISingInForm> = async (data): Promise<void> => {
+		await new Promise((resolve) => setTimeout(resolve, 1000))
+		console.log(data)
+		reset()
 	}
 
 	return (
-		<Card raised className="flex flex-col items-center p-10">
+		<Card raised className="flex flex-col items-center p-10 rounded-xl">
 			<Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
 				<HowToRegIcon />
 			</Avatar>
@@ -46,71 +57,93 @@ const SignInForm = (): JSX.Element => {
 			</Typography>
 			<Box
 				component="form"
-				onSubmit={handleSubmit}
-				noValidate
+				onSubmit={handleSubmit(onSubmit)}
 				className="w-full mt-8"
 			>
-				<div className="mb-10">
-					<Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+				<div className="mb-8">
+					<Box className="flex items-end">
 						<AlternateEmailIcon
-							sx={{ color: 'action.active', mr: 1, my: 1.5 }}
+							sx={{ color: 'action.active', mr: 1, mb: 0.5 }}
 						/>
 						<TextField
-							variant="standard"
-							margin="normal"
-							required
-							fullWidth
-							id="email"
+							{...register('email', {
+								required: 'Укажите адрес электронной почты!',
+							})}
+							type="email"
 							label="Адрес электронной почты"
-							name="email"
-							autoComplete="email"
+							autoComplete="current-email"
+							placeholder="test@test.ru"
+							fullWidth
+							variant="standard"
 							autoFocus
 						/>
 					</Box>
-					<Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-						<LockIcon sx={{ color: 'action.active', mr: 1, my: 1.5 }} />
+
+					<div>
+						<p className="mt-0.5 pl-8 text-xs text-red-500 h-4">
+							{errors.email !== undefined ? errors.email.message : ''}
+						</p>
+					</div>
+
+					<Box className="flex items-end">
+						<LockIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
 						<TextField
-							variant="standard"
-							margin="normal"
-							required
-							fullWidth
-							name="password"
-							label="Пароль"
+							{...register('password', {
+								required: 'Введите пароль!',
+								minLength: {
+									value: 8,
+									message: 'Пароль должен содержать не менее 8 символов!',
+								},
+							})}
 							type={showPassword ? 'text' : 'password'}
-							id="password"
-							// autoComplete="current-password"
-							// helperText="Введите правильные данные"
+							label="Пароль"
+							autoComplete="current-password"
+							placeholder="testPassword_123"
+							fullWidth
+							variant="standard"
 						/>
 						<IconButton
-							aria-label="toggle password visibility"
 							onClick={handleClickShowPassword}
 							onMouseDown={handleClickShowPassword}
-							sx={{ color: 'action.active', my: 0.5 }}
+							sx={{ color: 'action.active', mb: -0.5, ml: 0.5 }}
 						>
 							{showPassword ? <Visibility /> : <VisibilityOff />}
 						</IconButton>
 					</Box>
+
+					<div>
+						<p className="mt-0.5 pl-8 text-xs text-red-500 h-4">
+							{errors.password !== undefined ? errors.password.message : ''}
+						</p>
+					</div>
 				</div>
 
-				<FormControlLabel
-					control={<Checkbox value="remember" color="primary" />}
-					label="Запомнить меня"
+				<Controller
+					control={control}
+					name="checkbox"
+					render={({ field }) => (
+						<FormControlLabel
+							{...field}
+							control={<Checkbox color="primary" />}
+							label="Запомнить меня"
+						/>
+					)}
 				/>
+
 				<div className="mt-2">
 					<Button
 						type="submit"
-						fullWidth
+						disabled={isSubmitting}
 						variant="contained"
-						className="mt-2 mb-2"
+						className="w-full mt-2 mb-2"
 						startIcon={<LoginIcon />}
 					>
 						Войти
 					</Button>
 					<Button
 						type="button"
-						fullWidth
 						variant="text"
-						className="mt-2 mb-2 normal-case"
+						className="w-full mt-2 mb-2 normal-case"
 						onClick={() => {
 							router.push('auth/registration')
 						}}

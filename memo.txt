@@ -83,4 +83,8 @@ export const metadata: Metadata = {
 	],
 }
 
+# Работа с формами react-hook-form :
+
+ $ npm install react-hook-form
+
 
