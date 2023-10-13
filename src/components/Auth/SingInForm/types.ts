@@ -3,3 +3,10 @@ export interface ISingInForm {
 	password: string
 	checkbox: boolean
 }
+
+export interface IRegistrationForm {
+	nickname: string
+	email: string
+	password: string
+	confirmPassword: string
+}

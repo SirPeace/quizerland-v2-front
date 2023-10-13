@@ -18,6 +18,11 @@ import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import { useForm } from 'react-hook-form'
+
+import type { IRegistrationForm } from '../SingInForm/types'
+import type { SubmitHandler } from 'react-hook-form'
+
 const RegistrationForm = (): JSX.Element => {
 	const [showPassword, setShowPassword] = useState(false)
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -31,13 +36,20 @@ const RegistrationForm = (): JSX.Element => {
 		setShowConfirmPassword((show) => !show)
 	}
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-		event.preventDefault()
-		const data = new FormData(event.currentTarget)
-		console.log({
-			email: data.get('email'),
-			password: data.get('password'),
-		})
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors, isSubmitting },
+		getValues,
+	} = useForm<IRegistrationForm>()
+
+	const onSubmit: SubmitHandler<IRegistrationForm> = async (
+		data,
+	): Promise<void> => {
+		await new Promise((resolve) => setTimeout(resolve, 1000))
+		console.log(data)
+		reset()
 	}
 
 	return (
@@ -48,97 +60,126 @@ const RegistrationForm = (): JSX.Element => {
 			<Typography component="h1" variant="h5">
 				Регистрация
 			</Typography>
-			<Box component="form" onSubmit={handleSubmit} className="w-full mt-8">
-				<div className="mb-10">
-					<Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+			<Box
+				component="form"
+				onSubmit={handleSubmit(onSubmit)}
+				className="w-full mt-8"
+			>
+				<div className="mb-8">
+					<Box className="flex items-end">
 						<AccountCircleIcon
-							sx={{ color: 'action.active', mr: 1, my: 1.5 }}
+							sx={{ color: 'action.active', mr: 1, mb: 0.5 }}
 						/>
 						<TextField
+							{...register('nickname', {
+								required: 'Укажите псевдоним пользователя!',
+							})}
 							type="text"
-							variant="standard"
-							margin="normal"
-							required
-							fullWidth
-							id="nickname"
 							label="Псевдоним пользователя"
-							name="nickname"
-							autoComplete="nickname"
+							placeholder="Nickname"
+							variant="standard"
+							fullWidth
 							autoFocus
 						/>
 					</Box>
 
-					<Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+					<div>
+						<p className="mt-0.5 pl-8 text-xs text-red-500 h-4">
+							{errors.nickname !== undefined ? errors.nickname.message : ''}
+						</p>
+					</div>
+
+					<Box className="flex items-end">
 						<AlternateEmailIcon
-							sx={{ color: 'action.active', mr: 1, my: 1.5 }}
+							sx={{ color: 'action.active', mr: 1, mb: 0.5 }}
 						/>
 						<TextField
+							{...register('email', {
+								required: 'Укажите адрес электронной почты!',
+							})}
 							type="email"
-							variant="standard"
-							margin="normal"
-							required
-							fullWidth
-							id="email"
 							label="Адрес электронной почты"
-							name="email"
-							autoComplete="email"
+							placeholder="test@test.ru"
+							fullWidth
+							variant="standard"
 						/>
 					</Box>
 
-					<Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-						<LockIcon sx={{ color: 'action.active', mr: 1, my: 1.5 }} />
+					<div>
+						<p className="mt-0.5 pl-8 text-xs text-red-500 h-4">
+							{errors.email !== undefined ? errors.email.message : ''}
+						</p>
+					</div>
+
+					<Box className="flex items-end">
+						<LockIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
 						<TextField
+							{...register('password', {
+								required: 'Введите пароль!',
+								minLength: {
+									value: 8,
+									message: 'Пароль должен содержать не менее 8 символов!',
+								},
+							})}
 							type={showPassword ? 'text' : 'password'}
-							variant="standard"
-							margin="normal"
-							required
-							fullWidth
-							name="password"
 							label="Пароль"
-							id="password"
-							// autoComplete="current-password"
-							// helperText="Введите правильные данные"
+							variant="standard"
+							placeholder="testPassword_123"
+							fullWidth
 						/>
 						<IconButton
-							aria-label="toggle password visibility"
 							onClick={handleClickShowPassword}
 							onMouseDown={handleClickShowPassword}
-							sx={{ color: 'action.active', my: 0.5 }}
+							sx={{ color: 'action.active', mb: -0.5, ml: 0.5 }}
 						>
 							{showPassword ? <Visibility /> : <VisibilityOff />}
 						</IconButton>
 					</Box>
 
-					<Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+					<div>
+						<p className="mt-0.5 pl-8 text-xs text-red-500 h-4">
+							{errors.password !== undefined ? errors.password.message : ''}
+						</p>
+					</div>
+
+					<Box className="flex items-end">
 						<EnhancedEncryptionIcon
-							sx={{ color: 'action.active', mr: 1, my: 1.5 }}
+							sx={{ color: 'action.active', mr: 1, mb: 0.5 }}
 						/>
 						<TextField
+							{...register('confirmPassword', {
+								required: 'Требуется подтверждение пароля!',
+								validate: (value) =>
+									value === getValues('password') || 'Пароли должны совпадать!',
+							})}
 							type={showConfirmPassword ? 'text' : 'password'}
-							variant="standard"
-							margin="normal"
-							required
-							fullWidth
-							name="confirm password"
 							label="Подтвердите пароль"
-							id="confirm password"
-							// autoComplete="current-password"
-							// helperText="Введите правильные данные"
+							placeholder="testPassword_123"
+							variant="standard"
+							fullWidth
 						/>
 						<IconButton
-							aria-label="toggle password visibility"
 							onClick={handleClickShowConfirmPassword}
 							onMouseDown={handleClickShowConfirmPassword}
-							sx={{ color: 'action.active', my: 0.5 }}
+							sx={{ color: 'action.active', mb: -0.5, ml: 0.5 }}
 						>
 							{showConfirmPassword ? <Visibility /> : <VisibilityOff />}
 						</IconButton>
 					</Box>
+
+					<div>
+						<p className="mt-0.5 pl-8 text-xs text-red-500 h-4">
+							{errors.confirmPassword !== undefined
+								? errors.confirmPassword.message
+								: ''}
+						</p>
+					</div>
 				</div>
 
 				<div className="mt-2">
 					<Button
 						type="submit"
+						disabled={isSubmitting}
 						fullWidth
 						variant="contained"
 						className="mt-2 mb-2"
