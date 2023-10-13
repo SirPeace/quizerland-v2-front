@@ -1,5 +1,7 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
+
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail'
 import HowToRegIcon from '@mui/icons-material/HowToReg'
 import LockIcon from '@mui/icons-material/Lock'
@@ -18,9 +20,9 @@ import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
-import type { ISingInForm } from './types'
+import { singInSchema, type TSingInSchema } from '../types'
 
 import type { SubmitHandler } from 'react-hook-form'
 
@@ -35,13 +37,16 @@ const SignInForm = (): JSX.Element => {
 
 	const {
 		register,
-		control,
 		handleSubmit,
 		formState: { errors, isSubmitting },
 		reset,
-	} = useForm<ISingInForm>()
+	} = useForm<TSingInSchema>({
+		resolver: zodResolver(singInSchema),
+	})
 
-	const onSubmit: SubmitHandler<ISingInForm> = async (data): Promise<void> => {
+	const onSubmit: SubmitHandler<TSingInSchema> = async (
+		data,
+	): Promise<void> => {
 		await new Promise((resolve) => setTimeout(resolve, 1000))
 		console.log(data)
 		reset()
@@ -88,13 +93,7 @@ const SignInForm = (): JSX.Element => {
 					<Box className="flex items-end">
 						<LockIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
 						<TextField
-							{...register('password', {
-								required: 'Введите пароль!',
-								minLength: {
-									value: 8,
-									message: 'Пароль должен содержать не менее 8 символов!',
-								},
-							})}
+							{...register('password')}
 							type={showPassword ? 'text' : 'password'}
 							label="Пароль"
 							autoComplete="current-password"
@@ -118,16 +117,9 @@ const SignInForm = (): JSX.Element => {
 					</div>
 				</div>
 
-				<Controller
-					control={control}
-					name="checkbox"
-					render={({ field }) => (
-						<FormControlLabel
-							{...field}
-							control={<Checkbox color="primary" />}
-							label="Запомнить меня"
-						/>
-					)}
+				<FormControlLabel
+					control={<Checkbox color="primary" />}
+					label="Запомнить меня"
 				/>
 
 				<div className="mt-2">

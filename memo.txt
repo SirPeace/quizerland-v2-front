@@ -83,8 +83,19 @@ export const metadata: Metadata = {
 	],
 }
 
+-----
+
 # Работа с формами react-hook-form :
 
  $ npm install react-hook-form
 
+-----
 
+# ZOD - Проверка схемы с помощью статического вывода типов :
+ 
+ $ npm i zod
+ $ npm i @hookform/resolvers
+
+ $ npm i zod @hookform/resolvers
+
+----- 

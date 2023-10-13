@@ -1,5 +1,6 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail'
 import EnhancedEncryptionIcon from '@mui/icons-material/EnhancedEncryption'
@@ -15,12 +16,16 @@ import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 
-import type { IRegistrationForm } from '../SingInForm/types'
+import { registrationSchema } from '../types'
+
+import type { TRegistrationSchema } from '../types'
+
 import type { SubmitHandler } from 'react-hook-form'
 
 const RegistrationForm = (): JSX.Element => {
@@ -41,10 +46,11 @@ const RegistrationForm = (): JSX.Element => {
 		handleSubmit,
 		reset,
 		formState: { errors, isSubmitting },
-		getValues,
-	} = useForm<IRegistrationForm>()
+	} = useForm<TRegistrationSchema>({
+		resolver: zodResolver(registrationSchema),
+	})
 
-	const onSubmit: SubmitHandler<IRegistrationForm> = async (
+	const onSubmit: SubmitHandler<TRegistrationSchema> = async (
 		data,
 	): Promise<void> => {
 		await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -71,9 +77,7 @@ const RegistrationForm = (): JSX.Element => {
 							sx={{ color: 'action.active', mr: 1, mb: 0.5 }}
 						/>
 						<TextField
-							{...register('nickname', {
-								required: 'Укажите псевдоним пользователя!',
-							})}
+							{...register('nickname')}
 							type="text"
 							label="Псевдоним пользователя"
 							placeholder="Nickname"
@@ -94,9 +98,7 @@ const RegistrationForm = (): JSX.Element => {
 							sx={{ color: 'action.active', mr: 1, mb: 0.5 }}
 						/>
 						<TextField
-							{...register('email', {
-								required: 'Укажите адрес электронной почты!',
-							})}
+							{...register('email')}
 							type="email"
 							label="Адрес электронной почты"
 							placeholder="test@test.ru"
@@ -114,13 +116,7 @@ const RegistrationForm = (): JSX.Element => {
 					<Box className="flex items-end">
 						<LockIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
 						<TextField
-							{...register('password', {
-								required: 'Введите пароль!',
-								minLength: {
-									value: 8,
-									message: 'Пароль должен содержать не менее 8 символов!',
-								},
-							})}
+							{...register('password')}
 							type={showPassword ? 'text' : 'password'}
 							label="Пароль"
 							variant="standard"
@@ -147,11 +143,7 @@ const RegistrationForm = (): JSX.Element => {
 							sx={{ color: 'action.active', mr: 1, mb: 0.5 }}
 						/>
 						<TextField
-							{...register('confirmPassword', {
-								required: 'Требуется подтверждение пароля!',
-								validate: (value) =>
-									value === getValues('password') || 'Пароли должны совпадать!',
-							})}
+							{...register('confirmPassword')}
 							type={showConfirmPassword ? 'text' : 'password'}
 							label="Подтвердите пароль"
 							placeholder="testPassword_123"
