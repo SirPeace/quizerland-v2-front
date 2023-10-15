@@ -33,3 +33,5 @@ export const registrationSchema = z
 		path: ['confirmPassword'],
 	})
 export type TRegistrationSchema = z.infer<typeof registrationSchema>
+
+export type TUserRegistrationData = Omit<TRegistrationSchema, 'confirmPassword'>

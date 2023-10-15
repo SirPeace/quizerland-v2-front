@@ -49,6 +49,7 @@ const SignInForm = (): JSX.Element => {
 	): Promise<void> => {
 		await new Promise((resolve) => setTimeout(resolve, 1000))
 		console.log(data)
+
 		reset()
 	}
 

@@ -24,7 +24,7 @@ import { useForm } from 'react-hook-form'
 
 import { registrationSchema } from '../types'
 
-import type { TRegistrationSchema } from '../types'
+import type { TRegistrationSchema, TUserRegistrationData } from '../types'
 
 import type { SubmitHandler } from 'react-hook-form'
 
@@ -55,6 +55,7 @@ const RegistrationForm = (): JSX.Element => {
 	): Promise<void> => {
 		await new Promise((resolve) => setTimeout(resolve, 1000))
 		console.log(data)
+		const { confirmPassword, ...userDataRegistration } = data
 		reset()
 	}
 
