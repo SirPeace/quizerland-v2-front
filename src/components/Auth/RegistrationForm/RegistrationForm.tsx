@@ -121,7 +121,6 @@ const RegistrationForm = (): JSX.Element => {
               type={showPassword ? 'text' : 'password'}
               label="Пароль"
               variant="standard"
-              placeholder="testPassword_123"
               fullWidth
             />
             <IconButton
@@ -147,7 +146,6 @@ const RegistrationForm = (): JSX.Element => {
               {...register('confirmPassword')}
               type={showConfirmPassword ? 'text' : 'password'}
               label="Подтвердите пароль"
-              placeholder="testPassword_123"
               variant="standard"
               fullWidth
             />

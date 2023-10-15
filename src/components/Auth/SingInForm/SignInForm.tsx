@@ -22,6 +22,10 @@ import { useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 
+import { setUser } from '@/redux/auth/authSlice'
+import { defaultUser } from '@/redux/auth/initialState'
+import { useAppDispatch } from '@/redux/reduxHooks'
+
 import { singInSchema, type TSingInSchema } from '../types'
 
 import type { SubmitHandler } from 'react-hook-form'
@@ -30,6 +34,7 @@ const SignInForm = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false)
 
   const router = useRouter()
+  const dispatch = useAppDispatch()
 
   const handleClickShowPassword = (): void => {
     setShowPassword((show) => !show)
@@ -48,7 +53,10 @@ const SignInForm = (): JSX.Element => {
     data,
   ): Promise<void> => {
     await new Promise((resolve) => setTimeout(resolve, 1000))
-    console.log(data)
+    console.log('Auth form: ', data)
+
+    dispatch(setUser(defaultUser))
+
     reset()
   }
 
@@ -97,7 +105,6 @@ const SignInForm = (): JSX.Element => {
               type={showPassword ? 'text' : 'password'}
               label="Пароль"
               autoComplete="current-password"
-              placeholder="testPassword_123"
               fullWidth
               variant="standard"
             />
