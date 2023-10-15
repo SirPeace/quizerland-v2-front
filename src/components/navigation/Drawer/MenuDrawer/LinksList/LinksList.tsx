@@ -15,63 +15,63 @@ import { DrawerContext } from '../../Drawer'
 import type { ILink } from './types'
 
 const LinksList = (): JSX.Element => {
-	const pathname = usePathname()
-	const router = useRouter()
+  const pathname = usePathname()
+  const router = useRouter()
 
-	const { closeDrawer } = useContext(DrawerContext)
+  const { closeDrawer } = useContext(DrawerContext)
 
-	const links: ILink[] = [
-		{
-			pathname: '/',
-			query: { name: 'Тесты' },
-			muiIcon: <FormatListNumberedRtlIcon />,
-		},
-		{
-			pathname: '/create-quiz',
-			query: { name: 'Создание тестов' },
-			muiIcon: <EditNoteIcon />,
-		},
-		{
-			pathname: '/auth',
-			query: { name: 'Авторизация' },
-			muiIcon: <InputOutlinedIcon />,
-		},
-	]
+  const links: ILink[] = [
+    {
+      pathname: '/',
+      query: { name: 'Тесты' },
+      muiIcon: <FormatListNumberedRtlIcon />,
+    },
+    {
+      pathname: '/create-quiz',
+      query: { name: 'Создание тестов' },
+      muiIcon: <EditNoteIcon />,
+    },
+    {
+      pathname: '/auth',
+      query: { name: 'Авторизация' },
+      muiIcon: <InputOutlinedIcon />,
+    },
+  ]
 
-	return (
-		<>
-			{links.map((link) => {
-				const isActive = pathname === link.pathname
+  return (
+    <>
+      {links.map((link) => {
+        const isActive = pathname === link.pathname
 
-				return (
-					<div key={link.pathname}>
-						<ListItem
-							onClick={() => {
-								router.push(link.pathname)
-								closeDrawer()
-							}}
-						>
-							<ListItemButton>
-								<ListItemIcon
-									className={`m-auto ${isActive && 'text-blue-700'}`}
-								>
-									{link.muiIcon}
-								</ListItemIcon>
-								<ListItemText
-									className={`m-auto ${isActive && 'text-blue-700'}`}
-									primary={link.query.name}
-								/>
-							</ListItemButton>
-						</ListItem>
+        return (
+          <div key={link.pathname}>
+            <ListItem
+              onClick={() => {
+                router.push(link.pathname)
+                closeDrawer()
+              }}
+            >
+              <ListItemButton>
+                <ListItemIcon
+                  className={`m-auto ${isActive && 'text-blue-700'}`}
+                >
+                  {link.muiIcon}
+                </ListItemIcon>
+                <ListItemText
+                  className={`m-auto ${isActive && 'text-blue-700'}`}
+                  primary={link.query.name}
+                />
+              </ListItemButton>
+            </ListItem>
 
-						{link.query.name === 'Создание тестов' && (
-							<Divider className="w-64 mx-auto my-2" />
-						)}
-					</div>
-				)
-			})}
-		</>
-	)
+            {link.query.name === 'Создание тестов' && (
+              <Divider className="w-64 mx-auto my-2" />
+            )}
+          </div>
+        )
+      })}
+    </>
+  )
 }
 
 export default LinksList

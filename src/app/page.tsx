@@ -4,13 +4,13 @@ import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 const HomePage = (): JSX.Element => {
-	const router = useRouter()
+  const router = useRouter()
 
-	useEffect(() => {
-		router.push('/quizzes')
-	}, [router])
+  useEffect(() => {
+    router.push('/quizzes')
+  }, [router])
 
-	return <></>
+  return <></>
 }
 
 export default HomePage

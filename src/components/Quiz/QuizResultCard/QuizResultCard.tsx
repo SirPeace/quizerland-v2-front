@@ -12,79 +12,79 @@ import RadioGroup from '@mui/material/RadioGroup'
 import Typography from '@mui/material/Typography'
 
 import {
-	goToAvailableQuiz,
-	resetRightAttempts,
-	resetCurrentQuestion,
+  goToAvailableQuiz,
+  resetRightAttempts,
+  resetCurrentQuestion,
 } from '@/redux/quiz/quizSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 const QuizResultCard = (): JSX.Element => {
-	const { correctAnswersCount, wrongAnswersCount } = useAppSelector(
-		({ quizState }) => {
-			const quiz = quizState.quizzes.find(
-				(quiz) => quiz.id === quizState.activeQuizId,
-			)
+  const { correctAnswersCount, wrongAnswersCount } = useAppSelector(
+    ({ quizState }) => {
+      const quiz = quizState.quizzes.find(
+        (quiz) => quiz.id === quizState.activeQuizId,
+      )
 
-			const questionsCount = quiz?.questions.length ?? 0
-			const correctAnswersCount = quiz?.rightAttempts ?? 0
-			const wrongAnswersCount = questionsCount - correctAnswersCount
+      const questionsCount = quiz?.questions.length ?? 0
+      const correctAnswersCount = quiz?.rightAttempts ?? 0
+      const wrongAnswersCount = questionsCount - correctAnswersCount
 
-			return { wrongAnswersCount, correctAnswersCount }
-		},
-	)
+      return { wrongAnswersCount, correctAnswersCount }
+    },
+  )
 
-	const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch()
 
-	const goToNextQuiz = (): void => {
-		dispatch(resetRightAttempts())
-		dispatch(goToAvailableQuiz())
-	}
+  const goToNextQuiz = (): void => {
+    dispatch(resetRightAttempts())
+    dispatch(goToAvailableQuiz())
+  }
 
-	return (
-		<>
-			<CardContent sx={{ pb: 0 }}>
-				<Typography gutterBottom variant="h6" component="div">
-					Результат теста
-				</Typography>
-				<Divider />
+  return (
+    <>
+      <CardContent sx={{ pb: 0 }}>
+        <Typography gutterBottom variant="h6" component="div">
+          Результат теста
+        </Typography>
+        <Divider />
 
-				<RadioGroup className="mx-4 my-4">
-					<FormControlLabel
-						control={
-							<HighlightOffOutlinedIcon
-								className="text-red-400"
-								sx={{ margin: '9px' }}
-							/>
-						}
-						className="text-red-400"
-						label={`Неверные ответы : ${wrongAnswersCount}`}
-					/>
-					<div className="h-2" />
-					<FormControlLabel
-						control={
-							<VerifiedOutlinedIcon
-								className="text-green-700"
-								sx={{ margin: '9px' }}
-							/>
-						}
-						className="text-green-600"
-						label={`Правильные ответы : ${correctAnswersCount}`}
-					/>
-				</RadioGroup>
-			</CardContent>
-			<CardActions className="mx-3">
-				<Button
-					size="small"
-					className="mr-3"
-					onClick={() => dispatch(resetCurrentQuestion(1))}
-				>
-					Повторить
-				</Button>
-				<Button size="small" onClick={goToNextQuiz}>
-					К следующему тесту
-				</Button>
-			</CardActions>
-		</>
-	)
+        <RadioGroup className="mx-4 my-4">
+          <FormControlLabel
+            control={
+              <HighlightOffOutlinedIcon
+                className="text-red-400"
+                sx={{ margin: '9px' }}
+              />
+            }
+            className="text-red-400"
+            label={`Неверные ответы : ${wrongAnswersCount}`}
+          />
+          <div className="h-2" />
+          <FormControlLabel
+            control={
+              <VerifiedOutlinedIcon
+                className="text-green-700"
+                sx={{ margin: '9px' }}
+              />
+            }
+            className="text-green-600"
+            label={`Правильные ответы : ${correctAnswersCount}`}
+          />
+        </RadioGroup>
+      </CardContent>
+      <CardActions className="mx-3">
+        <Button
+          size="small"
+          className="mr-3"
+          onClick={() => dispatch(resetCurrentQuestion(1))}
+        >
+          Повторить
+        </Button>
+        <Button size="small" onClick={goToNextQuiz}>
+          К следующему тесту
+        </Button>
+      </CardActions>
+    </>
+  )
 }
 export default QuizResultCard
