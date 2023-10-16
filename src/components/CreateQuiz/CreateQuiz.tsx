@@ -11,11 +11,15 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
-import * as React from 'react'
 
-const drawerWidth = 300
+import { useState } from 'react'
+
+import GoToHomePageButton from '../Navigation/GoToHomePageButton/GoToHomePageButton'
+
+import QuizDescriptionForm from './QuizDescriptionForm/QuizDescriptionForm'
+import QuizQuestionForm from './QuizQuestionForm/QuizQuestionForm'
+
+const drawerWidth = 240
 
 const DrawerList = (
   <Box sx={{ mt: { sm: 8, xs: 0 } }}>
@@ -34,8 +38,8 @@ const DrawerList = (
   </Box>
 )
 
-const ResponsiveDrawer = (): JSX.Element => {
-  const [mobileOpen, setMobileOpen] = React.useState(false)
+const CreateQuiz = (): JSX.Element => {
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   const handleDrawerToggle = (): void => {
     setMobileOpen(!mobileOpen)
@@ -102,39 +106,17 @@ const ResponsiveDrawer = (): JSX.Element => {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        <Toolbar />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        <div className="max-w-4xl min-h-screen mx-auto">
+          <h1 className="pb-10 text-center">Создание теста</h1>
+
+          <GoToHomePageButton />
+          <QuizQuestionForm />
+
+          {/* <QuizDescriptionForm /> */}
+        </div>
       </Box>
     </Box>
   )
 }
 
-export default ResponsiveDrawer
+export default CreateQuiz

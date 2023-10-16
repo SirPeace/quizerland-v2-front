@@ -1,4 +1,4 @@
-import ResponsiveDrawer from '@/components/CreateQuiz/CreateQuiz'
+import CreateQuiz from '@/components/CreateQuiz/CreateQuiz'
 
 import type { Metadata } from 'next'
 
@@ -7,6 +7,6 @@ export const metadata: Metadata = {
   description: 'Страница создания теста',
 }
 
-const CreateQuizPage = (): JSX.Element => <ResponsiveDrawer />
+const CreateQuizPage = (): JSX.Element => <CreateQuiz />
 
 export default CreateQuizPage
