@@ -30,20 +30,18 @@ export default function QuizDescriptionForm(): JSX.Element {
     <Card raised className="py-5 px-5 rounded-xl">
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <TextField
-          {...register('name')}
+          {...register('title')}
           type="text"
           label="Добавьте название теста"
           multiline
           fullWidth
           focused
           placeholder="Пример: Тест по теме 'Космос'"
+          error={errors.title !== undefined}
         />
-
-        <div>
-          <p className="mt-0.5 pl-3 text-xs text-red-500 h-4">
-            {errors.name !== undefined ? errors.name.message : ''}
-          </p>
-        </div>
+        <p className="mt-0.5 pl-3 text-xs text-red-600 h-4">
+          {errors.title !== undefined ? errors.title.message : ''}
+        </p>
 
         <TextField
           {...register('description')}
@@ -54,14 +52,12 @@ export default function QuizDescriptionForm(): JSX.Element {
           fullWidth
           focused
           rows={5}
+          error={errors.description !== undefined}
           placeholder="Пример: Космическое пространство, космос (др.-греч. κόσμος — «упорядоченность», «порядок») — относительно пустые участки Вселенной, которые лежат вне границ атмосфер небесных тел. Космос не является абсолютно пустым пространством: в нём есть, хотя и с очень низкой плотностью, межзвёздное вещество (преимущественно ионы и атомы водорода), космические лучи и электромагнитное излучение, а также гипотетическая тёмная материя."
         />
-
-        <div>
-          <p className="mt-0.5 pl-3 text-xs text-red-500 h-4">
-            {errors.description !== undefined ? errors.description.message : ''}
-          </p>
-        </div>
+        <p className="mt-0.5 pl-3 text-xs text-red-600 h-4">
+          {errors.description !== undefined ? errors.description.message : ''}
+        </p>
 
         <CardActions className="p-0 mt-5 justify-center">
           <Button
