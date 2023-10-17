@@ -89,11 +89,12 @@ const SignInForm = (): JSX.Element => {
               fullWidth
               variant="standard"
               autoFocus
+              error={errors.email !== undefined}
             />
           </Box>
 
           <div>
-            <p className="mt-0.5 pl-8 text-xs text-red-500 h-4">
+            <p className="mt-0.5 pl-8 text-xs text-red-600 h-4">
               {errors.email !== undefined ? errors.email.message : ''}
             </p>
           </div>
@@ -107,6 +108,7 @@ const SignInForm = (): JSX.Element => {
               autoComplete="current-password"
               fullWidth
               variant="standard"
+              error={errors.password !== undefined}
             />
             <IconButton
               onClick={handleClickShowPassword}
@@ -118,7 +120,7 @@ const SignInForm = (): JSX.Element => {
           </Box>
 
           <div>
-            <p className="mt-0.5 pl-8 text-xs text-red-500 h-4">
+            <p className="mt-0.5 pl-8 text-xs text-red-600 h-4">
               {errors.password !== undefined ? errors.password.message : ''}
             </p>
           </div>

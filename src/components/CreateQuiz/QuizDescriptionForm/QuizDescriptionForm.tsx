@@ -45,7 +45,6 @@ export default function QuizDescriptionForm(): JSX.Element {
 
         <TextField
           {...register('description')}
-          className="mt-5"
           type="text"
           label="Добавьте описание к тесту"
           multiline

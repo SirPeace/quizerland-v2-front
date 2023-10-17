@@ -85,11 +85,12 @@ const RegistrationForm = (): JSX.Element => {
               variant="standard"
               fullWidth
               autoFocus
+              error={errors.nickname !== undefined}
             />
           </Box>
 
           <div>
-            <p className="mt-0.5 pl-8 text-xs text-red-500 h-4">
+            <p className="mt-0.5 pl-8 text-xs text-red-600 h-4">
               {errors.nickname !== undefined ? errors.nickname.message : ''}
             </p>
           </div>
@@ -105,11 +106,12 @@ const RegistrationForm = (): JSX.Element => {
               placeholder="test@test.ru"
               fullWidth
               variant="standard"
+              error={errors.email !== undefined}
             />
           </Box>
 
           <div>
-            <p className="mt-0.5 pl-8 text-xs text-red-500 h-4">
+            <p className="mt-0.5 pl-8 text-xs text-red-600 h-4">
               {errors.email !== undefined ? errors.email.message : ''}
             </p>
           </div>
@@ -122,6 +124,7 @@ const RegistrationForm = (): JSX.Element => {
               label="Пароль"
               variant="standard"
               fullWidth
+              error={errors.password !== undefined}
             />
             <IconButton
               onClick={handleClickShowPassword}
@@ -133,7 +136,7 @@ const RegistrationForm = (): JSX.Element => {
           </Box>
 
           <div>
-            <p className="mt-0.5 pl-8 text-xs text-red-500 h-4">
+            <p className="mt-0.5 pl-8 text-xs text-red-600 h-4">
               {errors.password !== undefined ? errors.password.message : ''}
             </p>
           </div>
@@ -148,6 +151,7 @@ const RegistrationForm = (): JSX.Element => {
               label="Подтвердите пароль"
               variant="standard"
               fullWidth
+              error={errors.confirmPassword !== undefined}
             />
             <IconButton
               onClick={handleClickShowConfirmPassword}
@@ -159,7 +163,7 @@ const RegistrationForm = (): JSX.Element => {
           </Box>
 
           <div>
-            <p className="mt-0.5 pl-8 text-xs text-red-500 h-4">
+            <p className="mt-0.5 pl-8 text-xs text-red-600 h-4">
               {errors.confirmPassword !== undefined
                 ? errors.confirmPassword.message
                 : ''}

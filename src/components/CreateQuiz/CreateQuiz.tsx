@@ -16,7 +16,7 @@ import { useState } from 'react'
 
 import GoToHomePageButton from '../Navigation/GoToHomePageButton/GoToHomePageButton'
 
-// import QuizDescriptionForm from './QuizDescriptionForm/QuizDescriptionForm'
+import QuizDescriptionForm from './QuizDescriptionForm/QuizDescriptionForm'
 import QuizQuestionForm from './QuizQuestionForm/QuizQuestionForm'
 import CreateQuizContext from './context'
 
@@ -112,9 +112,9 @@ const CreateQuiz = (): JSX.Element => {
             <h1 className="pb-10 pt-10 mt-0 text-center">Создание теста</h1>
 
             <GoToHomePageButton />
-            <QuizQuestionForm />
+            {/* <QuizQuestionForm /> */}
 
-            {/* <QuizDescriptionForm /> */}
+            <QuizDescriptionForm />
           </div>
         </Box>
       </Box>
