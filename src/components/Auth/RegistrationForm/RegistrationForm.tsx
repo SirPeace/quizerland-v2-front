@@ -24,7 +24,7 @@ import { useForm } from 'react-hook-form'
 
 import { registrationSchema } from '../types'
 
-import type { TRegistrationSchema } from '../types'
+import type { TRegistrationSchema, TUserRegistrationData } from '../types'
 
 import type { SubmitHandler } from 'react-hook-form'
 
