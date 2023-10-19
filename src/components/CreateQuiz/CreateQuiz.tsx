@@ -41,7 +41,7 @@ const DrawerList = (
 
 const CreateQuiz = (): JSX.Element => {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState(1)
+  const [activeTab, setActiveTab] = useState(0)
 
   const handleDrawerToggle = (): void => {
     setMobileOpen(!mobileOpen)
@@ -110,11 +110,9 @@ const CreateQuiz = (): JSX.Element => {
         >
           <div className="max-w-4xl min-h-screen mx-auto">
             <h1 className="pb-10 pt-10 mt-0 text-center">Создание теста</h1>
-
             <GoToHomePageButton />
-            <QuizQuestionForm />
 
-            {/* <QuizDescriptionForm /> */}
+            {activeTab === 0 ? <QuizDescriptionForm /> : <QuizQuestionForm />}
           </div>
         </Box>
       </Box>

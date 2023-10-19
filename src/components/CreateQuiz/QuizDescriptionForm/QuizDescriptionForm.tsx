@@ -4,8 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Card, CardActions, Box } from '@mui/material'
 import TextField from '@mui/material/TextField'
 
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 
+import { addDescription } from '@/redux/createQuiz/createQuizSlice'
+import { useAppDispatch } from '@/redux/reduxHooks'
+
+import CreateQuizContext from '../context'
 import { descriptionSchema, type TDescriptionSchema } from '../types'
 
 import type { SubmitHandler } from 'react-hook-form'
@@ -14,15 +19,22 @@ export default function QuizDescriptionForm(): JSX.Element {
   const {
     register,
     handleSubmit,
-    reset,
+    // reset,
     formState: { errors, isSubmitting },
   } = useForm<TDescriptionSchema>({ resolver: zodResolver(descriptionSchema) })
+
+  const dispatch = useAppDispatch()
+
+  const { activeTab, setActiveTab } = useContext(CreateQuizContext)
 
   const onSubmit: SubmitHandler<TDescriptionSchema> = async (
     data,
   ): Promise<void> => {
     await new Promise(resolve => setTimeout(resolve, 1000))
     console.log(data)
+
+    dispatch(addDescription(data))
+    setActiveTab(previousState => previousState + 1)
     // reset()
   }
 
