@@ -21,7 +21,7 @@ const QuizQuestionForm = (): JSX.Element => {
   const { activeTab } = useContext(CreateQuizContext)
 
   const activeQuestion = useAppSelector(({ createQuizState }) =>
-    createQuizState.questions.find((q) => q.id === activeTab),
+    createQuizState.questions.find(q => q.id === activeTab),
   )
   const answers = activeQuestion?.answers
 
@@ -39,7 +39,7 @@ const QuizQuestionForm = (): JSX.Element => {
   const onSubmit: SubmitHandler<TQuestionSchema> = async (
     data,
   ): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise(resolve => setTimeout(resolve, 1000))
     console.log(data)
     reset()
   }

@@ -8,9 +8,9 @@ export const quizSlice = createSlice({
   name: 'quizzes',
   initialState: quizState,
   reducers: {
-    nextQuestion: (state) => {
+    nextQuestion: state => {
       const activeQuiz = state.quizzes.find(
-        (quiz) => quiz.id === state.activeQuizId,
+        quiz => quiz.id === state.activeQuizId,
       )
       if (activeQuiz !== undefined) {
         activeQuiz.currentQuestionId += 1
@@ -19,9 +19,9 @@ export const quizSlice = createSlice({
     setActiveQuiz: (state, action: PayloadAction<number>) => {
       state.activeQuizId = action.payload
     },
-    setIsFinishedQuiz: (state) => {
+    setIsFinishedQuiz: state => {
       const activeQuiz = state.quizzes.find(
-        (quiz) => quiz.id === state.activeQuizId,
+        quiz => quiz.id === state.activeQuizId,
       )
       if (activeQuiz !== undefined) {
         activeQuiz.isFinished = true
@@ -29,29 +29,29 @@ export const quizSlice = createSlice({
     },
     resetCurrentQuestion: (state, action: PayloadAction<number>) => {
       const activeQuiz = state.quizzes.find(
-        (quiz) => quiz.id === state.activeQuizId,
+        quiz => quiz.id === state.activeQuizId,
       )
       if (activeQuiz !== undefined) {
         activeQuiz.currentQuestionId = action.payload
       }
     },
-    goToAvailableQuiz: (state) => {
-      const availableQuiz = state.quizzes.find((quiz) => !quiz.isFinished)
+    goToAvailableQuiz: state => {
+      const availableQuiz = state.quizzes.find(quiz => !quiz.isFinished)
       if (availableQuiz !== undefined) {
         state.activeQuizId = availableQuiz.id
       }
     },
-    setRightAttempts: (state) => {
+    setRightAttempts: state => {
       const activeQuiz = state.quizzes.find(
-        (quiz) => quiz.id === state.activeQuizId,
+        quiz => quiz.id === state.activeQuizId,
       )
       if (activeQuiz !== undefined) {
         activeQuiz.rightAttempts += 1
       }
     },
-    resetRightAttempts: (state) => {
+    resetRightAttempts: state => {
       const activeQuiz = state.quizzes.find(
-        (quiz) => quiz.id === state.activeQuizId,
+        quiz => quiz.id === state.activeQuizId,
       )
       if (activeQuiz !== undefined) {
         activeQuiz.rightAttempts = 0

@@ -22,7 +22,7 @@ const QuizResultCard = (): JSX.Element => {
   const { correctAnswersCount, wrongAnswersCount } = useAppSelector(
     ({ quizState }) => {
       const quiz = quizState.quizzes.find(
-        (quiz) => quiz.id === quizState.activeQuizId,
+        quiz => quiz.id === quizState.activeQuizId,
       )
 
       const questionsCount = quiz?.questions.length ?? 0

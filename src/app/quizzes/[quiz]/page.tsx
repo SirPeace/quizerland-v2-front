@@ -38,7 +38,7 @@ const QuizPage = ({ params: { quiz: quizId } }: Props): JSX.Element => {
   }, [dispatch, quizId])
 
   const { quiz, currentQuestion } = useAppSelector(({ quizState }) => {
-    const quiz = quizState.quizzes.find((q) => q.id === currentQuizId)
+    const quiz = quizState.quizzes.find(q => q.id === currentQuizId)
 
     const currentQuestion = quiz?.questions.find(
       (question: IQuestion) => quiz.currentQuestionId === question.id,

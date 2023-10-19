@@ -57,7 +57,8 @@
         "semi": false,
         "bracketSpacing": true,
         "printWidth": 80,
-        "endOfLine": "auto"
+        "endOfLine": "auto",
+        "arrowParens": "avoid"
       }
     ],
     "import/order": [

@@ -30,7 +30,7 @@ export const registrationSchema = z
       .string()
       .min(1, 'Поле проверки пароля не может быть пустым!'),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine(data => data.password === data.confirmPassword, {
     message: 'Пароли должны совпадать!',
     path: ['confirmPassword'],
   })

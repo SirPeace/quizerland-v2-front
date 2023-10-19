@@ -21,7 +21,7 @@ export default function QuizDescriptionForm(): JSX.Element {
   const onSubmit: SubmitHandler<TDescriptionSchema> = async (
     data,
   ): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise(resolve => setTimeout(resolve, 1000))
     console.log(data)
     // reset()
   }

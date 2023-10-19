@@ -78,7 +78,7 @@ const QuestionCard = ({
 
     const isCorrectAnswer = selected.id === correctAnswer
 
-    setAttempts((attempts) => ({
+    setAttempts(attempts => ({
       ...attempts,
       [selected.id]: isCorrectAnswer,
     }))
@@ -107,7 +107,7 @@ const QuestionCard = ({
       <form>
         <FormControl className="w-full p-3" variant="standard">
           <RadioGroup>
-            {question.answers.map((answer) => (
+            {question.answers.map(answer => (
               <Button
                 key={answer.id}
                 className="normal-case disabled:opacity-60"

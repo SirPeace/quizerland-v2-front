@@ -37,7 +37,7 @@ const SignInForm = (): JSX.Element => {
   const dispatch = useAppDispatch()
 
   const handleClickShowPassword = (): void => {
-    setShowPassword((show) => !show)
+    setShowPassword(show => !show)
   }
 
   const {
@@ -52,7 +52,7 @@ const SignInForm = (): JSX.Element => {
   const onSubmit: SubmitHandler<TSingInSchema> = async (
     data,
   ): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise(resolve => setTimeout(resolve, 1000))
     console.log('Auth form: ', data)
 
     dispatch(setUser(defaultUser))

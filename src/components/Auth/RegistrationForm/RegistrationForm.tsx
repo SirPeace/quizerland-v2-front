@@ -35,10 +35,10 @@ const RegistrationForm = (): JSX.Element => {
   const router = useRouter()
 
   const handleClickShowPassword = (): void => {
-    setShowPassword((show) => !show)
+    setShowPassword(show => !show)
   }
   const handleClickShowConfirmPassword = (): void => {
-    setShowConfirmPassword((show) => !show)
+    setShowConfirmPassword(show => !show)
   }
 
   const {
@@ -53,7 +53,7 @@ const RegistrationForm = (): JSX.Element => {
   const onSubmit: SubmitHandler<TRegistrationSchema> = async (
     data,
   ): Promise<void> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise(resolve => setTimeout(resolve, 1000))
     console.log(data)
     const { confirmPassword, ...userDataRegistration } = data
     reset()
