@@ -1,10 +1,10 @@
 export interface ICreateQuizState {
   title: string
   description: string
-  questions: IQuestion[]
+  questions: IQuestionTemplate[]
 }
 
-export interface IQuestion {
+export interface IQuestionTemplate {
   id: number
   text: string
   correctAnswerId?: number

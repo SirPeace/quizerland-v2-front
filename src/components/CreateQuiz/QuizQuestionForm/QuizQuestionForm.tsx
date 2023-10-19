@@ -2,13 +2,17 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import { Box, Button, Card, TextField, Radio } from '@mui/material'
 
+import IconButton from '@mui/material/IconButton'
+import InputAdornment from '@mui/material/InputAdornment'
 import { useContext, useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 
-import { useAppSelector } from '@/redux/reduxHooks'
+import { addNewAnswer, deleteAnswer } from '@/redux/createQuiz/createQuizSlice'
+import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 import CreateQuizContext from '../context'
 import { questionSchema, type TQuestionSchema } from '../types'
@@ -18,15 +22,6 @@ import { questionSchema, type TQuestionSchema } from '../types'
 import type { SubmitHandler } from 'react-hook-form'
 
 const QuizQuestionForm = (): JSX.Element => {
-  const { activeTab } = useContext(CreateQuizContext)
-
-  const activeQuestion = useAppSelector(({ createQuizState }) =>
-    createQuizState.questions.find(q => q.id === activeTab),
-  )
-  const answers = activeQuestion?.answers
-
-  const [selected, setSelected] = useState<number | null>(null)
-
   const {
     register,
     handleSubmit,
@@ -35,6 +30,19 @@ const QuizQuestionForm = (): JSX.Element => {
   } = useForm<TQuestionSchema>({
     resolver: zodResolver(questionSchema),
   })
+
+  const [selected, setSelected] = useState<number | null>(null)
+
+  const dispatch = useAppDispatch()
+
+  const { activeTab } = useContext(CreateQuizContext)
+
+  const activeQuestion = useAppSelector(({ createQuizState }) =>
+    createQuizState.questions.find(q => q.id === activeTab),
+  )
+  const answers = activeQuestion?.answers
+
+  const lastAnswerId = Number(answers?.at(-1)?.id)
 
   const onSubmit: SubmitHandler<TQuestionSchema> = async (
     data,
@@ -79,6 +87,19 @@ const QuizQuestionForm = (): JSX.Element => {
                 fullWidth
                 size="small"
                 error={errors.answers?.[i] !== undefined}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => dispatch(deleteAnswer(answer.id))}
+                        edge="end"
+                      >
+                        {<DeleteForeverIcon />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </div>
 
@@ -91,7 +112,14 @@ const QuizQuestionForm = (): JSX.Element => {
         ))}
 
         <div className="flex justify-between mt-6">
-          <Button variant="text" type="button" startIcon={<AddToPhotosIcon />}>
+          <Button
+            variant="text"
+            type="button"
+            startIcon={<AddToPhotosIcon />}
+            onClick={() =>
+              dispatch(addNewAnswer({ id: lastAnswerId + 1, text: '' }))
+            }
+          >
             Добавить ответ
           </Button>
           <Button variant="contained" type="submit" disabled={isSubmitting}>

@@ -112,9 +112,9 @@ const CreateQuiz = (): JSX.Element => {
             <h1 className="pb-10 pt-10 mt-0 text-center">Создание теста</h1>
 
             <GoToHomePageButton />
-            {/* <QuizQuestionForm /> */}
+            <QuizQuestionForm />
 
-            <QuizDescriptionForm />
+            {/* <QuizDescriptionForm /> */}
           </div>
         </Box>
       </Box>
