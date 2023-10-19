@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import createQuizState from './initialState'
 
-import type { IAnswerTemplate } from './types'
+import type { IAnswerTemplate, IQuestionTemplate } from './types'
 
 import type { PayloadAction } from '@reduxjs/toolkit'
 
@@ -22,9 +22,13 @@ const createQuizSlice = createSlice({
         answer => answer.id !== action.payload,
       )
     },
+    addNewQuestion: (state, action: PayloadAction<IQuestionTemplate>) => {
+      state.questions.push(action.payload)
+    },
   },
 })
 
-export const { addNewAnswer, deleteAnswer } = createQuizSlice.actions
+export const { addNewAnswer, deleteAnswer, addNewQuestion } =
+  createQuizSlice.actions
 
 export default createQuizSlice.reducer

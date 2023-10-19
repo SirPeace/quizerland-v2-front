@@ -11,7 +11,15 @@ import { useContext, useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 
-import { addNewAnswer, deleteAnswer } from '@/redux/createQuiz/createQuizSlice'
+import {
+  addNewAnswer,
+  addNewQuestion,
+  deleteAnswer,
+} from '@/redux/createQuiz/createQuizSlice'
+import type {
+  IAnswerTemplate,
+  IQuestionTemplate,
+} from '@/redux/createQuiz/types'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 import CreateQuizContext from '../context'
@@ -31,7 +39,7 @@ const QuizQuestionForm = (): JSX.Element => {
     resolver: zodResolver(questionSchema),
   })
 
-  const [selected, setSelected] = useState<number | null>(null)
+  const [selected, setSelected] = useState<number | undefined>(undefined)
 
   const dispatch = useAppDispatch()
 
@@ -40,15 +48,49 @@ const QuizQuestionForm = (): JSX.Element => {
   const activeQuestion = useAppSelector(({ createQuizState }) =>
     createQuizState.questions.find(q => q.id === activeTab),
   )
+  const { questions } = useAppSelector(({ createQuizState }) => createQuizState)
   const answers = activeQuestion?.answers
 
   const lastAnswerId = Number(answers?.at(-1)?.id)
+  const lastQuestionId = Number(questions?.at(-1)?.id)
+
+  const buildingNewAnswers = (
+    submitDataAnswers: string[],
+  ): IAnswerTemplate[] => {
+    const newAnswers = []
+
+    for (let i = 0; i < submitDataAnswers.length; i++) {
+      const answerObj: IAnswerTemplate = {
+        id: i + 1,
+        text: submitDataAnswers[i],
+      }
+      newAnswers.push(answerObj)
+    }
+
+    return newAnswers
+  }
+
+  const buildingNewQuestion = (submitData: {
+    question: string
+    answers: string[]
+  }): IQuestionTemplate => {
+    const newQuestion: IQuestionTemplate = {
+      id: lastQuestionId + 1,
+      text: submitData.question,
+      correctAnswerId: selected,
+      answers: buildingNewAnswers(submitData.answers),
+    }
+    return newQuestion
+  }
 
   const onSubmit: SubmitHandler<TQuestionSchema> = async (
     data,
   ): Promise<void> => {
     await new Promise(resolve => setTimeout(resolve, 1000))
-    console.log(data)
+    console.log('onSubmit (data) :', data)
+
+    dispatch(addNewQuestion(buildingNewQuestion(data)))
+
     reset()
   }
 
