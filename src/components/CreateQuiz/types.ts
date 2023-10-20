@@ -22,8 +22,8 @@ export const questionSchema = z.object({
     .min(1, 'Поле обязательное для заполнения!')
     .max(70, 'Ответ не может сдержать более 70 символов!')
     .array(),
-  // setRightAnswer: z.literal(true, {
-  //   errorMap: () => ({ message: 'Выберите правильный вариант ответа!' }),
-  // }),
+  rightAnswerId: z
+    .string({ errorMap: () => ({ message: 'Выберите вариант ответа' }) })
+    .regex(/^\d+$/, { message: 'Выберите вариант ответа' }),
 })
 export type TQuestionSchema = z.infer<typeof questionSchema>

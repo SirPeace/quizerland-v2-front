@@ -86,10 +86,11 @@ const QuizQuestionForm = (): JSX.Element => {
   const onSubmit: SubmitHandler<TQuestionSchema> = async (
     data,
   ): Promise<void> => {
-    await new Promise(resolve => setTimeout(resolve, 1000))
     console.log('onSubmit (data) :', data)
+    await new Promise(resolve => setTimeout(resolve, 1000))
 
     dispatch(addNewQuestion(buildingNewQuestion(data)))
+    setSelected(undefined)
 
     reset()
   }
@@ -115,8 +116,9 @@ const QuizQuestionForm = (): JSX.Element => {
           <div key={answer.id}>
             <div className="flex w-full">
               <Radio
-                // {...register('setRightAnswer')}
+                {...register('rightAnswerId')}
                 className="mr-1 mt-[-1px]"
+                value={answer.id}
                 checked={answer.id === selected}
                 onClick={() => {
                   setSelected(answer.id)
@@ -155,11 +157,11 @@ const QuizQuestionForm = (): JSX.Element => {
           </div>
         ))}
 
-        {/* <p className="mt-[-1px] mb-2 pl-3 text-xs text-red-600  h-4">
-          {errors.setRightAnswer !== undefined
-            ? errors.setRightAnswer?.message
+        <p className="mt-[-1px] mb-2 pl-3 text-xs text-red-600  h-4">
+          {errors.rightAnswerId !== undefined
+            ? errors.rightAnswerId?.message
             : ''}
-        </p> */}
+        </p>
 
         <div className="flex justify-between mt-6">
           <Button

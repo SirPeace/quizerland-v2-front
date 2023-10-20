@@ -23,7 +23,7 @@ const DrawerList = (): JSX.Element => {
   )
 
   const { activeTab, setActiveTab } = useContext(CreateQuizContext)
-  console.log(activeTab)
+  // console.log(activeTab)
 
   return (
     <Box sx={{ mt: { sm: 10, xs: 0 } }}>
@@ -49,7 +49,7 @@ const DrawerList = (): JSX.Element => {
             <ListItemIcon>
               <AddToPhotosIcon />
             </ListItemIcon>
-            <ListItemText primary={'Добавить ответ'} />
+            <ListItemText primary={'Новый вопрос'} />
           </ListItemButton>
         </ListItem>
       </List>
