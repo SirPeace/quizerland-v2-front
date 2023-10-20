@@ -8,7 +8,7 @@ import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { addDescription } from '@/redux/createQuiz/createQuizSlice'
-import { useAppDispatch } from '@/redux/reduxHooks'
+import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 import CreateQuizContext from '../context'
 import { descriptionSchema, type TDescriptionSchema } from '../types'
@@ -19,13 +19,17 @@ export default function QuizDescriptionForm(): JSX.Element {
   const {
     register,
     handleSubmit,
-    // reset,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<TDescriptionSchema>({ resolver: zodResolver(descriptionSchema) })
 
+  const { title, description } = useAppSelector(
+    ({ createQuizState }) => createQuizState,
+  )
+
   const dispatch = useAppDispatch()
 
-  const { activeTab, setActiveTab } = useContext(CreateQuizContext)
+  const { setActiveTab } = useContext(CreateQuizContext)
 
   const onSubmit: SubmitHandler<TDescriptionSchema> = async (
     data,
@@ -35,7 +39,7 @@ export default function QuizDescriptionForm(): JSX.Element {
 
     dispatch(addDescription(data))
     setActiveTab(previousState => previousState + 1)
-    // reset()
+    reset()
   }
 
   return (

@@ -1,47 +1,25 @@
 'use client'
 
 import ChecklistOutlinedIcon from '@mui/icons-material/ChecklistOutlined'
-import MailIcon from '@mui/icons-material/Mail'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
+
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Drawer from '@mui/material/Drawer'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
 
 import { useState } from 'react'
 
 import GoToHomePageButton from '../Navigation/GoToHomePageButton/GoToHomePageButton'
 
+import DrawerList from './DrawerList/DrawerList'
 import QuizDescriptionForm from './QuizDescriptionForm/QuizDescriptionForm'
 import QuizQuestionForm from './QuizQuestionForm/QuizQuestionForm'
 import CreateQuizContext from './context'
 
-const drawerWidth = 240
-
-const DrawerList = (
-  <Box sx={{ mt: { sm: 10, xs: 0 } }}>
-    <List>
-      {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-        <ListItem key={text} disablePadding>
-          <ListItemButton>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </List>
-  </Box>
-)
-
 const CreateQuiz = (): JSX.Element => {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeTab, setActiveTab] = useState(0)
+
+  const drawerWidth = 240
 
   const handleDrawerToggle = (): void => {
     setMobileOpen(!mobileOpen)
@@ -81,7 +59,7 @@ const CreateQuiz = (): JSX.Element => {
               },
             }}
           >
-            {DrawerList}
+            <DrawerList />
           </Drawer>
           <Drawer
             variant="permanent"
@@ -97,7 +75,7 @@ const CreateQuiz = (): JSX.Element => {
             }}
             open
           >
-            {DrawerList}
+            <DrawerList />
           </Drawer>
         </Box>
 

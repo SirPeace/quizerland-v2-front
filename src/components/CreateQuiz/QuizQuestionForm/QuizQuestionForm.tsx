@@ -104,6 +104,7 @@ const QuizQuestionForm = (): JSX.Element => {
           placeholder="Пример: Первый астронавт вышедший в открытый космос?"
           fullWidth
           multiline
+          focused
           error={errors.question !== undefined}
         />
         <p className="mt-0.5 pl-3 text-xs text-red-600 h-4">
@@ -114,6 +115,7 @@ const QuizQuestionForm = (): JSX.Element => {
           <div key={answer.id}>
             <div className="flex w-full">
               <Radio
+                // {...register('setRightAnswer')}
                 className="mr-1 mt-[-1px]"
                 checked={answer.id === selected}
                 onClick={() => {
@@ -152,6 +154,12 @@ const QuizQuestionForm = (): JSX.Element => {
             </p>
           </div>
         ))}
+
+        {/* <p className="mt-[-1px] mb-2 pl-3 text-xs text-red-600  h-4">
+          {errors.setRightAnswer !== undefined
+            ? errors.setRightAnswer?.message
+            : ''}
+        </p> */}
 
         <div className="flex justify-between mt-6">
           <Button
