@@ -26,20 +26,32 @@ const createQuizSlice = createSlice({
         answer => answer.id !== action.payload,
       )
     },
-    addDescription: (
+    setDescription: (
       state,
       action: PayloadAction<Omit<ICreateQuizState, 'questions'>>,
     ) => {
       state.title = action.payload.title
       state.description = action.payload.description
     },
+    // addDescription: (
+    //   state,
+    //   action: PayloadAction<Omit<ICreateQuizState, 'questions'>>,
+    // ) => {
+    //   state.title = action.payload.title
+    //   state.description = action.payload.description
+    // },
     addNewQuestion: (state, action: PayloadAction<IQuestionTemplate>) => {
       state.questions.push(action.payload)
     },
   },
 })
 
-export const { addNewAnswer, deleteAnswer, addDescription, addNewQuestion } =
-  createQuizSlice.actions
+export const {
+  addNewAnswer,
+  deleteAnswer,
+  // addDescription,
+  addNewQuestion,
+  setDescription,
+} = createQuizSlice.actions
 
 export default createQuizSlice.reducer

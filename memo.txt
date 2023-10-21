@@ -99,3 +99,15 @@ export const metadata: Metadata = {
  $ npm i zod @hookform/resolvers
 
 ----- 
+
+# hookform/devtools - инструмент работы с формами :
+
+ $ npm install -D @hookform/devtools 
+
+----- 
+
+# lodash - использовал для создания задержки обработки данных функции watch из react-hook-form: 
+
+ $ npm i lodash-es
+
+----- 

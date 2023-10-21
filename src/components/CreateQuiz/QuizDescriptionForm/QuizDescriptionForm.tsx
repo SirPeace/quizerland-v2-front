@@ -4,47 +4,66 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Card, CardActions, Box } from '@mui/material'
 import TextField from '@mui/material/TextField'
 
-import { useContext } from 'react'
+import { debounce } from 'lodash-es'
+import { useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { addDescription } from '@/redux/createQuiz/createQuizSlice'
+import { setDescription } from '@/redux/createQuiz/createQuizSlice'
+import type { ICreateQuizState } from '@/redux/createQuiz/types'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 import CreateQuizContext from '../context'
 import { descriptionSchema, type TDescriptionSchema } from '../types'
 
-import type { SubmitHandler } from 'react-hook-form'
-
 export default function QuizDescriptionForm(): JSX.Element {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<TDescriptionSchema>({ resolver: zodResolver(descriptionSchema) })
-
   const { title, description } = useAppSelector(
     ({ createQuizState }) => createQuizState,
   )
+
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useForm<TDescriptionSchema>({
+    mode: 'onChange',
+    defaultValues: {
+      title,
+      description,
+    },
+    resolver: zodResolver(descriptionSchema),
+  })
 
   const dispatch = useAppDispatch()
 
   const { setActiveTab } = useContext(CreateQuizContext)
 
-  const onSubmit: SubmitHandler<TDescriptionSchema> = async (
-    data,
-  ): Promise<void> => {
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    console.log(data)
-
-    dispatch(addDescription(data))
+  const goToQuestion = (): void => {
     setActiveTab(previousState => previousState + 1)
-    reset()
   }
 
+  useEffect(() => {
+    const subscription = watch(
+      debounce(value => {
+        const isDescription = value.description !== undefined
+        const isTitle = value.title !== undefined
+
+        if (isDescription && isTitle) {
+          const newDescription: Omit<ICreateQuizState, 'questions'> = {
+            title: value.title,
+            description: value.description,
+          }
+          dispatch(setDescription(newDescription))
+        }
+      }, 500),
+    )
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [watch, dispatch])
+
   return (
-    <Card raised className="py-5 px-5 rounded-xl">
-      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+    <Card raised className="py-5 px-5  rounded-xl">
+      <Box component="form">
         <TextField
           {...register('title')}
           type="text"
@@ -52,12 +71,11 @@ export default function QuizDescriptionForm(): JSX.Element {
           multiline
           fullWidth
           focused
+          className="mb-6"
           placeholder="Пример: Тест по теме 'Космос'"
-          error={errors.title !== undefined}
+          error={Object.hasOwn(errors, 'title')}
+          helperText={errors.title?.message}
         />
-        <p className="mt-0.5 pl-3 text-xs text-red-600 h-4">
-          {errors.title !== undefined ? errors.title.message : ''}
-        </p>
 
         <TextField
           {...register('description')}
@@ -67,17 +85,15 @@ export default function QuizDescriptionForm(): JSX.Element {
           fullWidth
           focused
           rows={5}
-          error={errors.description !== undefined}
           placeholder="Пример: Космическое пространство, космос (др.-греч. κόσμος — «упорядоченность», «порядок») — относительно пустые участки Вселенной, которые лежат вне границ атмосфер небесных тел. Космос не является абсолютно пустым пространством: в нём есть, хотя и с очень низкой плотностью, межзвёздное вещество (преимущественно ионы и атомы водорода), космические лучи и электромагнитное излучение, а также гипотетическая тёмная материя."
+          error={Object.hasOwn(errors, 'description')}
+          helperText={errors.description?.message}
         />
-        <p className="mt-0.5 pl-3 text-xs text-red-600 h-4">
-          {errors.description !== undefined ? errors.description.message : ''}
-        </p>
 
         <CardActions className="p-0 mt-5 justify-center">
           <Button
-            type="submit"
-            disabled={isSubmitting}
+            onClick={goToQuestion}
+            type="button"
             size="small"
             variant="contained"
             className="m-0"
