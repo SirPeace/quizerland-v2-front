@@ -7,14 +7,15 @@ import { Box, Button, Card, TextField, Radio } from '@mui/material'
 
 import IconButton from '@mui/material/IconButton'
 import InputAdornment from '@mui/material/InputAdornment'
-import { useContext, useState } from 'react'
+import { debounce } from 'lodash-es'
+import { useContext, useEffect, useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 
 import {
   addNewAnswer,
-  addNewQuestion,
   deleteAnswer,
+  setQuestion,
 } from '@/redux/createQuiz/createQuizSlice'
 import type {
   IAnswerTemplate,
@@ -25,79 +26,77 @@ import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 import CreateQuizContext from '../context'
 import { questionSchema, type TQuestionSchema } from '../types'
 
-// import AnswerForm from './AnswerForm/AnswerForm'
-
-import type { SubmitHandler } from 'react-hook-form'
-
 const QuizQuestionForm = (): JSX.Element => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<TQuestionSchema>({
-    resolver: zodResolver(questionSchema),
-  })
+  const { activeTab } = useContext(CreateQuizContext)
 
-  const [selected, setSelected] = useState<number | undefined>(undefined)
+  const [selected, setSelected] = useState<number | null>(null)
 
   const dispatch = useAppDispatch()
-
-  const { activeTab } = useContext(CreateQuizContext)
 
   const activeQuestion = useAppSelector(({ createQuizState }) =>
     createQuizState.questions.find(q => q.id === activeTab),
   )
-  const { questions } = useAppSelector(({ createQuizState }) => createQuizState)
-  const answers = activeQuestion?.answers
+  if (undefined === activeQuestion) return <></>
+
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useForm<TQuestionSchema>({
+    mode: 'onChange',
+    defaultValues: {
+      question: activeQuestion.text,
+      rightAnswerId: String(activeQuestion.correctAnswerId),
+      answers: activeQuestion.answers.map(answer => answer.text),
+    },
+
+    resolver: zodResolver(questionSchema),
+  })
+
+  const answers = activeQuestion.answers
 
   const lastAnswerId = Number(answers?.at(-1)?.id)
-  const lastQuestionId = Number(questions?.at(-1)?.id)
 
-  const buildingNewAnswers = (
-    submitDataAnswers: string[],
-  ): IAnswerTemplate[] => {
-    const newAnswers = []
+  const stringsToAnswers = (answers: string[]): IAnswerTemplate[] => {
+    const answerTemplates = []
 
-    for (let i = 0; i < submitDataAnswers.length; i++) {
+    for (let i = 0; i < answers.length; i++) {
       const answerObj: IAnswerTemplate = {
         id: i + 1,
-        text: submitDataAnswers[i],
+        text: answers[i],
       }
-      newAnswers.push(answerObj)
+      answerTemplates.push(answerObj)
     }
 
-    return newAnswers
+    return answerTemplates
   }
 
-  const buildingNewQuestion = (submitData: {
-    question: string
-    answers: string[]
-  }): IQuestionTemplate => {
-    const newQuestion: IQuestionTemplate = {
-      id: lastQuestionId + 1,
-      text: submitData.question,
-      correctAnswerId: selected,
-      answers: buildingNewAnswers(submitData.answers),
+  useEffect(() => {
+    const updateQuestion = (data: TQuestionSchema): void => {
+      const newQuestion: IQuestionTemplate = {
+        id: activeTab,
+        text: data.question,
+        correctAnswerId: Number(data.rightAnswerId),
+        answers: stringsToAnswers(data.answers),
+      }
+      dispatch(setQuestion(newQuestion))
     }
-    return newQuestion
-  }
 
-  const onSubmit: SubmitHandler<TQuestionSchema> = async (
-    data,
-  ): Promise<void> => {
-    console.log('onSubmit (data) :', data)
-    await new Promise(resolve => setTimeout(resolve, 1000))
-
-    dispatch(addNewQuestion(buildingNewQuestion(data)))
-    setSelected(undefined)
-
-    reset()
-  }
+    // TODO: Разобраться с типом value
+    // TODO: Оставить debounce только для текстовых полей
+    const subscription = watch(
+      debounce(value => {
+        updateQuestion(value)
+      }, 500),
+    )
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [watch, activeTab, dispatch, selected])
 
   return (
     <Card raised className="py-5 px-5 rounded-xl mx-3">
-      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+      <Box component="form">
         <TextField
           {...register('question')}
           label="Добавьте текст вопроса"
@@ -174,7 +173,7 @@ const QuizQuestionForm = (): JSX.Element => {
           >
             Добавить ответ
           </Button>
-          <Button variant="contained" type="submit" disabled={isSubmitting}>
+          <Button variant="contained" type="submit">
             Сохранить вопрос
           </Button>
         </div>

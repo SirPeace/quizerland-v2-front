@@ -7,7 +7,7 @@ const createQuizState: ICreateQuizState = {
     {
       id: 1,
       text: '',
-      correctAnswerId: undefined,
+      correctAnswerId: null,
       answers: [
         {
           id: 1,

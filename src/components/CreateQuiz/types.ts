@@ -22,6 +22,7 @@ export const questionSchema = z.object({
     .min(1, 'Поле обязательное для заполнения!')
     .max(70, 'Ответ не может сдержать более 70 символов!')
     .array(),
+  // TODO: Перевести на тип number().int()
   rightAnswerId: z
     .string({ errorMap: () => ({ message: 'Выберите вариант ответа' }) })
     .regex(/^\d+$/, { message: 'Выберите вариант ответа' }),

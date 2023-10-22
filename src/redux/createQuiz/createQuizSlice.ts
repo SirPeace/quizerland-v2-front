@@ -22,6 +22,7 @@ const createQuizSlice = createSlice({
     deleteAnswer: (state, action: PayloadAction<number>) => {
       const currentQuestion = state.questions.at(0)
       if (currentQuestion === undefined) return
+
       currentQuestion.answers = currentQuestion?.answers?.filter(
         answer => answer.id !== action.payload,
       )
@@ -33,13 +34,16 @@ const createQuizSlice = createSlice({
       state.title = action.payload.title
       state.description = action.payload.description
     },
-    // addDescription: (
-    //   state,
-    //   action: PayloadAction<Omit<ICreateQuizState, 'questions'>>,
-    // ) => {
-    //   state.title = action.payload.title
-    //   state.description = action.payload.description
-    // },
+    setQuestion: (state, action: PayloadAction<IQuestionTemplate>) => {
+      const currentQuestion = state.questions.find(
+        question => question.id === action.payload.id,
+      )
+      if (currentQuestion === undefined) return
+
+      currentQuestion.text = action.payload.text
+      currentQuestion.correctAnswerId = action.payload.correctAnswerId
+      currentQuestion.answers = action.payload.answers
+    },
     addNewQuestion: (state, action: PayloadAction<IQuestionTemplate>) => {
       state.questions.push(action.payload)
     },
@@ -49,9 +53,9 @@ const createQuizSlice = createSlice({
 export const {
   addNewAnswer,
   deleteAnswer,
-  // addDescription,
   addNewQuestion,
   setDescription,
+  setQuestion,
 } = createQuizSlice.actions
 
 export default createQuizSlice.reducer

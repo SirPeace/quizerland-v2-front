@@ -7,11 +7,11 @@ export interface ICreateQuizState {
 export interface IQuestionTemplate {
   id: number
   text: string
-  correctAnswerId?: number
+  correctAnswerId: number | null
   answers: IAnswerTemplate[]
 }
 
 export interface IAnswerTemplate {
   id: number
-  text?: string
+  text: string
 }
