@@ -9,73 +9,86 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Button,
 } from '@mui/material'
 
 import { useContext } from 'react'
 
-import { useAppSelector } from '@/redux/reduxHooks'
+import { useWatch } from 'react-hook-form'
 
 import CreateQuizContext from '../context'
 
 const DrawerList = (): JSX.Element => {
-  const questions = useAppSelector(
-    ({ createQuizState }) => createQuizState.questions,
-  )
+  const { submit, setActiveTab, form } = useContext(CreateQuizContext)
 
-  const { activeTab, setActiveTab } = useContext(CreateQuizContext)
-  // console.log(activeTab)
+  // useWatch() вместо getValues(), т.к. нам надо следить за добавлением новых вопросов и ре-рендерить список при изменениях
+  const questions = useWatch({
+    control: form.control,
+    name: 'questions',
+  })
 
   return (
-    <Box sx={{ mt: { sm: 10, xs: 0 } }}>
-      <List>
-        <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => {
-              setActiveTab(0)
-            }}
-          >
-            <ListItemIcon>
-              <DescriptionIcon />
-            </ListItemIcon>
-            <ListItemText primary={'Описание теста'} />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => {
-              setActiveTab(1)
-            }}
-          >
-            <ListItemIcon>
-              <AddToPhotosIcon />
-            </ListItemIcon>
-            <ListItemText primary={'Новый вопрос'} />
-          </ListItemButton>
-        </ListItem>
-      </List>
-      <Divider className="mx-3" />
-      <List>
-        {questions.length === 1 ? (
-          <ListItemText
-            primary={'Вопросы не добавлены'}
-            className="text-center"
-          />
-        ) : (
-          questions.map((question, idx) => (
-            <ListItem key={question.id} disablePadding>
-              {idx > 0 && (
+    <Box
+      sx={{ mt: { sm: 10, xs: 0 } }}
+      className="flex flex-col justify-between h-full"
+    >
+      <div>
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={() => {
+                setActiveTab(-1)
+              }}
+            >
+              <ListItemIcon>
+                <DescriptionIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Описание теста'} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={() => {
+                setActiveTab(0)
+              }}
+            >
+              <ListItemIcon>
+                <AddToPhotosIcon />
+              </ListItemIcon>
+              <ListItemText primary={'Новый вопрос'} />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        <Divider className="mx-3" />
+        <List>
+          {questions.length === 0 ? (
+            <ListItemText
+              primary={'Вопросы не добавлены'}
+              className="text-center"
+            />
+          ) : (
+            questions.map((question, idx) => (
+              <ListItem key={idx} disablePadding>
                 <ListItemButton
                   onClick={() => {
-                    setActiveTab(question.id)
+                    setActiveTab(idx)
                   }}
                 >
-                  <ListItemText primary={`№ ${idx}: ${question.text}`} />
+                  <ListItemText
+                    primary={`№ ${idx + 1}: "${
+                      question.text.length > 0 ? question.text : '___'
+                    }"`}
+                  />
                 </ListItemButton>
-              )}
-            </ListItem>
-          ))
-        )}
-      </List>
+              </ListItem>
+            ))
+          )}
+        </List>
+      </div>
+
+      <Button variant="contained" onClick={submit} className="m-2">
+        Создать тест
+      </Button>
     </Box>
   )
 }

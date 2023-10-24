@@ -1,33 +1,68 @@
 'use client'
 
+// import { DevTool } from '@hookform/devtools'
+import { zodResolver } from '@hookform/resolvers/zod'
 import ChecklistOutlinedIcon from '@mui/icons-material/ChecklistOutlined'
 
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Drawer from '@mui/material/Drawer'
-
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 
 import GoToHomePageButton from '../Navigation/GoToHomePageButton/GoToHomePageButton'
 
 import DrawerList from './DrawerList/DrawerList'
-import QuizDescriptionForm from './QuizDescriptionForm/QuizDescriptionForm'
-import QuizQuestionForm from './QuizQuestionForm/QuizQuestionForm'
-import CreateQuizContext from './context'
+import QuestionCard from './QuestionCard/QuestionCard'
+import QuizDescriptionCard from './QuizDescriptionCard/QuizDescriptionCard'
+import CreateQuizContext, { type ICreateQuizContext } from './context'
 
-const CreateQuiz = (): JSX.Element => {
+import { quizFormSchema, type TQuizForm } from './types'
+
+const drawerWidth = 240
+
+const QuizForm = (): JSX.Element => {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState(0)
+  const [activeTab, setActiveTab] = useState(-1)
 
-  const drawerWidth = 240
+  const form = useForm<TQuizForm>({
+    resolver: zodResolver(quizFormSchema),
+    defaultValues: {
+      title: '',
+      description: '',
+      questions: [
+        {
+          text: '',
+          rightAnswerId: undefined,
+          answers: ['', '', ''],
+        },
+      ],
+    },
+  })
+
+  // Обертка для вызова `handleSubmit(data => onSubmit(data))()` у RHF
+  // Раньше ты его вызывал при событии на элементе, но его можно вызвать и программно (вручную)
+  const submit = async (): Promise<void> => {
+    await form.handleSubmit(data => {
+      console.debug(data)
+    })()
+  }
+
+  const formContext: ICreateQuizContext = {
+    activeTab,
+    setActiveTab,
+    form,
+    submit,
+  }
 
   const handleDrawerToggle = (): void => {
     setMobileOpen(!mobileOpen)
   }
 
   return (
-    <CreateQuizContext.Provider value={{ activeTab, setActiveTab }}>
+    <CreateQuizContext.Provider value={formContext}>
       <Box className="flex h-screen">
+        {/* <DevTool control={form.control} placement="top-right" /> */}
         <Button
           onClick={handleDrawerToggle}
           className="fixed bottom-3 left-3 rounded-full p-0 min-w-0 w-14 h-14 z-50 items-center"
@@ -78,7 +113,6 @@ const CreateQuiz = (): JSX.Element => {
             <DrawerList />
           </Drawer>
         </Box>
-
         <Box
           component="main"
           sx={{
@@ -90,7 +124,7 @@ const CreateQuiz = (): JSX.Element => {
             <h1 className="pb-10 pt-10 mt-0 text-center">Создание теста</h1>
             <GoToHomePageButton />
 
-            {activeTab === 0 ? <QuizDescriptionForm /> : <QuizQuestionForm />}
+            {activeTab === -1 ? <QuizDescriptionCard /> : <QuestionCard />}
           </div>
         </Box>
       </Box>
@@ -98,4 +132,4 @@ const CreateQuiz = (): JSX.Element => {
   )
 }
 
-export default CreateQuiz
+export default QuizForm

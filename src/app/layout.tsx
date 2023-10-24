@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <head>
-        <title>Quizzes | Quizerland</title>
+        <title>Список тестов | Quizerland</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
           name="description"
