@@ -12,6 +12,7 @@ export default function QuizDescriptionForm(): JSX.Element {
   if (undefined === form) return <></>
 
   const {
+    setValue,
     register,
     formState: { errors },
   } = form
@@ -41,7 +42,7 @@ export default function QuizDescriptionForm(): JSX.Element {
           multiline
           fullWidth
           rows={5}
-          // placeholder="Пример: Космическое пространство, космос (др.-греч. κόσμος — «упорядоченность», «порядок») — относительно пустые участки Вселенной, которые лежат вне границ атмосфер небесных тел. Космос не является абсолютно пустым пространством: в нём есть, хотя и с очень низкой плотностью, межзвёздное вещество (преимущественно ионы и атомы водорода), космические лучи и электромагнитное излучение, а также гипотетическая тёмная материя."
+          placeholder="Пример: Космическое пространство, космос (др.-греч. κόσμος — «упорядоченность», «порядок»)..."
           error={Object.hasOwn(errors, 'description')}
           helperText={errors.description?.message}
         />

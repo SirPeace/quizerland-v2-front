@@ -18,7 +18,8 @@ export const quizFormSchema = zod.object({
       // TODO: Перевести на тип number().int()
       rightAnswerId: zod
         .string({ errorMap: () => ({ message: 'Выберите вариант ответа' }) })
-        .regex(/^\d+$/, { message: 'Выберите вариант ответа' }),
+        .regex(/^\d+$/, { message: 'Выберите вариант ответа' })
+        .optional(),
       answers: zod
         .string()
         .min(1, 'Поле обязательное для заполнения!')

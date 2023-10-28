@@ -12,20 +12,39 @@ import {
   Button,
 } from '@mui/material'
 
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 
 import { useWatch } from 'react-hook-form'
 
+import { defaultQuestion } from '../QuizForm'
 import CreateQuizContext from '../context'
 
 const DrawerList = (): JSX.Element => {
-  const { submit, setActiveTab, form } = useContext(CreateQuizContext)
+  const { activeTab, submit, setActiveTab, form } =
+    useContext(CreateQuizContext)
+
+  const { setValue } = form
 
   // useWatch() вместо getValues(), т.к. нам надо следить за добавлением новых вопросов и ре-рендерить список при изменениях
   const questions = useWatch({
     control: form.control,
     name: 'questions',
   })
+
+  function addQuestion(): void {
+    console.debug(questions)
+
+    const newActiveTab = questions.length
+
+    setValue('questions', [...questions, defaultQuestion])
+    setActiveTab(questions.length + 1)
+    console.log(questions)
+  }
+
+  const setActiveTabLog = (index: number): void => {
+    setActiveTab(index)
+    console.log('activeTab :', activeTab)
+  }
 
   return (
     <Box
@@ -49,7 +68,7 @@ const DrawerList = (): JSX.Element => {
           <ListItem disablePadding>
             <ListItemButton
               onClick={() => {
-                setActiveTab(0)
+                addQuestion()
               }}
             >
               <ListItemIcon>
@@ -61,28 +80,25 @@ const DrawerList = (): JSX.Element => {
         </List>
         <Divider className="mx-3" />
         <List>
-          {questions.length === 0 ? (
-            <ListItemText
-              primary={'Вопросы не добавлены'}
-              className="text-center"
-            />
-          ) : (
-            questions.map((question, idx) => (
-              <ListItem key={idx} disablePadding>
-                <ListItemButton
-                  onClick={() => {
-                    setActiveTab(idx)
-                  }}
-                >
-                  <ListItemText
-                    primary={`№ ${idx + 1}: "${
-                      question.text.length > 0 ? question.text : '___'
-                    }"`}
-                  />
-                </ListItemButton>
-              </ListItem>
-            ))
-          )}
+          <ListItemText
+            primary={
+              questions.length <= 1 ? 'Вопросы не добавлены' : 'Список вопросов'
+            }
+            className="text-center"
+          />
+          {questions.map((question, idx) => (
+            <ListItem key={idx} disablePadding>
+              <ListItemButton
+                onClick={() => {
+                  setActiveTabLog(idx)
+                }}
+              >
+                <ListItemText>
+                  {`№ ${idx}: "${questions.length > 0 && question.text}"`}
+                </ListItemText>
+              </ListItemButton>
+            </ListItem>
+          ))}
         </List>
       </div>
 

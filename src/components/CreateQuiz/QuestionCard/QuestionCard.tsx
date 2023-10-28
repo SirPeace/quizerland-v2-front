@@ -10,6 +10,7 @@ import { debounce } from 'lodash-es'
 import { useCallback, useContext, useState } from 'react'
 import { type FieldErrors, useWatch } from 'react-hook-form'
 
+import { defaultQuestion } from '../QuizForm'
 import CreateQuizContext from '../context'
 
 import type {
@@ -20,19 +21,31 @@ import type {
 } from '../types'
 
 const QuizQuestionForm = (): JSX.Element => {
-  const { activeTab: questionIndex, form } = useContext(CreateQuizContext)
+  const {
+    activeTab: questionIndex,
+    setActiveTab,
+    form,
+  } = useContext(CreateQuizContext)
+
+  console.log(`Question index: ${questionIndex}`)
+
   const {
     register,
     setValue,
     getValues,
     formState: { errors },
+    resetField,
   } = form
 
   /*
     Замена useAppSelector
     Получаем данные не из Redux, а из стейта RHF
   */
+  const questions = getValues('questions')
   const question = getValues(`questions.${questionIndex}`)
+
+  console.log(question)
+
   // useWatch() вместо getValues(), т.к. нам надо следить за списком ответов и ре-рендерить список, когда добавляем/удаляем элементы
   const answers = useWatch({
     control: form.control,
@@ -77,6 +90,14 @@ const QuizQuestionForm = (): JSX.Element => {
       `questions.${questionIndex}.answers`,
       question.answers.filter((_, idx) => idx !== answerIndex),
     )
+  }
+
+  function addQuestion(): void {
+    const newActiveTab = questions.length
+
+    setValue('questions', [...questions, defaultQuestion])
+    setActiveTab(newActiveTab)
+    console.log(questions)
   }
 
   return (
@@ -151,6 +172,17 @@ const QuizQuestionForm = (): JSX.Element => {
           onClick={addAnswer}
         >
           Добавить ответ
+        </Button>
+
+        <Button
+          variant="text"
+          type="button"
+          fullWidth
+          size="large"
+          startIcon={<AddToPhotosIcon />}
+          onClick={addQuestion}
+        >
+          Добавить вопрос
         </Button>
 
         {questionFieldError('rightAnswerId') !== '' && (

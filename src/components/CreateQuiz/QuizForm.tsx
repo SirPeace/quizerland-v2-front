@@ -1,5 +1,5 @@
 'use client'
-
+// TODO Убрать DevTool
 // import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ChecklistOutlinedIcon from '@mui/icons-material/ChecklistOutlined'
@@ -21,6 +21,12 @@ import { quizFormSchema, type TQuizForm } from './types'
 
 const drawerWidth = 240
 
+export const defaultQuestion = {
+  text: '',
+  rightAnswerId: undefined,
+  answers: ['', '', ''],
+}
+
 const QuizForm = (): JSX.Element => {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeTab, setActiveTab] = useState(-1)
@@ -30,13 +36,7 @@ const QuizForm = (): JSX.Element => {
     defaultValues: {
       title: '',
       description: '',
-      questions: [
-        {
-          text: '',
-          rightAnswerId: undefined,
-          answers: ['', '', ''],
-        },
-      ],
+      questions: [defaultQuestion],
     },
   })
 
@@ -44,7 +44,7 @@ const QuizForm = (): JSX.Element => {
   // Раньше ты его вызывал при событии на элементе, но его можно вызвать и программно (вручную)
   const submit = async (): Promise<void> => {
     await form.handleSubmit(data => {
-      console.debug(data)
+      console.log(data)
     })()
   }
 
