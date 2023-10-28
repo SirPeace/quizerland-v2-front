@@ -2,8 +2,10 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit'
 
 import authReducer from './auth/authSlice'
 import quizReducer from './quiz/quizSlice'
+import quizFormReducer from './quizForm/quizFormSlice'
 
 const rootReducer = combineReducers({
+  quizFormState: quizFormReducer,
   quizState: quizReducer,
   authState: authReducer,
 })

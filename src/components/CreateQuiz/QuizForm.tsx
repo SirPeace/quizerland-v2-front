@@ -1,14 +1,13 @@
 'use client'
-// TODO Убрать DevTool
-// import { DevTool } from '@hookform/devtools'
-import { zodResolver } from '@hookform/resolvers/zod'
+
 import ChecklistOutlinedIcon from '@mui/icons-material/ChecklistOutlined'
 
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Drawer from '@mui/material/Drawer'
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+
+import { useAppSelector } from '@/redux/reduxHooks'
 
 import GoToHomePageButton from '../Navigation/GoToHomePageButton/GoToHomePageButton'
 
@@ -16,8 +15,6 @@ import DrawerList from './DrawerList/DrawerList'
 import QuestionCard from './QuestionCard/QuestionCard'
 import QuizDescriptionCard from './QuizDescriptionCard/QuizDescriptionCard'
 import CreateQuizContext, { type ICreateQuizContext } from './context'
-
-import { quizFormSchema, type TQuizForm } from './types'
 
 const drawerWidth = 240
 
@@ -31,27 +28,15 @@ const QuizForm = (): JSX.Element => {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeTab, setActiveTab] = useState(-1)
 
-  const form = useForm<TQuizForm>({
-    resolver: zodResolver(quizFormSchema),
-    defaultValues: {
-      title: '',
-      description: '',
-      questions: [defaultQuestion],
-    },
-  })
+  const quizForm = useAppSelector(({ quizFormState }) => quizFormState)
 
-  // Обертка для вызова `handleSubmit(data => onSubmit(data))()` у RHF
-  // Раньше ты его вызывал при событии на элементе, но его можно вызвать и программно (вручную)
   const submit = async (): Promise<void> => {
-    await form.handleSubmit(data => {
-      console.log(data)
-    })()
+    console.debug('form submitted: ', quizForm)
   }
 
   const formContext: ICreateQuizContext = {
     activeTab,
     setActiveTab,
-    form,
     submit,
   }
 
@@ -62,7 +47,6 @@ const QuizForm = (): JSX.Element => {
   return (
     <CreateQuizContext.Provider value={formContext}>
       <Box className="flex h-screen">
-        {/* <DevTool control={form.control} placement="top-right" /> */}
         <Button
           onClick={handleDrawerToggle}
           className="fixed bottom-3 left-3 rounded-full p-0 min-w-0 w-14 h-14 z-50 items-center"
@@ -78,7 +62,6 @@ const QuizForm = (): JSX.Element => {
           sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
           aria-label="mailbox folders"
         >
-          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
           <Drawer
             variant="temporary"
             open={mobileOpen}

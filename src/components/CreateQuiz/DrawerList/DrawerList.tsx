@@ -12,38 +12,24 @@ import {
   Button,
 } from '@mui/material'
 
-import { useContext, useMemo } from 'react'
+import { useContext } from 'react'
 
-import { useWatch } from 'react-hook-form'
+import { addQuestion as addQuestionAction } from '@/redux/quizForm/quizFormSlice'
+import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
-import { defaultQuestion } from '../QuizForm'
 import CreateQuizContext from '../context'
 
 const DrawerList = (): JSX.Element => {
-  const { activeTab, submit, setActiveTab, form } =
-    useContext(CreateQuizContext)
+  const { submit, setActiveTab } = useContext(CreateQuizContext)
 
-  const { setValue } = form
-
-  // useWatch() вместо getValues(), т.к. нам надо следить за добавлением новых вопросов и ре-рендерить список при изменениях
-  const questions = useWatch({
-    control: form.control,
-    name: 'questions',
-  })
+  const { questions } = useAppSelector(({ quizFormState }) => quizFormState)
+  const dispatch = useAppDispatch()
 
   function addQuestion(): void {
-    console.debug(questions)
-
     const newActiveTab = questions.length
 
-    setValue('questions', [...questions, defaultQuestion])
+    dispatch(addQuestionAction())
     setActiveTab(questions.length + 1)
-    console.log(questions)
-  }
-
-  const setActiveTabLog = (index: number): void => {
-    setActiveTab(index)
-    console.log('activeTab :', activeTab)
   }
 
   return (
@@ -80,21 +66,15 @@ const DrawerList = (): JSX.Element => {
         </List>
         <Divider className="mx-3" />
         <List>
-          <ListItemText
-            primary={
-              questions.length <= 1 ? 'Вопросы не добавлены' : 'Список вопросов'
-            }
-            className="text-center"
-          />
           {questions.map((question, idx) => (
             <ListItem key={idx} disablePadding>
               <ListItemButton
                 onClick={() => {
-                  setActiveTabLog(idx)
+                  setActiveTab(idx)
                 }}
               >
                 <ListItemText>
-                  {`№ ${idx}: "${questions.length > 0 && question.text}"`}
+                  {`№ ${idx + 1}: "${question.title}"`}
                 </ListItemText>
               </ListItemButton>
             </ListItem>
