@@ -11,7 +11,7 @@ export interface IQuizDescription {
 
 export interface IQuestionForm {
   title: string
-  rightAnswerId: number | undefined
+  rightAnswerId: number | null
   answers: IQuestionFormAnswer[]
 }
 

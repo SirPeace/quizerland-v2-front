@@ -18,7 +18,8 @@ export const questionFormSchema = zod.object({
     .max(100, 'Вопрос не может содержать более 100 символов!'),
   rightAnswerId: zod
     .number({ errorMap: () => ({ message: 'Выберите вариант ответа' }) })
-    .int(),
+    .int()
+    .default(0),
   answers: zod
     .object({
       text: zod

@@ -1,17 +1,17 @@
-import type { IQuestionForm, IQuizFormState } from './types'
+import type { IQuizFormState } from './types'
 
-export const newDefaultQuestion = (): IQuestionForm => ({
+export const defaultQuestion = {
   title: 'Новый вопрос',
-  rightAnswerId: undefined,
-  answers: new Array(3).fill(''),
-})
+  rightAnswerId: 0,
+  answers: [{ text: '' }, { text: '' }, { text: '' }],
+}
 
 const quizFormState: IQuizFormState = {
   quizDescription: {
     title: '',
     description: '',
   },
-  questions: [newDefaultQuestion()],
+  questions: [defaultQuestion],
 }
 
 export default quizFormState

@@ -5,7 +5,7 @@ import { Button, Card, CardActions, Box } from '@mui/material'
 import TextField from '@mui/material/TextField'
 
 import { debounce } from 'lodash-es'
-import { type FormEvent, useContext, useEffect } from 'react'
+import { type ChangeEvent, useContext, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { updateQuizDescription } from '@/redux/quizForm/quizFormSlice'
@@ -31,18 +31,25 @@ export default function QuizDescriptionForm(): JSX.Element {
       title: quizDescription.title,
       description: quizDescription.description,
     })
-  }, [quizDescription, reset])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reset])
+
+  const onInput = debounce(
+    (
+      event: ChangeEvent<HTMLInputElement>,
+      field: keyof TQuizDescriptionForm,
+    ): void => {
+      dispatch(
+        updateQuizDescription({
+          [field]: event.target.value,
+        }),
+      )
+    },
+    500,
+  )
 
   function goToQuestion(): void {
     setActiveTab(prev => prev + 1)
-  }
-
-  const onInput = (e: any, field: keyof TQuizDescriptionForm): any => {
-    dispatch(
-      updateQuizDescription({
-        [field]: 'value',
-      }),
-    )
   }
 
   return (
@@ -54,7 +61,9 @@ export default function QuizDescriptionForm(): JSX.Element {
           render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
-              onInput={e => onInput(e, 'title')}
+              onInput={(e: ChangeEvent<HTMLInputElement>) =>
+                onInput(e, 'title')
+              }
               label="Название теста"
               multiline
               fullWidth
@@ -71,7 +80,9 @@ export default function QuizDescriptionForm(): JSX.Element {
           render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
-              onInput={e => onInput(e, 'description')}
+              onInput={(e: ChangeEvent<HTMLInputElement>) =>
+                onInput(e, 'description')
+              }
               label="Описание к тесту"
               multiline
               fullWidth

@@ -73,9 +73,7 @@ const DrawerList = (): JSX.Element => {
                   setActiveTab(idx)
                 }}
               >
-                <ListItemText>
-                  {`№ ${idx + 1}: "${question.title}"`}
-                </ListItemText>
+                <ListItemText>{`${idx + 1}. ${question.title}`}</ListItemText>
               </ListItemButton>
             </ListItem>
           ))}
