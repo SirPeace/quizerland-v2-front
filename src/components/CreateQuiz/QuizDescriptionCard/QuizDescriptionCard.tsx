@@ -11,11 +11,11 @@ import { Controller, useForm } from 'react-hook-form'
 import { updateQuizDescription } from '@/redux/quizForm/quizFormSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
-import CreateQuizContext from '../context'
+import { QuizFormContext } from '../QuizFormContext'
 import { type TQuizDescriptionForm, quizDescriptionFormSchema } from '../schema'
 
 export default function QuizDescriptionForm(): JSX.Element {
-  const { setActiveTab } = useContext(CreateQuizContext)
+  const { setActiveTab } = useContext(QuizFormContext)
 
   const { quizDescription } = useAppSelector(
     ({ quizFormState }) => quizFormState,

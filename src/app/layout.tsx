@@ -1,9 +1,12 @@
+'use client'
+
 import './globals.css'
-import { CssBaseline } from '@mui/material'
+import { CssBaseline, ThemeProvider } from '@mui/material'
 import { Inter } from 'next/font/google'
 
 import Drawer from '@/components/Navigation/Drawer/Drawer'
 import { ReduxProvider } from '@/redux/ReduxProvider'
+import { lightTheme } from '@/theme/themes'
 
 const inter = Inter({ subsets: ['cyrillic'], preload: true })
 
@@ -30,7 +33,9 @@ export default function RootLayout({
 
           <Drawer />
 
-          <main className="text-gray-700">{children}</main>
+          <ThemeProvider theme={lightTheme}>
+            <main className="text-gray-700">{children}</main>
+          </ThemeProvider>
         </body>
       </ReduxProvider>
     </html>

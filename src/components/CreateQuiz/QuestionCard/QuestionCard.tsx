@@ -9,40 +9,29 @@ import { Box, Button, Card, TextField, Radio, RadioGroup } from '@mui/material'
 
 import IconButton from '@mui/material/IconButton'
 import InputAdornment from '@mui/material/InputAdornment'
-import { type DebouncedFunc, debounce } from 'lodash-es'
-import { type ChangeEvent, useContext, useEffect } from 'react'
+import { debounce, isEqual } from 'lodash-es'
+import { useContext, useEffect, useCallback } from 'react'
 
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 
 import {
+  type PartialQuestion,
   appendAnswer,
   removeAnswer,
-  updateAnswer,
   updateQuestion,
 } from '@/redux/quizForm/quizFormSlice'
-import type { IQuestionForm } from '@/redux/quizForm/types'
+
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
-import CreateQuizContext from '../context'
+import { QuizFormContext } from '../QuizFormContext'
 
 import { type TQuestionForm, questionFormSchema } from '../schema'
-
-type TOnAnswerInputDebounced = DebouncedFunc<
-  (event: ChangeEvent<HTMLInputElement>, answerIndex: number) => void
->
-
-/**
- * Ключ = индекс ответа\
- * Значение = результат вызова debounce() на ф-ции onAnswerInput()
- */
-const _answerInputDebounceCache: Record<number, TOnAnswerInputDebounced> = {}
 
 const QuizQuestionForm = (): JSX.Element => {
   //* =======================================
   //*             STATE & HOOKS
   //* =======================================
-
-  const { activeTab: questionIndex } = useContext(CreateQuizContext)
+  const { activeTab: questionIndex } = useContext(QuizFormContext)
 
   const { question } = useAppSelector(({ quizFormState }) => {
     const question = quizFormState.questions[questionIndex]
@@ -51,7 +40,7 @@ const QuizQuestionForm = (): JSX.Element => {
   })
   const dispatch = useAppDispatch()
 
-  const { control, formState, reset } = useForm<TQuestionForm>({
+  const { control, formState, reset, watch } = useForm<TQuestionForm>({
     resolver: zodResolver(questionFormSchema),
     defaultValues: {
       title: question?.title ?? '',
@@ -68,17 +57,39 @@ const QuizQuestionForm = (): JSX.Element => {
     control,
   })
 
+  const watchForm = useCallback(
+    (form: PartialQuestion) => {
+      // ? Можно оптимизировать, если проверять не полное соответствие форм, а только reset формы
+      if (isEqual(form, question)) {
+        return
+      }
+
+      dispatch(
+        updateQuestion({
+          index: questionIndex,
+          question: form,
+        }),
+      )
+    },
+    [dispatch, question, questionIndex],
+  )
+
   //* =======================================
   //*               useEffect
   //* =======================================
 
   useEffect(() => {
-    if (undefined !== question) {
-      reset({
-        title: question.title,
-        rightAnswerId: question.rightAnswerId ?? 0,
-        answers: question.answers,
-      })
+    reset({
+      title: question.title,
+      rightAnswerId: question.rightAnswerId ?? 0,
+      answers: question.answers,
+    })
+
+    const { unsubscribe } = watch(debounce(watchForm, 500))
+
+    // return unsubscribe
+    return () => {
+      unsubscribe()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questionIndex])
@@ -87,51 +98,11 @@ const QuizQuestionForm = (): JSX.Element => {
   //*                METHODS
   //* =======================================
 
-  function onInput(
-    event: ChangeEvent<HTMLInputElement>,
-    field: keyof IQuestionForm,
-  ): void {
-    dispatch(
-      updateQuestion({
-        index: questionIndex,
-        question: {
-          [field]: event.target.value,
-        },
-      }),
-    )
-  }
-  const onInputDebounce = debounce(onInput, 500)
-
-  function onAnswerInput(
-    event: ChangeEvent<HTMLInputElement>,
-    answerIndex: number,
-  ): void {
-    dispatch(
-      updateAnswer({
-        questionIndex,
-        answerIndex,
-        answer: {
-          text: event.target.value,
-        },
-      }),
-    )
-  }
-  const onAnswerInputDebounce = (
-    answerIndex: number,
-  ): TOnAnswerInputDebounced => {
-    if (undefined === _answerInputDebounceCache[answerIndex]) {
-      _answerInputDebounceCache[answerIndex] = debounce(e => {
-        onAnswerInput(e, answerIndex)
-      }, 500)
-    }
-
-    return _answerInputDebounceCache[answerIndex]
-  }
-
   function addAnswer(): void {
     appendFormAnswer({ text: '' })
     dispatch(appendAnswer({ questionIndex }))
   }
+
   function deleteAnswer(answerIndex: number): void {
     removeFormAnswer(answerIndex)
     dispatch(removeAnswer({ questionIndex, answerIndex }))
@@ -147,9 +118,6 @@ const QuizQuestionForm = (): JSX.Element => {
           render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
-              onInput={(e: ChangeEvent<HTMLInputElement>) =>
-                onInputDebounce(e, 'title')
-              }
               label="Добавьте текст вопроса"
               type="text"
               placeholder="Пример: Первый астронавт вышедший в открытый космос?"
@@ -166,13 +134,7 @@ const QuizQuestionForm = (): JSX.Element => {
           control={control}
           name="rightAnswerId"
           render={({ field }) => (
-            <RadioGroup
-              {...field}
-              onInput={(e: ChangeEvent<HTMLInputElement>) => {
-                onInput(e, 'rightAnswerId')
-              }}
-              className="space-y-4"
-            >
+            <RadioGroup {...field} className="space-y-4">
               {answerFields.map((answerField, idx) => (
                 <div key={answerField.id} className="flex w-full">
                   <Radio value={idx} className="mr-1" />
@@ -183,10 +145,6 @@ const QuizQuestionForm = (): JSX.Element => {
                     render={({ field, fieldState: { error } }) => (
                       <TextField
                         {...field}
-                        onInput={(e: ChangeEvent<HTMLInputElement>) => {
-                          e.stopPropagation()
-                          onAnswerInputDebounce(idx)(e, idx)
-                        }}
                         placeholder="Введите вариант ответа..."
                         multiline
                         fullWidth

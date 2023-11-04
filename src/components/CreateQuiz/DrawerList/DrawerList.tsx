@@ -17,10 +17,10 @@ import { useContext } from 'react'
 import { addQuestion as addQuestionAction } from '@/redux/quizForm/quizFormSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
-import CreateQuizContext from '../context'
+import { QuizFormContext } from '../QuizFormContext'
 
 const DrawerList = (): JSX.Element => {
-  const { submit, setActiveTab } = useContext(CreateQuizContext)
+  const { submit, activeTab, setActiveTab } = useContext(QuizFormContext)
 
   const { questions } = useAppSelector(({ quizFormState }) => quizFormState)
   const dispatch = useAppDispatch()
@@ -29,7 +29,7 @@ const DrawerList = (): JSX.Element => {
     const newActiveTab = questions.length
 
     dispatch(addQuestionAction())
-    setActiveTab(questions.length + 1)
+    setActiveTab(newActiveTab)
   }
 
   return (
@@ -41,6 +41,7 @@ const DrawerList = (): JSX.Element => {
         <List>
           <ListItem disablePadding>
             <ListItemButton
+              selected={activeTab === -1}
               onClick={() => {
                 setActiveTab(-1)
               }}
@@ -51,24 +52,26 @@ const DrawerList = (): JSX.Element => {
               <ListItemText primary={'Описание теста'} />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton
-              onClick={() => {
-                addQuestion()
-              }}
-            >
-              <ListItemIcon>
-                <AddToPhotosIcon />
-              </ListItemIcon>
-              <ListItemText primary={'Новый вопрос'} />
-            </ListItemButton>
-          </ListItem>
         </List>
         <Divider className="mx-3" />
-        <List>
+        <div className="my-4 px-2">
+          <Button
+            variant="contained"
+            color="secondary"
+            className="w-full"
+            onClick={() => {
+              addQuestion()
+            }}
+          >
+            <AddToPhotosIcon fontSize={'small'} className="mr-4" />
+            Новый вопрос
+          </Button>
+        </div>
+        <List className="py-0">
           {questions.map((question, idx) => (
             <ListItem key={idx} disablePadding>
               <ListItemButton
+                selected={idx === activeTab}
                 onClick={() => {
                   setActiveTab(idx)
                 }}

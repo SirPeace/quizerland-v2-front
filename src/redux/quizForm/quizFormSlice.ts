@@ -2,20 +2,17 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 import quizFormState, { defaultQuestion } from './initialState'
 
-import type {
-  IQuestionForm,
-  IQuestionFormAnswer,
-  IQuizDescription,
-} from './types'
+import type { IQuizDescription } from './types'
+
+export interface PartialQuestion {
+  title?: string | undefined
+  rightAnswerId?: number | undefined
+  answers?: Array<{ text?: string | undefined } | undefined> | undefined
+}
 
 interface IUpdateQuestionPayload {
   index: number
-  question: Partial<IQuestionForm>
-}
-interface IUpdateAnswerPayload {
-  questionIndex: number
-  answerIndex: number
-  answer: Partial<IQuestionFormAnswer>
+  question: PartialQuestion
 }
 interface IAppendAnswerPayload {
   questionIndex: number
@@ -43,25 +40,32 @@ export const quizFormSlice = createSlice({
       state.questions.push(defaultQuestion)
     },
     updateQuestion(state, { payload }: PayloadAction<IUpdateQuestionPayload>) {
+      const { question: payloadQuestion } = payload
+      const question = state.questions[payload.index]
+
+      const title = payloadQuestion.title ?? question.title
+      const rightAnswerId =
+        payloadQuestion.rightAnswerId ?? question.rightAnswerId
+      const answers =
+        payloadQuestion.answers?.map((payloadAnswer, idx) => {
+          const answer = question.answers[idx]
+          const text = payloadAnswer?.text ?? answer?.text
+
+          return { text }
+        }) ?? question.answers
+
+      const updatedFields = {
+        title,
+        rightAnswerId,
+        answers,
+      }
+
       state.questions[payload.index] = {
         ...state.questions[payload.index],
-        ...payload.question,
+        ...updatedFields,
       }
     },
 
-    updateAnswer(state, { payload }: PayloadAction<IUpdateAnswerPayload>) {
-      const { questionIndex, answerIndex, answer: newAnswer } = payload
-
-      const answer = state.questions[questionIndex].answers[answerIndex]
-      if (undefined === answer) {
-        return
-      }
-
-      state.questions[questionIndex].answers[answerIndex] = {
-        ...answer,
-        ...newAnswer,
-      }
-    },
     appendAnswer(state, { payload }: PayloadAction<IAppendAnswerPayload>) {
       const { questionIndex } = payload
 
@@ -79,7 +83,6 @@ export const {
   addQuestion,
   updateQuestion,
   updateQuizDescription,
-  updateAnswer,
   appendAnswer,
   removeAnswer,
 } = quizFormSlice.actions
