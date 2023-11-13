@@ -10,7 +10,6 @@ import { debounce } from 'lodash-es'
 import { useCallback, useContext, useState } from 'react'
 import { type FieldErrors, useWatch } from 'react-hook-form'
 
-import { defaultQuestion } from '../QuizForm'
 import CreateQuizContext from '../context'
 
 import type {
@@ -21,31 +20,20 @@ import type {
 } from '../types'
 
 const QuizQuestionForm = (): JSX.Element => {
-  const {
-    activeTab: questionIndex,
-    setActiveTab,
-    form,
-  } = useContext(CreateQuizContext)
-
-  console.log(`Question index: ${questionIndex}`)
+  const { activeTab: questionIndex, form } = useContext(CreateQuizContext)
 
   const {
     register,
     setValue,
     getValues,
     formState: { errors },
-    resetField,
   } = form
 
   /*
     Замена useAppSelector
     Получаем данные не из Redux, а из стейта RHF
   */
-  const questions = getValues('questions')
   const question = getValues(`questions.${questionIndex}`)
-
-  console.log(question)
-
   // useWatch() вместо getValues(), т.к. нам надо следить за списком ответов и ре-рендерить список, когда добавляем/удаляем элементы
   const answers = useWatch({
     control: form.control,
@@ -92,14 +80,6 @@ const QuizQuestionForm = (): JSX.Element => {
     )
   }
 
-  function addQuestion(): void {
-    const newActiveTab = questions.length
-
-    setValue('questions', [...questions, defaultQuestion])
-    setActiveTab(newActiveTab)
-    console.log(questions)
-  }
-
   return (
     <Card raised className="py-5 px-5 rounded-xl mx-3">
       <Box component="form">
@@ -116,7 +96,7 @@ const QuizQuestionForm = (): JSX.Element => {
           {questionFieldError('text')}
         </p>
 
-        {answers.map((answer, idx) => (
+        {answers.map((_, idx) => (
           <div key={idx}>
             <div className="flex w-full">
               <Radio
@@ -172,17 +152,6 @@ const QuizQuestionForm = (): JSX.Element => {
           onClick={addAnswer}
         >
           Добавить ответ
-        </Button>
-
-        <Button
-          variant="text"
-          type="button"
-          fullWidth
-          size="large"
-          startIcon={<AddToPhotosIcon />}
-          onClick={addQuestion}
-        >
-          Добавить вопрос
         </Button>
 
         {questionFieldError('rightAnswerId') !== '' && (

@@ -21,12 +21,6 @@ import { quizFormSchema, type TQuizForm } from './types'
 
 const drawerWidth = 240
 
-export const defaultQuestion = {
-  text: '',
-  rightAnswerId: undefined,
-  answers: ['', '', ''],
-}
-
 const QuizForm = (): JSX.Element => {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeTab, setActiveTab] = useState(-1)
@@ -36,12 +30,18 @@ const QuizForm = (): JSX.Element => {
     defaultValues: {
       title: '',
       description: '',
-      questions: [defaultQuestion],
+      questions: [
+        {
+          text: '',
+          rightAnswerId: undefined,
+          answers: ['', '', ''],
+        },
+      ],
     },
   })
 
   // Обертка для вызова `handleSubmit(data => onSubmit(data))()` у RHF
-  // Раньше ты его вызывал при событии на элементе, но его можно вызвать и программно (вручную)
+  // Раньше вызывал при событии на элементе, но его можно вызвать и программно
   const submit = async (): Promise<void> => {
     await form.handleSubmit(data => {
       console.log(data)
@@ -78,7 +78,6 @@ const QuizForm = (): JSX.Element => {
           sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
           aria-label="mailbox folders"
         >
-          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
           <Drawer
             variant="temporary"
             open={mobileOpen}

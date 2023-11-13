@@ -12,17 +12,16 @@ export default function QuizDescriptionForm(): JSX.Element {
   if (undefined === form) return <></>
 
   const {
-    setValue,
     register,
     formState: { errors },
   } = form
 
   const goToQuestion = (): void => {
-    setActiveTab(prev => prev + 1)
+    setActiveTab(prevState => prevState + 1)
   }
 
   return (
-    <Card raised className="py-5 px-5  rounded-xl">
+    <Card raised className="py-5 px-5 rounded-xl mx-3">
       <Box component="form">
         <TextField
           {...register('title')}
