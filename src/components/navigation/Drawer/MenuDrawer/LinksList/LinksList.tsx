@@ -22,7 +22,7 @@ const LinksList = (): JSX.Element => {
 
   const links: ILink[] = [
     {
-      pathname: '/',
+      pathname: '/quizzes',
       query: { name: 'Тесты' },
       muiIcon: <FormatListNumberedRtlIcon />,
     },

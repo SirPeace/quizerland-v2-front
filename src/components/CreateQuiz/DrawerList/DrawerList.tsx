@@ -21,8 +21,6 @@ import CreateQuizContext from '../context'
 const DrawerList = (): JSX.Element => {
   const { submit, setActiveTab, form } = useContext(CreateQuizContext)
 
-  const { setValue } = form
-
   // useWatch() вместо getValues(), т.к. нам надо следить за добавлением новых вопросов и ре-рендерить список при изменениях
   const questions = useWatch({
     control: form.control,
@@ -48,20 +46,22 @@ const DrawerList = (): JSX.Element => {
               <ListItemText primary={'Описание теста'} />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton
-              onClick={() => {
-                setActiveTab(0)
-              }}
-            >
-              <ListItemIcon>
-                <AddToPhotosIcon />
-              </ListItemIcon>
-              <ListItemText primary={'Новый вопрос'} />
-            </ListItemButton>
-          </ListItem>
         </List>
         <Divider className="mx-3" />
+        <div className="p-2">
+          <Button
+            variant="contained"
+            startIcon={<AddToPhotosIcon />}
+            fullWidth
+            onClick={() => {
+              setActiveTab(0)
+            }}
+            className="bg-purple-500"
+          >
+            Новый вопрос
+          </Button>
+        </div>
+
         <List>
           {questions.length === 0 ? (
             <ListItemText

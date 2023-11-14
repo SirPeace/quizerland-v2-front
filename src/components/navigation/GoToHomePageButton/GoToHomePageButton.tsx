@@ -2,7 +2,7 @@ import Button from '@mui/material/Button'
 import Link from 'next/link'
 
 const GoToHomePageButton = (): JSX.Element => (
-  <div className="ml-5 mb-5">
+  <div className="ml-3 mb-5">
     <Button variant="text">
       <Link href="/" className="text-blue-500">
         На домашнюю страницу

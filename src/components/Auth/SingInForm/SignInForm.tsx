@@ -149,7 +149,7 @@ const SignInForm = (): JSX.Element => {
               router.push('auth/registration')
             }}
           >
-            Нет аккаунта? Заведи новый.
+            Нет аккаунта? Заведите новый.
           </Button>
         </div>
       </Box>
