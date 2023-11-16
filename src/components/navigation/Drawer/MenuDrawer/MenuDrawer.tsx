@@ -1,5 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close'
-import PersonIcon from '@mui/icons-material/Person'
+import HowToRegIcon from '@mui/icons-material/HowToReg'
+import PersonOffIcon from '@mui/icons-material/PersonOff'
 import { Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
@@ -47,18 +48,30 @@ const MenuDrawer: React.FC = () => {
         <LinksList />
       </List>
 
-      {user !== undefined && (
+      {user !== undefined ? (
         <Box
           sx={{ bgcolor: 'primary.main' }}
           className="flex items-center p-4"
           color="white"
         >
-          <PersonIcon className="mr-3" />
+          <HowToRegIcon className="mr-3" />
 
           <Box>
             <Typography variant="body1">
               Вы вошли как: <strong>{user.nickname}</strong>
             </Typography>
+          </Box>
+        </Box>
+      ) : (
+        <Box
+          sx={{ bgcolor: 'error.main' }}
+          className="flex items-center p-4"
+          color="white"
+        >
+          <PersonOffIcon className="mr-3" />
+
+          <Box>
+            <Typography variant="body1">Пользователь не авторизован</Typography>
           </Box>
         </Box>
       )}

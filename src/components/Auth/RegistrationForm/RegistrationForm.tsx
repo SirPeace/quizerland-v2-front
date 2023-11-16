@@ -22,6 +22,11 @@ import { useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 
+import { registerUser, user } from '@/api/modules/auth'
+
+import { setUser } from '@/redux/auth/authSlice'
+import { useAppDispatch } from '@/redux/reduxHooks'
+
 import { registrationSchema } from '../types'
 
 import type { TRegistrationSchema } from '../types'
@@ -33,6 +38,7 @@ const RegistrationForm = (): JSX.Element => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const router = useRouter()
+  const dispatch = useAppDispatch()
 
   const handleClickShowPassword = (): void => {
     setShowPassword(show => !show)
@@ -53,9 +59,17 @@ const RegistrationForm = (): JSX.Element => {
   const onSubmit: SubmitHandler<TRegistrationSchema> = async (
     data,
   ): Promise<void> => {
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    console.log(data)
     const { confirmPassword, ...userDataRegistration } = data
+
+    // Запрос к db, регистрация пользователя
+    await registerUser(userDataRegistration)
+    // Запрос к db на получение верифицированного пользователя
+    const verifiedUser = await user()
+    // Сохранение верифицированного пользователя в redux
+    dispatch(setUser(verifiedUser))
+
+    router.push('/quizzes')
+
     reset()
   }
 

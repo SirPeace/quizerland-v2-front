@@ -26,7 +26,7 @@ export async function generateMetadata({
     title: `${quiz} | Quizerland`,
   }
 }
-
+//! Task ошибка : Неизвестный селектор при вызове с теми же параметрами возвращает другой результат. Это может привести к ненужным повторным вызовам. Селекторы, возвращающие новую ссылку (например, на объект или массив), должны быть мемоизированы:
 const QuizPage = ({ params: { quiz: quizId } }: Props): JSX.Element => {
   const currentQuizId = useAppSelector(
     ({ quizState }) => quizState.activeQuizId,

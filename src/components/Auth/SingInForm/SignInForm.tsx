@@ -22,8 +22,9 @@ import { useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 
+import { login, user } from '@/api/modules/auth'
 import { setUser } from '@/redux/auth/authSlice'
-import { defaultUser } from '@/redux/auth/initialState'
+
 import { useAppDispatch } from '@/redux/reduxHooks'
 
 import { singInSchema, type TSingInSchema } from '../types'
@@ -52,10 +53,14 @@ const SignInForm = (): JSX.Element => {
   const onSubmit: SubmitHandler<TSingInSchema> = async (
     data,
   ): Promise<void> => {
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    console.log('Auth form: ', data)
+    // Запрос к db, авторизация пользователя
+    await login(data)
+    // Запрос к db на получение верифицированного пользователя
+    const verifiedUser = await user()
+    // Сохранение верифицированного пользователя в redux
+    dispatch(setUser(verifiedUser))
 
-    dispatch(setUser(defaultUser))
+    router.push('/quizzes')
 
     reset()
   }

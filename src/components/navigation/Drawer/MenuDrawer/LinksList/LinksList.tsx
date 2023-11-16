@@ -1,6 +1,7 @@
 import EditNoteIcon from '@mui/icons-material/EditNote'
 import FormatListNumberedRtlIcon from '@mui/icons-material/FormatListNumberedRtl'
 import InputOutlinedIcon from '@mui/icons-material/InputOutlined'
+import LogoutIcon from '@mui/icons-material/Logout'
 import { Divider } from '@mui/material'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
@@ -10,13 +11,19 @@ import ListItemText from '@mui/material/ListItemText'
 import { usePathname, useRouter } from 'next/navigation'
 import { useContext } from 'react'
 
+import { logout } from '@/api/modules/auth'
+import { unsetUser } from '@/redux/auth/authSlice'
+import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
+
 import { DrawerContext } from '../../Drawer'
 
 import type { ILink } from './types'
 
 const LinksList = (): JSX.Element => {
+  const user = useAppSelector(({ authState }) => authState.user)
   const pathname = usePathname()
   const router = useRouter()
+  const dispatch = useAppDispatch()
 
   const { closeDrawer } = useContext(DrawerContext)
 
@@ -31,12 +38,39 @@ const LinksList = (): JSX.Element => {
       query: { name: 'Создание тестов' },
       muiIcon: <EditNoteIcon />,
     },
-    {
+  ]
+
+  if (user === undefined) {
+    links.push({
       pathname: '/auth',
       query: { name: 'Авторизация' },
       muiIcon: <InputOutlinedIcon />,
-    },
-  ]
+    })
+  } else {
+    links.push({
+      pathname: '/',
+      query: { name: 'Выход' },
+      muiIcon: <LogoutIcon />,
+    })
+  }
+
+  const logoutHandler = async (linkName: string): Promise<void> => {
+    if (linkName !== 'Выход') {
+      return
+    }
+
+    await logout()
+    dispatch(unsetUser())
+    router.push('/quizzes')
+  }
+
+  const setDisabled = (linkName: string): boolean => {
+    if (linkName === 'Создание тестов' && user === undefined) {
+      return true
+    }
+
+    return false
+  }
 
   return (
     <>
@@ -46,12 +80,20 @@ const LinksList = (): JSX.Element => {
         return (
           <div key={link.pathname}>
             <ListItem
-              onClick={() => {
-                router.push(link.pathname)
-                closeDrawer()
-              }}
+              className={
+                setDisabled(link.query.name)
+                  ? 'cursor-not-allowed'
+                  : 'cursor-default'
+              }
             >
-              <ListItemButton>
+              <ListItemButton
+                disabled={setDisabled(link.query.name)}
+                onClick={() => {
+                  void logoutHandler(link.query.name)
+                  router.push(link.pathname)
+                  closeDrawer()
+                }}
+              >
                 <ListItemIcon
                   className={`m-auto ${isActive && 'text-blue-700'}`}
                 >
