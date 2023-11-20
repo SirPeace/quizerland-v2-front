@@ -3,18 +3,20 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail'
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import HowToRegIcon from '@mui/icons-material/HowToReg'
 import LockIcon from '@mui/icons-material/Lock'
 import LoginIcon from '@mui/icons-material/Login'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import { IconButton } from '@mui/material'
+import Alert from '@mui/material/Alert'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import Checkbox from '@mui/material/Checkbox'
 import FormControlLabel from '@mui/material/FormControlLabel'
+import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/navigation'
@@ -22,7 +24,7 @@ import { useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 
-import { login, user } from '@/api/modules/auth'
+import { login } from '@/api/modules/auth'
 import { setUser } from '@/redux/auth/authSlice'
 
 import { useAppDispatch } from '@/redux/reduxHooks'
@@ -33,6 +35,7 @@ import type { SubmitHandler } from 'react-hook-form'
 
 const SignInForm = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<undefined | string>()
 
   const router = useRouter()
   const dispatch = useAppDispatch()
@@ -45,7 +48,6 @@ const SignInForm = (): JSX.Element => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
   } = useForm<TSingInSchema>({
     resolver: zodResolver(singInSchema),
   })
@@ -55,17 +57,18 @@ const SignInForm = (): JSX.Element => {
   ): Promise<void> => {
     try {
       // Запрос к db, авторизация пользователя
-      await login(data)
-      // Запрос к db на получение верифицированного пользователя
-      const verifiedUser = await user()
+      const { data: verifiedUser } = await login(data)
       // Сохранение верифицированного пользователя в redux
       dispatch(setUser(verifiedUser))
 
       router.push('/quizzes')
-
-      reset()
     } catch (err: any) {
-      return err
+      const serverMessage = err?.response?.data?.message
+      if (typeof serverMessage === 'string') {
+        setErrorMessage(serverMessage)
+      } else {
+        setErrorMessage('Произошла ошибка, попробуйте позже')
+      }
     }
   }
 
@@ -82,7 +85,7 @@ const SignInForm = (): JSX.Element => {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full mt-8"
       >
-        <div className="mb-8">
+        <div>
           <Box className="flex items-end">
             <AlternateEmailIcon
               sx={{ color: 'action.active', mr: 1, mb: 0.5 }}
@@ -139,6 +142,12 @@ const SignInForm = (): JSX.Element => {
           control={<Checkbox color="primary" />}
           label="Запомнить меня"
         />
+
+        {undefined !== errorMessage && (
+          <Alert icon={<ErrorOutlineIcon />} color="error" className="my-4">
+            {errorMessage}
+          </Alert>
+        )}
 
         <div className="mt-2">
           <Button

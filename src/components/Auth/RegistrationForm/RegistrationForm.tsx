@@ -22,7 +22,7 @@ import { useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 
-import { registerUser, user } from '@/api/modules/auth'
+import { registerUser, getAuthUser } from '@/api/modules/auth'
 
 import { setUser } from '@/redux/auth/authSlice'
 import { useAppDispatch } from '@/redux/reduxHooks'
@@ -64,7 +64,7 @@ const RegistrationForm = (): JSX.Element => {
       // Запрос к db, регистрация пользователя
       await registerUser(userDataRegistration)
       // Запрос к db на получение верифицированного пользователя
-      const verifiedUser = await user()
+      const verifiedUser = await getAuthUser()
       // Сохранение верифицированного пользователя в redux
       dispatch(setUser(verifiedUser))
 

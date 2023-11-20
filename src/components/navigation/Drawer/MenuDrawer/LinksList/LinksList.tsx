@@ -71,7 +71,10 @@ const LinksList = (): JSX.Element => {
   }
 
   const setDisabled = (linkName: string): boolean => {
-    if (linkName === 'Создание тестов' && user === undefined) {
+    if (
+      (linkName === 'Создание тестов' || linkName === 'Тесты') &&
+      user === undefined
+    ) {
       return true
     }
 

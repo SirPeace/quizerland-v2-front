@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const AuthPage = (): JSX.Element => (
   <div className="w-full bg-slate-100">
-    <div className="flex flex-col items-stretch max-w-lg min-h-screen mx-auto">
+    <div className="flex flex-col items-stretch max-w-lg min-h-screen mx-auto px-3">
       <div className="mt-[25%] mb-auto">
         <SignInForm />
       </div>

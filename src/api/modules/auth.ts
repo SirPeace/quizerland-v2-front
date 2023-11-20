@@ -23,7 +23,7 @@ export const logout = async (): Promise<void> => {
   await httpClient.delete('/api/auth')
 }
 
-export const user = async (): Promise<IUser> => {
+export const getAuthUser = async (): Promise<IUser> => {
   const { data } = await httpClient.get<IUser>('/api/auth')
   return data
 }
