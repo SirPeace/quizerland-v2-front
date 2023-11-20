@@ -10,6 +10,8 @@ import Drawer from '@mui/material/Drawer'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
+import { createQuiz } from '@/api/modules/quizzes'
+
 import GoToHomePageButton from '../Navigation/GoToHomePageButton/GoToHomePageButton'
 
 import DrawerList from './DrawerList/DrawerList'
@@ -44,7 +46,9 @@ const QuizForm = (): JSX.Element => {
   // Раньше вызывал при событии на элементе, но его можно вызвать и программно
   const submit = async (): Promise<void> => {
     await form.handleSubmit(data => {
-      console.log(data)
+      try {
+        void createQuiz(data)
+      } catch (error) {}
     })()
   }
 
