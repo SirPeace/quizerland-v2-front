@@ -53,16 +53,20 @@ const SignInForm = (): JSX.Element => {
   const onSubmit: SubmitHandler<TSingInSchema> = async (
     data,
   ): Promise<void> => {
-    // Запрос к db, авторизация пользователя
-    await login(data)
-    // Запрос к db на получение верифицированного пользователя
-    const verifiedUser = await user()
-    // Сохранение верифицированного пользователя в redux
-    dispatch(setUser(verifiedUser))
+    try {
+      // Запрос к db, авторизация пользователя
+      await login(data)
+      // Запрос к db на получение верифицированного пользователя
+      const verifiedUser = await user()
+      // Сохранение верифицированного пользователя в redux
+      dispatch(setUser(verifiedUser))
 
-    router.push('/quizzes')
+      router.push('/quizzes')
 
-    reset()
+      reset()
+    } catch (err: any) {
+      return err
+    }
   }
 
   return (

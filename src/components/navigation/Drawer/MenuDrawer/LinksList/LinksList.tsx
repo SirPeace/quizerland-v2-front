@@ -59,9 +59,15 @@ const LinksList = (): JSX.Element => {
       return
     }
 
-    await logout()
-    dispatch(unsetUser())
-    router.push('/quizzes')
+    try {
+      // запрос к db на инвалидацию пользователя
+      await logout()
+
+      dispatch(unsetUser())
+      router.push('/quizzes')
+    } catch (err: any) {
+      return err
+    }
   }
 
   const setDisabled = (linkName: string): boolean => {

@@ -14,9 +14,7 @@ const HomePage = (): JSX.Element => {
   useEffect(() => {
     user()
       .then(user => dispatch(setUser(user)))
-      .catch(err => {
-        console.log(err)
-      })
+      .catch((err: any) => err)
   }, [dispatch])
 
   useEffect(() => {
