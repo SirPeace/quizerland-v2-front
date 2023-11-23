@@ -57,6 +57,9 @@ export const quizSlice = createSlice({
         activeQuiz.rightAttempts = 0
       }
     },
+    setQuizzes: (state, action) => {
+      // state.quizzes.push(action.payload)
+    },
   },
 })
 
@@ -68,5 +71,6 @@ export const {
   goToAvailableQuiz,
   setRightAttempts,
   resetRightAttempts,
+  setQuizzes,
 } = quizSlice.actions
 export default quizSlice.reducer

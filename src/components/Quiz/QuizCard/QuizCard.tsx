@@ -30,7 +30,7 @@ const Quiz = ({ quiz }: IQuizProp): JSX.Element => {
 
       <div className="flex justify-between px-4">
         <p className="text-sm font-semibold text-gray-400 ">
-          тест из {quiz.questions.length} вопросов
+          {/* тест из {quiz.questions.length} вопросов */}
         </p>
         <Button
           className="mb-4 opacity-80"

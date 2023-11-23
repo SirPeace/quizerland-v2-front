@@ -62,11 +62,9 @@ const RegistrationForm = (): JSX.Element => {
     const { confirmPassword, ...userDataRegistration } = data
     try {
       // Запрос к db, регистрация пользователя
-      await registerUser(userDataRegistration)
-      // Запрос к db на получение верифицированного пользователя
-      const verifiedUser = await getAuthUser()
+      const { data } = await registerUser(userDataRegistration)
       // Сохранение верифицированного пользователя в redux
-      dispatch(setUser(verifiedUser))
+      dispatch(setUser(data))
 
       router.push('/quizzes')
 

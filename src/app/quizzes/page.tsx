@@ -2,15 +2,31 @@
 
 import { Neucha, Pacifico } from 'next/font/google'
 
+import { useEffect } from 'react'
+
+import { getQuizzes } from '@/api/modules/quizzes'
 import Quiz from '@/components/Quiz/QuizCard/QuizCard'
+import { setQuizzes } from '@/redux/quiz/quizSlice'
 import type { IQuiz } from '@/redux/quiz/types'
-import { useAppSelector } from '@/redux/reduxHooks'
+import { useAppSelector, useAppDispatch } from '@/redux/reduxHooks'
 
 const neucha = Neucha({ subsets: ['cyrillic'], weight: '400', preload: true })
 const pacifico = Pacifico({ subsets: ['latin'], weight: '400', preload: true })
 
 const QuizzesPage = (): JSX.Element => {
   const quizzes = useAppSelector(({ quizState }) => quizState.quizzes)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    getQuizzes()
+      .then(data => {
+        dispatch(setQuizzes(data))
+        console.log(data)
+      })
+      .catch((err: any) => {
+        console.error('что то пошло не так', err)
+      })
+  }, [dispatch])
 
   return (
     <div className="max-w-4xl min-h-screen mx-auto pb-1 text-center">
