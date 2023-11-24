@@ -3,10 +3,10 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/navigation'
 
-import type { IQuiz } from '@/redux/quiz/types'
+import type { IQuizTitle } from '@/redux/quizTitles/types'
 
 interface IQuizProp {
-  quiz: IQuiz
+  quiz: IQuizTitle
 }
 const Quiz = ({ quiz }: IQuizProp): JSX.Element => {
   const router = useRouter()
@@ -14,12 +14,18 @@ const Quiz = ({ quiz }: IQuizProp): JSX.Element => {
   return (
     <Paper elevation={8} className="bg-white my-4 mx-6 rounded-xl">
       <div className="flex justify-between p-3">
-        <Typography gutterBottom variant="h6" component="div" margin={0}>
+        <Typography
+          gutterBottom
+          variant="h6"
+          component="div"
+          margin={0}
+          className="text-left indent-4"
+        >
           {quiz.title}
         </Typography>
 
         <p className="text-sm antialiased font-semibold m-0 text-gray-400">
-          тест № {quiz.id}
+          тест № {`TASK 1`}
         </p>
       </div>
 
@@ -30,7 +36,7 @@ const Quiz = ({ quiz }: IQuizProp): JSX.Element => {
 
       <div className="flex justify-between px-4">
         <p className="text-sm font-semibold text-gray-400 ">
-          {/* тест из {quiz.questions.length} вопросов */}
+          тест из {`TASK 1`} вопросов
         </p>
         <Button
           className="mb-4 opacity-80"
@@ -38,7 +44,7 @@ const Quiz = ({ quiz }: IQuizProp): JSX.Element => {
           variant="contained"
           size="small"
           onClick={() => {
-            router.push(`/quizzes/${quiz.id}`)
+            // router.push(`/quizzes/${1}`)
           }}
         >
           перейти к тесту

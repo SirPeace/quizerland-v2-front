@@ -6,15 +6,17 @@ import { useEffect } from 'react'
 
 import { getQuizzes } from '@/api/modules/quizzes'
 import Quiz from '@/components/Quiz/QuizCard/QuizCard'
-import { setQuizzes } from '@/redux/quiz/quizSlice'
-import type { IQuiz } from '@/redux/quiz/types'
+import { setQuizzes } from '@/redux/quizTitles/quizTitlesSlice'
+import type { IQuizTitle } from '@/redux/quizTitles/types'
 import { useAppSelector, useAppDispatch } from '@/redux/reduxHooks'
 
 const neucha = Neucha({ subsets: ['cyrillic'], weight: '400', preload: true })
 const pacifico = Pacifico({ subsets: ['latin'], weight: '400', preload: true })
 
 const QuizzesPage = (): JSX.Element => {
-  const quizzes = useAppSelector(({ quizState }) => quizState.quizzes)
+  const quizzes = useAppSelector(
+    ({ quizTitlesState }) => quizTitlesState.quizzes,
+  )
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -39,8 +41,8 @@ const QuizzesPage = (): JSX.Element => {
         </span>
       </h1>
 
-      {quizzes.map((quiz: IQuiz) => (
-        <Quiz key={quiz.id} quiz={quiz} />
+      {quizzes.map((quiz: IQuizTitle, idx) => (
+        <Quiz key={idx} quiz={quiz} />
       ))}
     </div>
   )

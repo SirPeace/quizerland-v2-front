@@ -1,8 +1,10 @@
 import type { IQuizState } from './types'
 
-export const quizState: IQuizState = {
+const quizState: IQuizState = {
   activeQuizId: 1,
-  quizzes: [
+  quizzes: [],
+
+  /* [
     {
       id: 1,
       currentQuestionId: 1,
@@ -411,7 +413,7 @@ export const quizState: IQuizState = {
         },
       ],
     },
-  ],
+  ], */
 }
 
 export default quizState
