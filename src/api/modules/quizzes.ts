@@ -6,12 +6,17 @@ import httpClient from '../httpClient'
 
 import type { AxiosResponse } from 'axios'
 
+interface IGetQuiz {
+  quizzes: IQuizTitle[]
+  quizzesTotalCount: number
+}
+
 export const createQuiz = async (
   data: TQuizForm,
 ): Promise<AxiosResponse<TQuizForm>> =>
   await httpClient.post<TQuizForm>('api/quizzes/create', data)
 
-export const getQuizzes = async (): Promise<IQuizTitle[]> => {
-  const { data } = await httpClient.get<IQuizTitle[]>('api/quizzes')
+export const getQuizzes = async (): Promise<IGetQuiz> => {
+  const { data } = await httpClient.get<IGetQuiz>('api/quizzes')
   return data
 }

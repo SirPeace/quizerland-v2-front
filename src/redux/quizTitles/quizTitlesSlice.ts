@@ -13,8 +13,11 @@ export const quizTitlesSlice = createSlice({
     setQuizzes: (state, action: PayloadAction<IQuizTitle[]>) => {
       state.quizzes = [...action.payload]
     },
+    setQuizzesTotalCount: (state, action: PayloadAction<number>) => {
+      state.quizzesTotalCount = action.payload
+    },
   },
 })
 
-export const { setQuizzes } = quizTitlesSlice.actions
+export const { setQuizzes, setQuizzesTotalCount } = quizTitlesSlice.actions
 export default quizTitlesSlice.reducer

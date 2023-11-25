@@ -1,5 +1,6 @@
 export interface IQuizTitlesState {
   activeQuizId: number
+  quizzesTotalCount: null | number
   quizzes: IQuizTitle[]
 }
 
