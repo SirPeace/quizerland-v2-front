@@ -6,7 +6,10 @@ import { useEffect } from 'react'
 
 import { getQuizzes } from '@/api/modules/quizzes'
 import Quiz from '@/components/Quiz/QuizCard/QuizCard'
-import { setQuizzes } from '@/redux/quizTitles/quizTitlesSlice'
+import {
+  setQuizzes,
+  setQuizzesTotalCount,
+} from '@/redux/quizTitles/quizTitlesSlice'
 import type { IQuizTitle } from '@/redux/quizTitles/types'
 import { useAppSelector, useAppDispatch } from '@/redux/reduxHooks'
 
@@ -14,19 +17,20 @@ const neucha = Neucha({ subsets: ['cyrillic'], weight: '400', preload: true })
 const pacifico = Pacifico({ subsets: ['latin'], weight: '400', preload: true })
 
 const QuizzesPage = (): JSX.Element => {
-  const quizzes = useAppSelector(
-    ({ quizTitlesState }) => quizTitlesState.quizzes,
+  const { quizzes, quizzesTotalCount } = useAppSelector(
+    ({ quizTitlesState }) => quizTitlesState,
   )
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     getQuizzes()
       .then(data => {
-        dispatch(setQuizzes(data))
+        dispatch(setQuizzes(data.quizzes))
+        dispatch(setQuizzesTotalCount(data.quizzesTotalCount))
         console.log(data)
       })
       .catch((err: any) => {
-        console.error('что то пошло не так', err)
+        console.log('Что-то пошло не так...', err)
       })
   }, [dispatch])
 
