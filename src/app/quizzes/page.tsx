@@ -4,6 +4,10 @@ import { Neucha, Pacifico } from 'next/font/google'
 
 import { useEffect } from 'react'
 
+import { FixedSizeList, type ListChildComponentProps } from 'react-window'
+
+import { match } from 'ts-pattern'
+
 import { getQuizzes } from '@/api/modules/quizzes'
 import Quiz from '@/components/Quiz/QuizCard/QuizCard'
 import {
@@ -17,10 +21,10 @@ const neucha = Neucha({ subsets: ['cyrillic'], weight: '400', preload: true })
 const pacifico = Pacifico({ subsets: ['latin'], weight: '400', preload: true })
 
 const QuizzesPage = (): JSX.Element => {
-  const { quizzes, quizzesTotalCount } = useAppSelector(
-    ({ quizTitlesState }) => quizTitlesState,
-  )
+  const { quizzes } = useAppSelector(({ quizTitlesState }) => quizTitlesState)
   const dispatch = useAppDispatch()
+
+  const quizzesCount = quizzes.length
 
   useEffect(() => {
     getQuizzes()
@@ -45,9 +49,31 @@ const QuizzesPage = (): JSX.Element => {
         </span>
       </h1>
 
-      {quizzes.map((quiz: IQuizTitle, idx) => (
-        <Quiz key={idx} quiz={quiz} />
-      ))}
+      {match(quizzesCount)
+        .with(0, () => <p>Нет ни одного теста. Создайте что-нибудь.</p>)
+        .otherwise(count => (
+          <FixedSizeList
+            height={700} // TODO: Переделать на https://usehooks.com/usewindowsize
+            width={800} // TODO: Переделать на https://usehooks.com/usewindowsize
+            itemSize={215} // TODO: Подумать, как нормально зафиксировать высоту элемента
+            itemCount={count}
+            overscanCount={5}
+          >
+            {({ index, style }: ListChildComponentProps) => (
+              <Quiz
+                key={index}
+                quiz={quizzes[index]}
+                itemStyle={{
+                  ...style,
+                  top: Number(style.top) + 24,
+                  height: Number(style.height) - 24,
+                  left: Number(style.left) + 8,
+                  width: `calc(${style.width} - ${20}px)`,
+                }}
+              />
+            )}
+          </FixedSizeList>
+        ))}
     </div>
   )
 }
