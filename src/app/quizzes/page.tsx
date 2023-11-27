@@ -1,5 +1,6 @@
 'use client'
 
+import { useWindowSize } from '@uidotdev/usehooks'
 import { Neucha, Pacifico } from 'next/font/google'
 
 import { useEffect } from 'react'
@@ -20,11 +21,20 @@ import { useAppSelector, useAppDispatch } from '@/redux/reduxHooks'
 const neucha = Neucha({ subsets: ['cyrillic'], weight: '400', preload: true })
 const pacifico = Pacifico({ subsets: ['latin'], weight: '400', preload: true })
 
+const LIST_ITEM_HEIGHT = 215 // px
+const LIST_PADDING_X = 8 // px
+const LIST_PADDING_RIGHT = LIST_PADDING_X + 16 // px
+const LIST_PADDING_Y = 24 // px
+const LIST_MARGIN_TOP = 112 // px
+
 const QuizzesPage = (): JSX.Element => {
   const { quizzes } = useAppSelector(({ quizTitlesState }) => quizTitlesState)
   const dispatch = useAppDispatch()
 
   const quizzesCount = quizzes.length
+
+  const { height } = useWindowSize()
+  const screenHeight = height ?? document.body.clientHeight
 
   useEffect(() => {
     getQuizzes()
@@ -39,8 +49,8 @@ const QuizzesPage = (): JSX.Element => {
   }, [dispatch])
 
   return (
-    <div className="max-w-4xl min-h-screen mx-auto pb-1 text-center">
-      <h1 className="pt-16 pb-6 my-0 sticky top-0 bg-white z-10">
+    <div className="max-w-4xl min-h-screen mx-auto text-center">
+      <h1 className="py-8 my-0 bg-white z-10">
         <span className={`sm:text-3xl text-2xl ${neucha.className}`}>
           Добро пожаловать в{' '}
         </span>
@@ -53,9 +63,9 @@ const QuizzesPage = (): JSX.Element => {
         .with(0, () => <p>Нет ни одного теста. Создайте что-нибудь.</p>)
         .otherwise(count => (
           <FixedSizeList
-            height={700} // TODO: Переделать на https://usehooks.com/usewindowsize
-            width={800} // TODO: Переделать на https://usehooks.com/usewindowsize
-            itemSize={215} // TODO: Подумать, как нормально зафиксировать высоту элемента
+            width="100%"
+            height={screenHeight - LIST_MARGIN_TOP}
+            itemSize={LIST_ITEM_HEIGHT}
             itemCount={count}
             overscanCount={5}
           >
@@ -65,10 +75,10 @@ const QuizzesPage = (): JSX.Element => {
                 quiz={quizzes[index]}
                 itemStyle={{
                   ...style,
-                  top: Number(style.top) + 24,
-                  height: Number(style.height) - 24,
-                  left: Number(style.left) + 8,
-                  width: `calc(${style.width} - ${20}px)`,
+                  top: Number(style.top) + LIST_PADDING_Y,
+                  height: Number(style.height) - LIST_PADDING_Y,
+                  left: Number(style.left) + LIST_PADDING_X,
+                  width: `calc(${style.width} - ${LIST_PADDING_RIGHT}px)`,
                 }}
               />
             )}
