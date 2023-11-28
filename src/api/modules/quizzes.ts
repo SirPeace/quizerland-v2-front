@@ -16,7 +16,9 @@ export const createQuiz = async (
 ): Promise<AxiosResponse<TQuizForm>> =>
   await httpClient.post<TQuizForm>('api/quizzes/create', data)
 
-export const getQuizzes = async (): Promise<IGetQuiz> => {
-  const { data } = await httpClient.get<IGetQuiz>('api/quizzes')
+export const getQuizzes = async (pageNumber: number): Promise<IGetQuiz> => {
+  const { data } = await httpClient.get<IGetQuiz>(
+    `api/quizzes/?page=${pageNumber}`,
+  )
   return data
 }
