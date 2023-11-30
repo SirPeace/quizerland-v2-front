@@ -1,15 +1,12 @@
-export interface IQuizState {
-  activeQuizId: number
-  quizzes: IQuiz[]
-}
-
 export interface IQuiz {
-  id: number
-  currentQuestionId: number
-  rightAttempts: number
+  currentQuestionIndex: number
+  rightAttempts: number | null
   isFinished: boolean
-  title: string
-  description: string
+
+  id: string | undefined
+  userId: string | undefined
+  title: string | undefined
+  description: string | undefined
   questions: IQuestion[]
 }
 

@@ -12,10 +12,7 @@ import { match } from 'ts-pattern'
 
 import { getQuizzes } from '@/api/modules/quizzes'
 import Quiz from '@/components/Quiz/QuizCard/QuizCard'
-import {
-  setQuizzes,
-  setQuizzesTotalCount,
-} from '@/redux/quizTitles/quizTitlesSlice'
+import { setQuizzes, setQuizzesTotalCount } from '@/redux/quizzes/quizzesSlice'
 
 import { useAppSelector, useAppDispatch } from '@/redux/reduxHooks'
 

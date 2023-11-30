@@ -3,7 +3,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/navigation'
 
-import type { IQuizTitle } from '@/redux/quizTitles/types'
+import type { IQuizTitle } from '@/redux/quizzes/types'
 
 interface IQuizProp {
   quiz: IQuizTitle

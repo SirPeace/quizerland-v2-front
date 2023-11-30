@@ -1,13 +1,15 @@
 import type { TQuizForm } from '@/components/CreateQuiz/types'
 
-import type { IQuizTitle } from '@/redux/quizTitles/types'
+import type { IQuizzesItem } from '@/redux/quizzes/types'
 
 import httpClient from '../httpClient'
 
+import type { IQuizResponse } from './types'
+
 import type { AxiosResponse } from 'axios'
 
-interface IGetQuiz {
-  quizzes: IQuizTitle[]
+interface IQuizzesResponse {
+  quizzes: IQuizzesItem[]
   quizzesTotalCount: number
 }
 
@@ -16,9 +18,16 @@ export const createQuiz = async (
 ): Promise<AxiosResponse<TQuizForm>> =>
   await httpClient.post<TQuizForm>('api/quizzes/create', data)
 
-export const getQuizzes = async (pageNumber: number): Promise<IGetQuiz> => {
-  const { data } = await httpClient.get<IGetQuiz>(
+export const getQuizzes = async (
+  pageNumber: number,
+): Promise<IQuizzesResponse> => {
+  const { data } = await httpClient.get<IQuizzesResponse>(
     `api/quizzes/?page=${pageNumber}`,
   )
+  return data
+}
+
+export const getQuiz = async (quizId: string): Promise<IQuizResponse> => {
+  const { data } = await httpClient.get<IQuizResponse>(`api/quizzes/${quizId}`)
   return data
 }
