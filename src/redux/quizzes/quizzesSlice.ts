@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import quizTitlesState from './initialState'
+import quizzesState from './initialState'
 
 import type { IQuizzesItem } from './types'
 
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-export const quizTitlesSlice = createSlice({
+export const quizzesSlice = createSlice({
   name: 'quizzes',
-  initialState: quizTitlesState,
+  initialState: quizzesState,
   reducers: {
     setQuizzes: (state, action: PayloadAction<IQuizzesItem[]>) => {
       state.quizzes = [...state.quizzes, ...action.payload]
@@ -19,5 +19,5 @@ export const quizTitlesSlice = createSlice({
   },
 })
 
-export const { setQuizzes, setQuizzesTotalCount } = quizTitlesSlice.actions
-export default quizTitlesSlice.reducer
+export const { setQuizzes, setQuizzesTotalCount } = quizzesSlice.actions
+export default quizzesSlice.reducer

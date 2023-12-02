@@ -3,13 +3,13 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/navigation'
 
-import type { IQuizTitle } from '@/redux/quizzes/types'
+import type { IQuizzesItem } from '@/redux/quizzes/types'
 
-interface IQuizProp {
-  quiz: IQuizTitle
+interface IQuizProps {
+  quiz: IQuizzesItem
   itemStyle?: React.CSSProperties
 }
-const Quiz = ({ quiz, itemStyle }: IQuizProp): JSX.Element => {
+const Quiz = ({ quiz, itemStyle }: IQuizProps): JSX.Element => {
   const router = useRouter()
 
   return (
@@ -49,7 +49,7 @@ const Quiz = ({ quiz, itemStyle }: IQuizProp): JSX.Element => {
           variant="contained"
           size="small"
           onClick={() => {
-            // router.push(`/quizzes/${1}`)
+            router.push(`/quizzes/${quiz.id}`)
           }}
         >
           перейти к тесту

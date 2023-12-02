@@ -53,7 +53,7 @@ const QuizzesPage = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const { height } = useWindowSize()
   const { quizzes, quizzesTotalCount } = useAppSelector(
-    ({ quizTitlesState }) => quizTitlesState,
+    ({ quizzesState }) => quizzesState,
   )
 
   const screenHeight = height ?? document.body.clientHeight

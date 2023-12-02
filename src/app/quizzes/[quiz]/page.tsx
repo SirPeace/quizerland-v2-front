@@ -28,6 +28,10 @@ export async function generateMetadata({
 }
 
 const QuizPage = ({ params: { quiz: quizId } }: Props): JSX.Element => {
+  const currentQuiz = useAppSelector(({ quizzesState }) =>
+    quizzesState.quizzes.find((_, idx) => idx === +quizId),
+  )
+
   const { quizTitle, currentQuestion, questionsLength } = useAppSelector(
     ({ quizState }) => {
       const currentQuestion =
@@ -40,13 +44,17 @@ const QuizPage = ({ params: { quiz: quizId } }: Props): JSX.Element => {
       return { currentQuestion, questionsLength, quizTitle }
     },
   )
+
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    void getQuiz(quizId).then(quiz => {
+    if (currentQuiz === undefined) {
+      return
+    }
+    void getQuiz(currentQuiz.id).then(quiz => {
       void dispatch(setup(quiz))
     })
-  }, [dispatch, quizId])
+  }, [dispatch, currentQuiz])
 
   useEffect(() => {
     if (currentQuestion === undefined) {

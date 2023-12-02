@@ -7,5 +7,5 @@ export interface IQuizzesItem {
   title: string
   description: string
   userId: string
-  quizId: string
+  id: string
 }

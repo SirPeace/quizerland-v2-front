@@ -4,6 +4,8 @@ import type { IQuizResponse } from '@/api/modules/types'
 
 import quizState from './initialState'
 
+import type { IQuestion, IAnswer } from './types'
+
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export const quizSlice = createSlice({
@@ -11,7 +13,27 @@ export const quizSlice = createSlice({
   initialState: quizState,
   reducers: {
     setup: (state, action: PayloadAction<IQuizResponse>) => {
-      // state = action.payload
+      const questions = action.payload.questions.map<IQuestion>(
+        (question, idx) => {
+          const questionItem: IQuestion = {
+            id: idx,
+            text: question.text,
+            correctAnswerId: +question.rightAnswerId,
+            answers: question.answers.map<IAnswer>((answer, idx) => ({
+              id: idx,
+              text: answer,
+            })),
+          }
+
+          return questionItem
+        },
+      )
+
+      state.id = action.payload._id
+      state.userId = action.payload.userId
+      state.title = action.payload.title
+      state.description = action.payload.description
+      state.questions = questions
     },
     nextQuestion: state => {
       // const activeQuiz = state.quizzes.find(

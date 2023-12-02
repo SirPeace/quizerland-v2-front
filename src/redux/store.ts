@@ -2,12 +2,12 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit'
 
 import authReducer from './auth/authSlice'
 import quizReducer from './quiz/quizSlice'
-import quizTitlesReducer from './quizzes/quizzesSlice'
+import quizzesReducer from './quizzes/quizzesSlice'
 
 const rootReducer = combineReducers({
   quizState: quizReducer,
   authState: authReducer,
-  quizTitlesState: quizTitlesReducer,
+  quizzesState: quizzesReducer,
 })
 
 export const store = configureStore({
