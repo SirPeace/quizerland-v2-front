@@ -12,9 +12,11 @@ import { match } from 'ts-pattern'
 
 import { getQuizzes } from '@/api/modules/quizzes'
 import Quiz from '@/components/Quiz/QuizCard/QuizCard'
+import useError from '@/hooks/useError'
 import { setQuizzes, setQuizzesTotalCount } from '@/redux/quizzes/quizzesSlice'
 
 import { useAppSelector, useAppDispatch } from '@/redux/reduxHooks'
+import { setSnackbar } from '@/redux/ui/uiSlice'
 
 const neucha = Neucha({ subsets: ['cyrillic'], weight: '400', preload: true })
 const pacifico = Pacifico({ subsets: ['latin'], weight: '400', preload: true })
@@ -56,6 +58,8 @@ const QuizzesPage = (): JSX.Element => {
     ({ quizzesState }) => quizzesState,
   )
 
+  const { setErrorSnackbar } = useError()
+
   const screenHeight = height ?? document.body.clientHeight
 
   const setCurrentPage = useRef(0)
@@ -74,38 +78,28 @@ const QuizzesPage = (): JSX.Element => {
       .then(data => {
         dispatch(setQuizzes(data.quizzes))
         dispatch(setQuizzesTotalCount(data.quizzesTotalCount))
-        console.log('RESPONSE', data)
       })
       .catch((err: any) => {
-        console.log('Что-то пошло не так...', err)
+        setErrorSnackbar(err)
       })
-  }, [dispatch])
+  }, [dispatch, setErrorSnackbar])
 
   // =======================================
   //  Повторный запрос IntersectionObserver
   // =======================================
 
   const onLastItemIntersect = (): void => {
-    console.log('requesting new quizzes')
     setCurrentPage.current = setCurrentPage.current + 1
 
     getQuizzes(setCurrentPage.current)
       .then(data => {
         dispatch(setQuizzes(data.quizzes))
         dispatch(setQuizzesTotalCount(data.quizzesTotalCount))
-        console.log(data)
       })
       .catch((err: any) => {
-        console.log('Что-то пошло не так...', err)
+        setErrorSnackbar(err)
       })
   }
-
-  console.log({
-    quizzesCount,
-    quizzesTotalCount,
-    page: setCurrentPage.current,
-    isGoToQuizzesRequest,
-  })
 
   return (
     <div className="max-w-4xl min-h-screen mx-auto text-center">

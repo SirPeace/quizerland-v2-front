@@ -4,7 +4,8 @@ import './globals.css'
 import { CssBaseline } from '@mui/material'
 import { Inter } from 'next/font/google'
 
-import Drawer from '@/components/Navigation/Drawer/Drawer'
+import SlidingDrawer from '@/components/navigation/Drawer/Drawer'
+import Snackbar from '@/components/navigation/Snackbar/Snackbar'
 import { ReduxProvider } from '@/redux/ReduxProvider'
 import AuthWrapper from '@/wrappers/AuthWrapper'
 
@@ -30,8 +31,10 @@ export default function RootLayout({
       <ReduxProvider>
         <body id="__next" className={inter.className}>
           <CssBaseline />
+
           <AuthWrapper>
-            <Drawer />
+            <SlidingDrawer />
+            <Snackbar />
             <main className="text-gray-700">{children}</main>
           </AuthWrapper>
         </body>
