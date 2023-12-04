@@ -1,14 +1,16 @@
 'use client'
 
-import { Paper } from '@mui/material'
 import { useEffect } from 'react'
 
+import { match } from 'ts-pattern'
+
 import { getQuiz } from '@/api/modules/quizzes'
+import Loader from '@/components/Loader'
 import GoToHomePageButton from '@/components/Navigation/GoToHomePageButton/GoToHomePageButton'
 import QuestionCard from '@/components/Quiz/QuestionCard/QuestionCard'
 import QuizResultCard from '@/components/Quiz/QuizResultCard/QuizResultCard'
 
-import { setIsFinishedQuiz, setup } from '@/redux/quiz/quizSlice'
+import { setupState } from '@/redux/quiz/quizSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 import type { Metadata } from 'next'
@@ -28,55 +30,57 @@ export async function generateMetadata({
 }
 
 const QuizPage = ({ params: { quiz: quizId } }: Props): JSX.Element => {
-  const currentQuiz = useAppSelector(({ quizzesState }) =>
-    quizzesState.quizzes.find((_, idx) => idx === +quizId),
-  )
+  const {
+    quizTitle,
+    currentQuestion,
+    currentQuestionIndex,
+    questionsLength,
+    isFinished,
+  } = useAppSelector(({ quizState }) => {
+    const currentQuestionIndex = quizState.currentQuestionIndex
+    const currentQuestion = quizState.questions[currentQuestionIndex]
+    const questionsLength = quizState.questions.length
+    const quizTitle = quizState.title
+    const isFinished = quizState.isFinished
 
-  const { quizTitle, currentQuestion, questionsLength } = useAppSelector(
-    ({ quizState }) => {
-      const currentQuestion =
-        quizState.questions[quizState.currentQuestionIndex]
-
-      const questionsLength = quizState.questions.length
-
-      const quizTitle = quizState.title
-
-      return { currentQuestion, questionsLength, quizTitle }
-    },
-  )
+    return {
+      currentQuestion,
+      questionsLength,
+      quizTitle,
+      currentQuestionIndex,
+      isFinished,
+    }
+  })
 
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (currentQuiz === undefined) {
-      return
-    }
-    void getQuiz(currentQuiz.id).then(quiz => {
-      void dispatch(setup(quiz))
+    void getQuiz(quizId).then(quiz => {
+      void dispatch(setupState(quiz))
     })
-  }, [dispatch, currentQuiz])
-
-  useEffect(() => {
-    if (currentQuestion === undefined) {
-      dispatch(setIsFinishedQuiz())
-    }
-  }, [currentQuestion, dispatch])
+  }, [dispatch, quizId])
 
   return (
     <div className="flex flex-col items-stretch max-w-4xl min-h-screen mx-auto pb-1">
       <h1 className="text-center pt-16 my-0">{quizTitle}</h1>
       <div className="mt-[10%] mb-auto">
         <GoToHomePageButton />
-        <Paper elevation={8} className="mx-4 mt-3 rounded-xl">
-          {currentQuestion === undefined ? (
-            <QuizResultCard />
-          ) : (
-            <QuestionCard
-              question={currentQuestion}
-              questionsLength={questionsLength}
-            />
-          )}
-        </Paper>
+        <div className="mx-4 mt-3">
+          {match<boolean>(true)
+            .with(currentQuestion === undefined, () => (
+              <div>
+                <Loader />
+              </div>
+            ))
+            .with(isFinished, () => <QuizResultCard />)
+            .otherwise(() => (
+              <QuestionCard
+                question={currentQuestion}
+                questionIndex={currentQuestionIndex}
+                questionsLength={questionsLength}
+              />
+            ))}
+        </div>
       </div>
     </div>
   )

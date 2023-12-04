@@ -2,6 +2,7 @@ import type { IQuestion } from '@/redux/quiz/types'
 
 export interface IQuestionCardProps {
   question: IQuestion
+  questionIndex: number
   questionsLength: number
 }
 

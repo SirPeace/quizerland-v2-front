@@ -2,7 +2,7 @@ import type { IQuiz } from './types'
 
 const quizState: IQuiz = {
   currentQuestionIndex: 0,
-  rightAttempts: null,
+  rightAttempts: 0,
   isFinished: false,
 
   id: undefined,

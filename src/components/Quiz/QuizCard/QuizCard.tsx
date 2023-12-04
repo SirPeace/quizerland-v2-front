@@ -3,13 +3,16 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/navigation'
 
-import type { IQuizzesItem } from '@/redux/quizzes/types'
+import type { IQuizzesItem } from '@/api/modules/types'
+
+import type { FC } from 'react'
 
 interface IQuizProps {
   quiz: IQuizzesItem
+  orderNumber: number
   itemStyle?: React.CSSProperties
 }
-const Quiz = ({ quiz, itemStyle }: IQuizProps): JSX.Element => {
+const Quiz: FC<IQuizProps> = ({ quiz, itemStyle, orderNumber }) => {
   const router = useRouter()
 
   return (
@@ -30,7 +33,7 @@ const Quiz = ({ quiz, itemStyle }: IQuizProps): JSX.Element => {
         </Typography>
 
         <p className="text-sm antialiased font-semibold m-0 text-gray-400 whitespace-nowrap">
-          тест № {`1`}
+          тест № {`${orderNumber}`}
         </p>
       </div>
 
@@ -41,7 +44,7 @@ const Quiz = ({ quiz, itemStyle }: IQuizProps): JSX.Element => {
 
       <div className="flex justify-between px-4">
         <p className="text-sm font-semibold text-gray-400 ">
-          тест из {`10`} вопросов
+          тест из {`${quiz.questionsCount}`} вопросов
         </p>
         <Button
           className="mb-4 opacity-80"

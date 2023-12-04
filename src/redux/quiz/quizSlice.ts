@@ -12,13 +12,13 @@ export const quizSlice = createSlice({
   name: 'quiz',
   initialState: quizState,
   reducers: {
-    setup: (state, action: PayloadAction<IQuizResponse>) => {
+    setupState: (state, action: PayloadAction<IQuizResponse>) => {
       const questions = action.payload.questions.map<IQuestion>(
         (question, idx) => {
           const questionItem: IQuestion = {
             id: idx,
             text: question.text,
-            correctAnswerId: +question.rightAnswerId,
+            correctAnswerIndex: question.rightAnswerIndex,
             answers: question.answers.map<IAnswer>((answer, idx) => ({
               id: idx,
               text: answer,
@@ -35,47 +35,31 @@ export const quizSlice = createSlice({
       state.description = action.payload.description
       state.questions = questions
     },
-    nextQuestion: state => {
-      // const activeQuiz = state.quizzes.find(
-      //   quiz => quiz.id === state.activeQuizId,
-      // )
-      // if (activeQuiz !== undefined) {
-      //   activeQuiz.currentQuestionId += 1
-      // }
+
+    goToNextQuestion: state => {
+      if (state.currentQuestionIndex >= state.questions.length - 1) {
+        state.isFinished = true
+      } else {
+        state.currentQuestionIndex += 1
+      }
     },
-    setActiveQuiz: (state, action: PayloadAction<number>) => {
-      // state.activeQuizId = action.payload
-    },
-    setIsFinishedQuiz: state => {
-      // const activeQuiz = state.quizzes.find(
-      //   quiz => quiz.id === state.activeQuizId,
-      // )
-      // if (activeQuiz !== undefined) {
-      //   activeQuiz.isFinished = true
-      // }
-    },
+
     resetCurrentQuestion: (state, action: PayloadAction<number>) => {
-      // const activeQuiz = state.quizzes.find(
-      //   quiz => quiz.id === state.activeQuizId,
-      // )
-      // if (activeQuiz !== undefined) {
-      //   activeQuiz.currentQuestionId = action.payload
-      // }
+      state.currentQuestionIndex = 0
+      state.isFinished = false
     },
+
     goToAvailableQuiz: state => {
       // const availableQuiz = state.quizzes.find(quiz => !quiz.isFinished)
       // if (availableQuiz !== undefined) {
       //   state.activeQuizId = availableQuiz.id
       // }
     },
+
     setRightAttempts: state => {
-      // const activeQuiz = state.quizzes.find(
-      //   quiz => quiz.id === state.activeQuizId,
-      // )
-      // if (activeQuiz !== undefined) {
-      //   activeQuiz.rightAttempts += 1
-      // }
+      state.rightAttempts += 1
     },
+
     resetRightAttempts: state => {
       // const activeQuiz = state.quizzes.find(
       //   quiz => quiz.id === state.activeQuizId,
@@ -88,10 +72,8 @@ export const quizSlice = createSlice({
 })
 
 export const {
-  setup,
-  nextQuestion,
-  setActiveQuiz,
-  setIsFinishedQuiz,
+  setupState,
+  goToNextQuestion,
   resetCurrentQuestion,
   goToAvailableQuiz,
   setRightAttempts,

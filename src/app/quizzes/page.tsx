@@ -74,10 +74,9 @@ const QuizzesPage = (): JSX.Element => {
       .then(data => {
         dispatch(setQuizzes(data.quizzes))
         dispatch(setQuizzesTotalCount(data.quizzesTotalCount))
-        console.log('RESPONSE', data)
       })
       .catch((err: any) => {
-        console.log('Что-то пошло не так...', err)
+        console.error('Что-то пошло не так...', err)
       })
   }, [dispatch])
 
@@ -86,26 +85,17 @@ const QuizzesPage = (): JSX.Element => {
   // =======================================
 
   const onLastItemIntersect = (): void => {
-    console.log('requesting new quizzes')
     setCurrentPage.current = setCurrentPage.current + 1
 
     getQuizzes(setCurrentPage.current)
       .then(data => {
         dispatch(setQuizzes(data.quizzes))
         dispatch(setQuizzesTotalCount(data.quizzesTotalCount))
-        console.log(data)
       })
       .catch((err: any) => {
-        console.log('Что-то пошло не так...', err)
+        console.error('Что-то пошло не так...', err)
       })
   }
-
-  console.log({
-    quizzesCount,
-    quizzesTotalCount,
-    page: setCurrentPage.current,
-    isGoToQuizzesRequest,
-  })
 
   return (
     <div className="max-w-4xl min-h-screen mx-auto text-center">
@@ -133,6 +123,7 @@ const QuizzesPage = (): JSX.Element => {
               <>
                 <Quiz
                   quiz={quizzes[index]}
+                  orderNumber={index + 1}
                   itemStyle={{
                     ...style,
                     top: Number(style.top) + LIST_PADDING_Y,

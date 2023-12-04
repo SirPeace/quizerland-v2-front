@@ -1,6 +1,6 @@
 export interface IQuiz {
   currentQuestionIndex: number
-  rightAttempts: number | null
+  rightAttempts: number
   isFinished: boolean
 
   id: string | undefined
@@ -13,7 +13,7 @@ export interface IQuiz {
 export interface IQuestion {
   id: number
   text: string
-  correctAnswerId: number
+  correctAnswerIndex: number
   answers: IAnswer[]
 }
 

@@ -1,17 +1,10 @@
 import type { TQuizForm } from '@/components/CreateQuiz/types'
 
-import type { IQuizzesItem } from '@/redux/quizzes/types'
-
 import httpClient from '../httpClient'
 
-import type { IQuizResponse } from './types'
+import type { IQuizResponse, IQuizzesResponse } from './types'
 
 import type { AxiosResponse } from 'axios'
-
-interface IQuizzesResponse {
-  quizzes: IQuizzesItem[]
-  quizzesTotalCount: number
-}
 
 export const createQuiz = async (
   data: TQuizForm,
