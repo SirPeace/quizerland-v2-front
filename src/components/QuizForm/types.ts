@@ -1,6 +1,4 @@
-import { object, string } from 'zod'
-
-import type { z } from 'zod'
+import { object, string, type z } from 'zod'
 
 export const quizFormSchema = object({
   title: string()

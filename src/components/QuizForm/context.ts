@@ -5,6 +5,8 @@ import type { Dispatch, SetStateAction } from 'react'
 import type { UseFormReturn } from 'react-hook-form'
 
 export interface ICreateQuizContext {
+  mobileDrawerOpen: boolean
+  setMobileDrawerOpen: Dispatch<SetStateAction<boolean>>
   /** `[-1] => описание теста | [>= 0] => индекс вопроса` */
   activeTab: number
   setActiveTab: Dispatch<SetStateAction<number>>
@@ -12,6 +14,8 @@ export interface ICreateQuizContext {
   submit: () => void
 }
 const CreateQuizContext = createContext<ICreateQuizContext>({
+  mobileDrawerOpen: false,
+  setMobileDrawerOpen: () => {},
   activeTab: 0,
   setActiveTab: () => {},
   form: {},

@@ -1,4 +1,4 @@
-import RegistrationForm from '@/components/Auth/RegistrationForm/RegistrationForm'
+import RegistrationForm from '@/components/Auth/RegistrationForm'
 
 import type { Metadata } from 'next'
 

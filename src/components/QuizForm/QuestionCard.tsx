@@ -10,14 +10,14 @@ import { debounce } from 'lodash-es'
 import { useCallback, useContext, useState } from 'react'
 import { type FieldErrors, useWatch } from 'react-hook-form'
 
-import CreateQuizContext from '../context'
+import CreateQuizContext from './context'
 
 import type {
   AnswerKey,
   QuestionKey,
   TQuestionSchema,
   TQuizForm,
-} from '../types'
+} from './types'
 
 const QuizQuestionForm = (): JSX.Element => {
   const { activeTab: questionIndex, form } = useContext(CreateQuizContext)
@@ -29,12 +29,7 @@ const QuizQuestionForm = (): JSX.Element => {
     formState: { errors },
   } = form
 
-  /*
-    Замена useAppSelector
-    Получаем данные не из Redux, а из стейта RHF
-  */
   const question = getValues(`questions.${questionIndex}`)
-  // useWatch() вместо getValues(), т.к. нам надо следить за списком ответов и ре-рендерить список, когда добавляем/удаляем элементы
   const answers = useWatch({
     control: form.control,
     name: `questions.${questionIndex}.answers`,
@@ -42,10 +37,6 @@ const QuizQuestionForm = (): JSX.Element => {
 
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
 
-  /*
-    Используем useCallback, чтобы объявить функции только в момент инициализации компонента.
-    При последующих ре-рендерах будут использоваться те же самые экземпляры функции
-  */
   const questionFieldError = useCallback(
     (field: keyof TQuestionSchema) =>
       getQuestionFieldError(errors, questionIndex, field),

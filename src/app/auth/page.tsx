@@ -1,4 +1,4 @@
-import SignInForm from '@/components/Auth/SingInForm/SignInForm'
+import SignInForm from '@/components/Auth/SignInForm'
 
 import type { Metadata } from 'next'
 

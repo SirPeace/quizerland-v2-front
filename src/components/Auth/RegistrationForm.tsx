@@ -1,37 +1,34 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail'
-import EnhancedEncryptionIcon from '@mui/icons-material/EnhancedEncryption'
-import LockIcon from '@mui/icons-material/Lock'
-import PersonAddIcon from '@mui/icons-material/PersonAdd'
-import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded'
-import Visibility from '@mui/icons-material/Visibility'
-import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import { IconButton } from '@mui/material'
-import Avatar from '@mui/material/Avatar'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-
+import {
+  AccountCircle,
+  AlternateEmail,
+  EnhancedEncryption,
+  Lock,
+  PersonAdd,
+  PersonAddAltRounded,
+  Visibility,
+  VisibilityOff,
+} from '@mui/icons-material'
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  TextField,
+  Typography,
+  IconButton,
+} from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-
-import { useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 
 import { registerUser } from '@/api/modules/auth'
-
 import { setUser } from '@/redux/auth/authSlice'
 import { useAppDispatch } from '@/redux/reduxHooks'
 
-import { registrationSchema } from '../types'
-
-import type { TRegistrationSchema } from '../types'
-
-import type { SubmitHandler } from 'react-hook-form'
+import { registrationSchema, type TRegistrationSchema } from './types'
 
 const RegistrationForm = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false)
@@ -77,7 +74,7 @@ const RegistrationForm = (): JSX.Element => {
   return (
     <Card raised className="flex flex-col items-center p-10 rounded-xl">
       <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-        <PersonAddIcon />
+        <PersonAdd />
       </Avatar>
       <Typography component="h1" variant="h5">
         Регистрация
@@ -89,9 +86,7 @@ const RegistrationForm = (): JSX.Element => {
       >
         <div className="mb-8">
           <Box className="flex items-end">
-            <AccountCircleIcon
-              sx={{ color: 'action.active', mr: 1, mb: 0.5 }}
-            />
+            <AccountCircle sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
             <TextField
               {...register('nickname')}
               type="text"
@@ -111,9 +106,7 @@ const RegistrationForm = (): JSX.Element => {
           </div>
 
           <Box className="flex items-end">
-            <AlternateEmailIcon
-              sx={{ color: 'action.active', mr: 1, mb: 0.5 }}
-            />
+            <AlternateEmail sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
             <TextField
               {...register('email')}
               type="email"
@@ -132,7 +125,7 @@ const RegistrationForm = (): JSX.Element => {
           </div>
 
           <Box className="flex items-end">
-            <LockIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
+            <Lock sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
             <TextField
               {...register('password')}
               type={showPassword ? 'text' : 'password'}
@@ -157,7 +150,7 @@ const RegistrationForm = (): JSX.Element => {
           </div>
 
           <Box className="flex items-end">
-            <EnhancedEncryptionIcon
+            <EnhancedEncryption
               sx={{ color: 'action.active', mr: 1, mb: 0.5 }}
             />
             <TextField
@@ -193,7 +186,7 @@ const RegistrationForm = (): JSX.Element => {
             fullWidth
             variant="contained"
             className="mt-2 mb-2"
-            startIcon={<PersonAddAltRoundedIcon />}
+            startIcon={<PersonAddAltRounded />}
           >
             Зарегистрироваться
           </Button>

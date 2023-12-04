@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField'
 
 import { useContext } from 'react'
 
-import CreateQuizContext from '../context'
+import CreateQuizContext from './context'
 
 export default function QuizDescriptionForm(): JSX.Element {
   const { form, setActiveTab } = useContext(CreateQuizContext)

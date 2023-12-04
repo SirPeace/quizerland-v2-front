@@ -1,4 +1,4 @@
-import QuizForm from '@/components/CreateQuiz/QuizForm'
+import QuizForm from '@/components/QuizForm'
 
 import type { Metadata } from 'next'
 

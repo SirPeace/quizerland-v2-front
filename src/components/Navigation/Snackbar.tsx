@@ -1,3 +1,4 @@
+import Close from '@mui/icons-material/Close'
 import {
   Alert,
   Box,
@@ -11,7 +12,6 @@ import { match } from 'ts-pattern'
 
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 import { setSnackbar } from '@/redux/ui/uiSlice'
-import Close from '@mui/icons-material/Close'
 
 const defaultPosition: SnackbarProps['anchorOrigin'] = {
   horizontal: 'right',

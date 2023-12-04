@@ -3,20 +3,15 @@
 import CircularProgress from '@mui/material/CircularProgress'
 import { useWindowSize, useIntersectionObserver } from '@uidotdev/usehooks'
 import { Neucha, Pacifico } from 'next/font/google'
-
-import { useEffect, useRef } from 'react'
-
+import { type CSSProperties, useEffect, useRef } from 'react'
 import { FixedSizeList, type ListChildComponentProps } from 'react-window'
-
 import { match } from 'ts-pattern'
 
 import { getQuizzes } from '@/api/modules/quizzes'
-import Quiz from '@/components/Quiz/QuizCard/QuizCard'
+import QuizListItem from '@/components/Quiz/QuizListItem'
 import useError from '@/hooks/useError'
 import { setQuizzes, setQuizzesTotalCount } from '@/redux/quizzes/quizzesSlice'
-
 import { useAppSelector, useAppDispatch } from '@/redux/reduxHooks'
-import { setSnackbar } from '@/redux/ui/uiSlice'
 
 const neucha = Neucha({ subsets: ['cyrillic'], weight: '400', preload: true })
 const pacifico = Pacifico({ subsets: ['latin'], weight: '400', preload: true })
@@ -31,7 +26,10 @@ interface LoaderProps {
   onIntersect: () => void
   [key: string]: any
 }
-const Loader = ({ onIntersect, ...props }: LoaderProps): JSX.Element => {
+const IntersectingLoader = ({
+  onIntersect,
+  ...props
+}: LoaderProps): JSX.Element => {
   const [ref, entry] = useIntersectionObserver({
     threshold: 0,
     root: null,
@@ -53,25 +51,17 @@ const Loader = ({ onIntersect, ...props }: LoaderProps): JSX.Element => {
 
 const QuizzesPage = (): JSX.Element => {
   const dispatch = useAppDispatch()
-  const { height } = useWindowSize()
   const { quizzes, quizzesTotalCount } = useAppSelector(
     ({ quizzesState }) => quizzesState,
   )
 
   const { setErrorSnackbar } = useError()
 
+  const { height } = useWindowSize()
   const screenHeight = height ?? document.body.clientHeight
 
-  const setCurrentPage = useRef(0)
+  const currentPage = useRef(0)
   const quizzesCount = quizzes.length
-  // если список тестов не пуст && кол-во тестов в DB больше чем в REDUX
-  // можно отобразить Loader && получить больше тестов
-  const isGoToQuizzesRequest =
-    quizzesTotalCount !== null && quizzesTotalCount > quizzesCount
-
-  // =======================================
-  // ======= Первый запрос при входе =======
-  // =======================================
 
   useEffect(() => {
     getQuizzes(0)
@@ -84,14 +74,10 @@ const QuizzesPage = (): JSX.Element => {
       })
   }, [dispatch, setErrorSnackbar])
 
-  // =======================================
-  //  Повторный запрос IntersectionObserver
-  // =======================================
-
   const onLastItemIntersect = (): void => {
-    setCurrentPage.current = setCurrentPage.current + 1
+    currentPage.current = currentPage.current + 1
 
-    getQuizzes(setCurrentPage.current)
+    getQuizzes(currentPage.current)
       .then(data => {
         dispatch(setQuizzes(data.quizzes))
         dispatch(setQuizzesTotalCount(data.quizzesTotalCount))
@@ -100,6 +86,8 @@ const QuizzesPage = (): JSX.Element => {
         setErrorSnackbar(err)
       })
   }
+
+  const canLoadMoreQuizzes = Number(quizzesTotalCount) > quizzesCount
 
   return (
     <div className="max-w-4xl min-h-screen mx-auto text-center">
@@ -125,29 +113,20 @@ const QuizzesPage = (): JSX.Element => {
           >
             {({ index, style }: ListChildComponentProps) => (
               <>
-                <Quiz
+                <QuizListItem
                   quiz={quizzes[index]}
-                  itemStyle={{
-                    ...style,
-                    top: Number(style.top) + LIST_PADDING_Y,
-                    height: Number(style.height) - LIST_PADDING_Y,
-                    left: Number(style.left) + LIST_PADDING_X,
-                    width: `calc(${style.width} - ${LIST_PADDING_RIGHT}px)`,
-                  }}
+                  itemStyle={getStylesForListItem(style)}
                 />
-                {index === quizzesCount - 1 && isGoToQuizzesRequest && (
-                  <Loader
+                {index === quizzesCount - 1 && canLoadMoreQuizzes && (
+                  <IntersectingLoader
                     onIntersect={onLastItemIntersect}
-                    style={{
-                      ...style,
+                    style={getStylesForListItem(style, {
                       top:
                         Number(style.top) +
                         LIST_PADDING_Y +
                         Number(style.height),
                       height: 70,
-                      left: Number(style.left) + LIST_PADDING_X,
-                      width: `calc(${style.width} - ${LIST_PADDING_RIGHT}px)`,
-                    }}
+                    })}
                   />
                 )}
               </>
@@ -156,6 +135,25 @@ const QuizzesPage = (): JSX.Element => {
         ))}
     </div>
   )
+}
+
+function getStylesForListItem(
+  itemStyles: CSSProperties,
+  overload?: CSSProperties,
+): CSSProperties {
+  let styles: CSSProperties = {
+    ...itemStyles,
+    top: Number(itemStyles.top) + LIST_PADDING_Y,
+    height: Number(itemStyles.height) - LIST_PADDING_Y,
+    left: Number(itemStyles.left) + LIST_PADDING_X,
+    width: `calc(${itemStyles.width} - ${LIST_PADDING_RIGHT}px)`,
+  }
+
+  if (undefined !== overload) {
+    styles = { ...styles, ...overload }
+  }
+
+  return styles
 }
 
 export default QuizzesPage
