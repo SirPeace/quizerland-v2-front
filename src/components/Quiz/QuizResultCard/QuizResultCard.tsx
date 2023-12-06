@@ -3,7 +3,7 @@
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined'
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined'
 
-import { Divider } from '@mui/material'
+import { Divider, Paper } from '@mui/material'
 import Button from '@mui/material/Button'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
@@ -21,12 +21,9 @@ import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 const QuizResultCard = (): JSX.Element => {
   const { correctAnswersCount, wrongAnswersCount } = useAppSelector(
     ({ quizState }) => {
-      const quiz = quizState.quizzes.find(
-        quiz => quiz.id === quizState.activeQuizId,
-      )
-
-      const questionsCount = quiz?.questions.length ?? 0
-      const correctAnswersCount = quiz?.rightAttempts ?? 0
+      const quiz = quizState
+      const questionsCount = quiz.questions.length ?? 0
+      const correctAnswersCount = quiz.rightAttempts ?? 0
       const wrongAnswersCount = questionsCount - correctAnswersCount
 
       return { wrongAnswersCount, correctAnswersCount }
@@ -41,7 +38,7 @@ const QuizResultCard = (): JSX.Element => {
   }
 
   return (
-    <>
+    <Paper elevation={8} className="rounded-xl">
       <CardContent sx={{ pb: 0 }}>
         <Typography gutterBottom variant="h6" component="div">
           Результат теста
@@ -84,7 +81,7 @@ const QuizResultCard = (): JSX.Element => {
           К следующему тесту
         </Button>
       </CardActions>
-    </>
+    </Paper>
   )
 }
 export default QuizResultCard

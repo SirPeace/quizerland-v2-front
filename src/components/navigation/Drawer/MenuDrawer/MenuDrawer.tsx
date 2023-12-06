@@ -71,7 +71,7 @@ const MenuDrawer: React.FC = () => {
           <PersonOffIcon className="mr-3" />
 
           <Box>
-            <Typography variant="body1">Пользователь не авторизован</Typography>
+            <Typography variant="body1">Требуется вход в систему</Typography>
           </Box>
         </Box>
       )}
