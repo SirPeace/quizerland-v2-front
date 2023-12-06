@@ -10,7 +10,7 @@ import GoToHomePageButton from '@/components/Navigation/GoToHomePageButton/GoToH
 import QuestionCard from '@/components/Quiz/QuestionCard/QuestionCard'
 import QuizResultCard from '@/components/Quiz/QuizResultCard/QuizResultCard'
 
-import { setupState } from '@/redux/quiz/quizSlice'
+import { resetState, setupState } from '@/redux/quiz/quizSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 import type { Metadata } from 'next'
@@ -58,6 +58,9 @@ const QuizPage = ({ params: { quiz: quizId } }: Props): JSX.Element => {
     void getQuiz(quizId).then(quiz => {
       void dispatch(setupState(quiz))
     })
+    return () => {
+      dispatch(resetState())
+    }
   }, [dispatch, quizId])
 
   return (

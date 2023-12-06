@@ -36,6 +36,8 @@ export const quizSlice = createSlice({
       state.questions = questions
     },
 
+    resetState: () => quizState,
+
     goToNextQuestion: state => {
       if (state.currentQuestionIndex >= state.questions.length - 1) {
         state.isFinished = true
@@ -73,6 +75,7 @@ export const quizSlice = createSlice({
 
 export const {
   setupState,
+  resetState,
   goToNextQuestion,
   resetCurrentQuestion,
   goToAvailableQuiz,

@@ -91,6 +91,7 @@ const QuestionCard = ({
       }
 
       setTimeout(() => {
+        setSelectedAnswerIndex(undefined)
         setAttempts({})
         dispatch(goToNextQuestion())
       }, 2000)
