@@ -13,7 +13,7 @@ export const quizSlice = createSlice({
   initialState: quizState,
   reducers: {
     setupState: (state, action: PayloadAction<IQuizResponse>) => {
-      const questions = action.payload.questions.map<IQuestion>(
+      const questions = action.payload.quizItem.questions.map<IQuestion>(
         (question, idx) => {
           const questionItem: IQuestion = {
             id: idx,
@@ -29,10 +29,15 @@ export const quizSlice = createSlice({
         },
       )
 
-      state.id = action.payload._id
-      state.userId = action.payload.userId
-      state.title = action.payload.title
-      state.description = action.payload.description
+      state.currentQuestionIndex = action.payload.progress.currentQuestionIndex
+      state.rightAttempts = action.payload.progress.rightAttempts
+      state.isFinished = action.payload.progress.isFinished
+      state.progressId = action.payload.progress._id
+
+      state.id = action.payload.quizItem._id
+      state.userId = action.payload.quizItem.userId
+      state.title = action.payload.quizItem.title
+      state.description = action.payload.quizItem.description
       state.questions = questions
     },
 
@@ -46,7 +51,7 @@ export const quizSlice = createSlice({
       }
     },
 
-    resetCurrentQuestion: (state, action: PayloadAction<number>) => {
+    resetCurrentQuestion: state => {
       state.currentQuestionIndex = 0
       state.isFinished = false
     },

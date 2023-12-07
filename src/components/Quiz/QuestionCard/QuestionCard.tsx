@@ -7,12 +7,13 @@ import FormHelperText from '@mui/material/FormHelperText'
 
 import RadioGroup from '@mui/material/RadioGroup'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { match } from 'ts-pattern'
 
+import { updateQuizProgress } from '@/api/modules/quizzes'
 import { goToNextQuestion, setRightAttempts } from '@/redux/quiz/quizSlice'
-import { useAppDispatch } from '@/redux/reduxHooks'
+import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 import {
   checkedAnswerStyles,
@@ -33,6 +34,8 @@ const QuestionCard = ({
   questionsLength,
 }: IQuestionCardProps): JSX.Element => {
   const dispatch = useAppDispatch()
+
+  const { id: quizId } = useAppSelector(({ quizState }) => quizState)
 
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number>()
   const [attempts, setAttempts] = useState<Record<number, boolean>>({})
@@ -84,11 +87,12 @@ const QuestionCard = ({
     }))
 
     if (isCorrectAnswer) {
-      const isSelectedAnswerWrong = Object.values(attempts).includes(false)
-
-      if (!isSelectedAnswerWrong) {
+      const hadWrongAttempts = Object.values(attempts).includes(false)
+      if (!hadWrongAttempts) {
         dispatch(setRightAttempts())
       }
+
+      void updateQuizProgress(quizId, !hadWrongAttempts)
 
       setTimeout(() => {
         setSelectedAnswerIndex(undefined)

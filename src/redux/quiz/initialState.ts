@@ -4,11 +4,12 @@ const quizState: IQuiz = {
   currentQuestionIndex: 0,
   rightAttempts: 0,
   isFinished: false,
+  progressId: '',
 
-  id: undefined,
-  userId: undefined,
-  title: undefined,
-  description: undefined,
+  id: '',
+  userId: '',
+  title: '',
+  description: '',
   questions: [],
 
   // activeQuizId: 1,

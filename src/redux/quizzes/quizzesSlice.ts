@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import quizzesState from './initialState'
+import type { IQuizzesItem } from '@/api/modules/types'
 
-import type { IQuizzesItem } from './types'
+import quizzesState from './initialState'
 
 import type { PayloadAction } from '@reduxjs/toolkit'
 

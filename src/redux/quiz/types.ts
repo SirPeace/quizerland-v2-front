@@ -2,11 +2,12 @@ export interface IQuiz {
   currentQuestionIndex: number
   rightAttempts: number
   isFinished: boolean
+  progressId: string
 
-  id: string | undefined
-  userId: string | undefined
-  title: string | undefined
-  description: string | undefined
+  id: string
+  userId: string
+  title: string
+  description: string
   questions: IQuestion[]
 }
 

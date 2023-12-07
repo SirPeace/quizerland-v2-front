@@ -17,15 +17,37 @@ export interface IQuizzesItem {
 }
 
 export interface IQuizResponse {
+  quizItem: {
+    _id: string
+    userId: string
+    title: string
+    description: string
+    questions: Array<{
+      text: string
+      rightAnswerIndex: number
+      answers: string[]
+    }>
+    createdAt: string
+    updatedAt: string
+  }
+  progress: IProgressResponse
+}
+
+export interface IProgressResponse {
   _id: string
+  quizId: string
   userId: string
-  title: string
-  description: string
-  questions: Array<{
-    text: string
-    rightAnswerIndex: number
-    answers: string[]
-  }>
+  currentQuestionIndex: number
+  rightAttempts: number
+  isFinished: boolean
   createdAt: string
   updatedAt: string
+}
+
+export interface IProgressRequest {
+  currentQuestionIndex: number
+  rightAttempts: number
+  isFinished: boolean
+  progressId: string
+  quizId: string
 }

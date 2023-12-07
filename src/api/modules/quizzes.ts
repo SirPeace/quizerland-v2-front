@@ -2,7 +2,12 @@ import type { TQuizForm } from '@/components/CreateQuiz/types'
 
 import httpClient from '../httpClient'
 
-import type { IQuizResponse, IQuizzesResponse } from './types'
+import type {
+  IProgressRequest,
+  IProgressResponse,
+  IQuizResponse,
+  IQuizzesResponse,
+} from './types'
 
 import type { AxiosResponse } from 'axios'
 
@@ -22,5 +27,18 @@ export const getQuizzes = async (
 
 export const getQuiz = async (quizId: string): Promise<IQuizResponse> => {
   const { data } = await httpClient.get<IQuizResponse>(`api/quizzes/${quizId}`)
+  return data
+}
+
+export const updateQuizProgress = async (
+  quizId: string,
+  isRightAttempt: boolean,
+): Promise<IProgressResponse> => {
+  const { data } = await httpClient.put<IProgressResponse>(
+    `api/quizzes/${quizId}/progress`,
+    {
+      isRightAttempt,
+    },
+  )
   return data
 }

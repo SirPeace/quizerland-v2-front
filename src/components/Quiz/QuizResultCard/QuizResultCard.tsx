@@ -73,7 +73,7 @@ const QuizResultCard = (): JSX.Element => {
         <Button
           size="small"
           className="mr-3"
-          onClick={() => dispatch(resetCurrentQuestion(1))}
+          onClick={() => dispatch(resetCurrentQuestion())}
         >
           Повторить
         </Button>
