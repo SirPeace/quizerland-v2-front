@@ -32,10 +32,9 @@ export const quizSlice = createSlice({
       state.currentQuestionIndex = action.payload.progress.currentQuestionIndex
       state.rightAttempts = action.payload.progress.rightAttempts
       state.isFinished = action.payload.progress.isFinished
-      state.progressId = action.payload.progress._id
+      state.progressId = action.payload.progress.id
 
-      state.id = action.payload.quizItem._id
-      state.userId = action.payload.quizItem.userId
+      state.id = action.payload.quizItem.id
       state.title = action.payload.quizItem.title
       state.description = action.payload.quizItem.description
       state.questions = questions
@@ -54,6 +53,7 @@ export const quizSlice = createSlice({
     resetCurrentQuestion: state => {
       state.currentQuestionIndex = 0
       state.isFinished = false
+      state.rightAttempts = 0
     },
 
     goToAvailableQuiz: state => {

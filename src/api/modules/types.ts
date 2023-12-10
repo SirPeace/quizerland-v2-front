@@ -18,8 +18,7 @@ export interface IQuizzesItem {
 
 export interface IQuizResponse {
   quizItem: {
-    _id: string
-    userId: string
+    id: string
     title: string
     description: string
     questions: Array<{
@@ -27,21 +26,15 @@ export interface IQuizResponse {
       rightAnswerIndex: number
       answers: string[]
     }>
-    createdAt: string
-    updatedAt: string
   }
   progress: IProgressResponse
 }
 
 export interface IProgressResponse {
-  _id: string
-  quizId: string
-  userId: string
+  id: string
   currentQuestionIndex: number
   rightAttempts: number
   isFinished: boolean
-  createdAt: string
-  updatedAt: string
 }
 
 export interface IProgressRequest {
@@ -50,4 +43,8 @@ export interface IProgressRequest {
   isFinished: boolean
   progressId: string
   quizId: string
+}
+
+export interface IProgressDelete {
+  progressId: number
 }

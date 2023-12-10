@@ -56,7 +56,7 @@ const QuizPage = ({ params: { quiz: quizId } }: Props): JSX.Element => {
 
   useEffect(() => {
     void getQuiz(quizId).then(quiz => {
-      void dispatch(setupState(quiz))
+      dispatch(setupState(quiz))
     })
     return () => {
       dispatch(resetState())

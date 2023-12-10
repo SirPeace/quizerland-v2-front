@@ -3,7 +3,6 @@ import type { TQuizForm } from '@/components/CreateQuiz/types'
 import httpClient from '../httpClient'
 
 import type {
-  IProgressRequest,
   IProgressResponse,
   IQuizResponse,
   IQuizzesResponse,
@@ -42,3 +41,8 @@ export const updateQuizProgress = async (
   )
   return data
 }
+
+export const deleteQuizProgress = async (
+  quizId: string,
+): Promise<AxiosResponse> =>
+  await httpClient.delete(`api/quizzes/${quizId}/progress`)

@@ -11,6 +11,7 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import RadioGroup from '@mui/material/RadioGroup'
 import Typography from '@mui/material/Typography'
 
+import { deleteQuizProgress } from '@/api/modules/quizzes'
 import {
   goToAvailableQuiz,
   resetRightAttempts,
@@ -19,14 +20,14 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 const QuizResultCard = (): JSX.Element => {
-  const { correctAnswersCount, wrongAnswersCount } = useAppSelector(
+  const { correctAnswersCount, wrongAnswersCount, quiz } = useAppSelector(
     ({ quizState }) => {
       const quiz = quizState
       const questionsCount = quiz.questions.length ?? 0
       const correctAnswersCount = quiz.rightAttempts ?? 0
       const wrongAnswersCount = questionsCount - correctAnswersCount
 
-      return { wrongAnswersCount, correctAnswersCount }
+      return { wrongAnswersCount, correctAnswersCount, quiz }
     },
   )
 
@@ -35,6 +36,16 @@ const QuizResultCard = (): JSX.Element => {
   const goToNextQuiz = (): void => {
     dispatch(resetRightAttempts())
     dispatch(goToAvailableQuiz())
+  }
+
+  const restartQuiz = async (): Promise<void> => {
+    try {
+      await deleteQuizProgress(quiz.id)
+
+      dispatch(resetCurrentQuestion())
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
@@ -70,11 +81,7 @@ const QuizResultCard = (): JSX.Element => {
         </RadioGroup>
       </CardContent>
       <CardActions className="mx-3">
-        <Button
-          size="small"
-          className="mr-3"
-          onClick={() => dispatch(resetCurrentQuestion())}
-        >
+        <Button size="small" className="mr-3" onClick={restartQuiz}>
           Повторить
         </Button>
         <Button size="small" onClick={goToNextQuiz}>
