@@ -56,13 +56,6 @@ export const quizSlice = createSlice({
       state.rightAttempts = 0
     },
 
-    goToAvailableQuiz: state => {
-      // const availableQuiz = state.quizzes.find(quiz => !quiz.isFinished)
-      // if (availableQuiz !== undefined) {
-      //   state.activeQuizId = availableQuiz.id
-      // }
-    },
-
     setRightAttempts: state => {
       state.rightAttempts += 1
     },
@@ -83,7 +76,6 @@ export const {
   resetState,
   goToNextQuestion,
   resetCurrentQuestion,
-  goToAvailableQuiz,
   setRightAttempts,
   resetRightAttempts,
 } = quizSlice.actions

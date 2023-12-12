@@ -17,6 +17,7 @@ import Card from '@mui/material/Card'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 
+import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -70,7 +71,12 @@ const RegistrationForm = (): JSX.Element => {
 
       reset()
     } catch (err: any) {
-      return err
+      if (err instanceof AxiosError) {
+        const error = err.response?.data?.message
+        console.error(error)
+      } else {
+        console.error('Произошла ошибка, обратитесь в тех. поддержку')
+      }
     }
   }
 

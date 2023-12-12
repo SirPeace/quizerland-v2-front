@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect } from 'react'
+import { AxiosError } from 'axios'
+import { useEffect, useState } from 'react'
 
 import { match } from 'ts-pattern'
 
@@ -52,12 +53,23 @@ const QuizPage = ({ params: { quiz: quizId } }: Props): JSX.Element => {
     }
   })
 
+  const [quizIdError, setQuizIdError] = useState<string>()
+
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    void getQuiz(quizId).then(quiz => {
-      dispatch(setupState(quiz))
-    })
+    void getQuiz(quizId)
+      .then(quiz => {
+        dispatch(setupState(quiz))
+      })
+      .catch(err => {
+        if (err instanceof AxiosError) {
+          const error = err.response?.data?.message
+          setQuizIdError(error)
+        } else {
+          setQuizIdError('Произошла ошибка, обратитесь в тех. поддержку')
+        }
+      })
     return () => {
       dispatch(resetState())
     }
@@ -70,6 +82,7 @@ const QuizPage = ({ params: { quiz: quizId } }: Props): JSX.Element => {
         <GoToHomePageButton />
         <div className="mx-4 mt-3">
           {match<boolean>(true)
+            .with(quizIdError !== undefined, () => <h1>{quizIdError}</h1>)
             .with(currentQuestion === undefined, () => (
               <div>
                 <Loader />

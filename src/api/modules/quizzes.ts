@@ -34,7 +34,7 @@ export const updateQuizProgress = async (
   isRightAttempt: boolean,
 ): Promise<IProgressResponse> => {
   const { data } = await httpClient.put<IProgressResponse>(
-    `api/quizzes/${quizId}/progress`,
+    `/api/quizzes/${quizId}/progress`,
     {
       isRightAttempt,
     },
@@ -45,4 +45,16 @@ export const updateQuizProgress = async (
 export const deleteQuizProgress = async (
   quizId: string,
 ): Promise<AxiosResponse> =>
-  await httpClient.delete(`api/quizzes/${quizId}/progress`)
+  await httpClient.delete(`/api/quizzes/${quizId}/progress`)
+
+export const getNextIncompleteQuiz = async (
+  quizId: string,
+): Promise<{ _id: string }> => {
+  const { data } = await httpClient.get<{ _id: string }>(
+    `/api/quizzes/next-incomplete`,
+    {
+      params: { excludeIds: [quizId] },
+    },
+  )
+  return data
+}

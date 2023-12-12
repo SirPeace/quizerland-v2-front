@@ -7,6 +7,7 @@ import ChecklistOutlinedIcon from '@mui/icons-material/ChecklistOutlined'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Drawer from '@mui/material/Drawer'
+import { AxiosError } from 'axios'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -48,7 +49,14 @@ const QuizForm = (): JSX.Element => {
     await form.handleSubmit(data => {
       try {
         void createQuiz(data)
-      } catch (error) {}
+      } catch (err: any) {
+        if (err instanceof AxiosError) {
+          const error = err.response?.data?.message
+          console.error(error)
+        } else {
+          console.error('Произошла ошибка, обратитесь в тех. поддержку')
+        }
+      }
     })()
   }
 

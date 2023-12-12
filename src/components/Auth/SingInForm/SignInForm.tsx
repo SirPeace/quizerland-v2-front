@@ -19,6 +19,7 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -63,9 +64,9 @@ const SignInForm = (): JSX.Element => {
 
       router.push('/quizzes')
     } catch (err: any) {
-      const serverMessage = err?.response?.data?.message
-      if (typeof serverMessage === 'string') {
-        setErrorMessage(serverMessage)
+      if (err instanceof AxiosError) {
+        const error = err.response?.data?.message
+        setErrorMessage(error)
       } else {
         setErrorMessage('Произошла ошибка, попробуйте позже')
       }

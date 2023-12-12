@@ -8,6 +8,7 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 
+import { AxiosError } from 'axios'
 import { usePathname, useRouter } from 'next/navigation'
 import { useContext } from 'react'
 
@@ -66,7 +67,12 @@ const LinksList = (): JSX.Element => {
       dispatch(unsetUser())
       router.push('/quizzes')
     } catch (err: any) {
-      return err
+      if (err instanceof AxiosError) {
+        const error = err.response?.data?.message
+        console.error(error)
+      } else {
+        console.error('Произошла ошибка, обратитесь в тех. поддержку')
+      }
     }
   }
 

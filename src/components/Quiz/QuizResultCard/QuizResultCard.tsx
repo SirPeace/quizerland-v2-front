@@ -11,9 +11,14 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import RadioGroup from '@mui/material/RadioGroup'
 import Typography from '@mui/material/Typography'
 
-import { deleteQuizProgress } from '@/api/modules/quizzes'
+import { AxiosError } from 'axios'
+import { useRouter } from 'next/navigation'
+
 import {
-  goToAvailableQuiz,
+  deleteQuizProgress,
+  getNextIncompleteQuiz,
+} from '@/api/modules/quizzes'
+import {
   resetRightAttempts,
   resetCurrentQuestion,
 } from '@/redux/quiz/quizSlice'
@@ -33,9 +38,22 @@ const QuizResultCard = (): JSX.Element => {
 
   const dispatch = useAppDispatch()
 
-  const goToNextQuiz = (): void => {
-    dispatch(resetRightAttempts())
-    dispatch(goToAvailableQuiz())
+  const router = useRouter()
+
+  const goToNextQuiz = async (): Promise<void> => {
+    try {
+      const nextQuiz = await getNextIncompleteQuiz(quiz.id)
+
+      dispatch(resetRightAttempts())
+      router.push(`/quizzes/${nextQuiz._id}`)
+    } catch (err: any) {
+      if (err instanceof AxiosError) {
+        const error = err.response?.data?.message
+        console.error(error)
+      } else {
+        console.error('Произошла ошибка, обратитесь в тех. поддержку')
+      }
+    }
   }
 
   const restartQuiz = async (): Promise<void> => {
@@ -43,8 +61,13 @@ const QuizResultCard = (): JSX.Element => {
       await deleteQuizProgress(quiz.id)
 
       dispatch(resetCurrentQuestion())
-    } catch (err) {
-      console.log(err)
+    } catch (err: any) {
+      if (err instanceof AxiosError) {
+        const error = err.response?.data?.message
+        console.error(error)
+      } else {
+        console.error('Произошла ошибка, обратитесь в тех. поддержку')
+      }
     }
   }
 
