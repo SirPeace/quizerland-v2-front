@@ -7,6 +7,7 @@ import FormHelperText from '@mui/material/FormHelperText'
 
 import RadioGroup from '@mui/material/RadioGroup'
 
+import { AxiosError, AxiosResponse } from 'axios'
 import { useMemo, useState } from 'react'
 
 import { match } from 'ts-pattern'
@@ -39,6 +40,8 @@ const QuestionCard = ({
 
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number>()
   const [attempts, setAttempts] = useState<Record<number, boolean>>({})
+  const [isExpectedResponseStatus, setIsExpectedResponseStatus] =
+    useState<boolean>(false)
 
   const correctAnswer = useMemo(() => question.correctAnswerIndex, [question])
   const isSelectedAnswerCorrect = useMemo(
@@ -76,7 +79,7 @@ const QuestionCard = ({
       .otherwise(() => wrongAnswerStyles)
   }
 
-  function checkAnswer(): void {
+  async function checkAnswer(): Promise<void> {
     if (selectedAnswerIndex === undefined) return
 
     const isCorrectAnswer = selectedAnswerIndex === correctAnswer
@@ -92,12 +95,44 @@ const QuestionCard = ({
         dispatch(setRightAttempts())
       }
 
-      void updateQuizProgress(quizId, !hadWrongAttempts)
+      try {
+        const response = await updateQuizProgress(quizId, !hadWrongAttempts)
+        if (response.status === 201) {
+          setIsExpectedResponseStatus(true)
+        }
+      } catch (err: any) {
+        let repeatRequestTimeout = setTimeout(async function newRequest() {
+          const response = await updateQuizProgress(quizId, !hadWrongAttempts)
+          if (response.status === 201) {
+            setIsExpectedResponseStatus(true)
+            clearTimeout(repeatRequestTimeout)
+          } else {
+            repeatRequestTimeout = setTimeout(newRequest, 5000)
+          }
+        }, 5000)
+      }
+
+      /* 
+      
+      let response = null
+
+      while (true) {
+        response = await updateQuizProgress(quizId, !hadWrongAttempts)
+
+        if (response.status === 201) {
+          break
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 5000))
+      }
+      
+      */
 
       setTimeout(() => {
         setSelectedAnswerIndex(undefined)
         setAttempts({})
         dispatch(goToNextQuestion())
+        setIsExpectedResponseStatus(false)
       }, 2000)
     }
   }

@@ -13,33 +13,33 @@ import type { AxiosResponse } from 'axios'
 export const createQuiz = async (
   data: TQuizForm,
 ): Promise<AxiosResponse<TQuizForm>> =>
-  await httpClient.post<TQuizForm>('api/quizzes/create', data)
+  await httpClient.post<TQuizForm>('/api/quizzes/create', data)
 
 export const getQuizzes = async (
   pageNumber: number,
 ): Promise<IQuizzesResponse> => {
   const { data } = await httpClient.get<IQuizzesResponse>(
-    `api/quizzes/?page=${pageNumber}`,
+    `/api/quizzes/?page=${pageNumber}`,
   )
   return data
 }
 
 export const getQuiz = async (quizId: string): Promise<IQuizResponse> => {
-  const { data } = await httpClient.get<IQuizResponse>(`api/quizzes/${quizId}`)
+  const { data } = await httpClient.get<IQuizResponse>(`/api/quizzes/${quizId}`)
   return data
 }
 
 export const updateQuizProgress = async (
   quizId: string,
   isRightAttempt: boolean,
-): Promise<IProgressResponse> => {
-  const { data } = await httpClient.put<IProgressResponse>(
+): Promise<AxiosResponse> => {
+  const response = await httpClient.put<AxiosResponse>(
     `/api/quizzes/${quizId}/progress`,
     {
       isRightAttempt,
     },
   )
-  return data
+  return response
 }
 
 export const deleteQuizProgress = async (
