@@ -3,7 +3,7 @@ import type { TQuizForm } from '@/components/CreateQuiz/types'
 import httpClient from '../httpClient'
 
 import type {
-  IProgressResponse,
+  ICreatedQuizResponse,
   IQuizResponse,
   IQuizzesResponse,
 } from './types'
@@ -11,10 +11,14 @@ import type {
 import type { AxiosResponse } from 'axios'
 
 export const createQuiz = async (
-  data: TQuizForm,
-): Promise<AxiosResponse<TQuizForm>> =>
-  await httpClient.post<TQuizForm>('/api/quizzes/create', data)
-
+  quizData: TQuizForm,
+): Promise<ICreatedQuizResponse> => {
+  const { data } = await httpClient.post<ICreatedQuizResponse>(
+    '/api/quizzes/create',
+    quizData,
+  )
+  return data
+}
 export const getQuizzes = async (
   pageNumber: number,
 ): Promise<IQuizzesResponse> => {

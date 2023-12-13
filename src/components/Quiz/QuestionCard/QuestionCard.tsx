@@ -40,8 +40,6 @@ const QuestionCard = ({
 
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number>()
   const [attempts, setAttempts] = useState<Record<number, boolean>>({})
-  const [isExpectedResponseStatus, setIsExpectedResponseStatus] =
-    useState<boolean>(false)
 
   const correctAnswer = useMemo(() => question.correctAnswerIndex, [question])
   const isSelectedAnswerCorrect = useMemo(
@@ -95,44 +93,19 @@ const QuestionCard = ({
         dispatch(setRightAttempts())
       }
 
-      try {
-        const response = await updateQuizProgress(quizId, !hadWrongAttempts)
-        if (response.status === 201) {
-          setIsExpectedResponseStatus(true)
+      const updateProgress = async (): Promise<void> => {
+        try {
+          await updateQuizProgress(quizId, !hadWrongAttempts)
+        } catch (err: any) {
+          setTimeout(updateProgress, 5000)
         }
-      } catch (err: any) {
-        let repeatRequestTimeout = setTimeout(async function newRequest() {
-          const response = await updateQuizProgress(quizId, !hadWrongAttempts)
-          if (response.status === 201) {
-            setIsExpectedResponseStatus(true)
-            clearTimeout(repeatRequestTimeout)
-          } else {
-            repeatRequestTimeout = setTimeout(newRequest, 5000)
-          }
-        }, 5000)
       }
-
-      /* 
-      
-      let response = null
-
-      while (true) {
-        response = await updateQuizProgress(quizId, !hadWrongAttempts)
-
-        if (response.status === 201) {
-          break
-        }
-
-        await new Promise(resolve => setTimeout(resolve, 5000))
-      }
-      
-      */
+      void updateProgress()
 
       setTimeout(() => {
         setSelectedAnswerIndex(undefined)
         setAttempts({})
         dispatch(goToNextQuestion())
-        setIsExpectedResponseStatus(false)
       }, 2000)
     }
   }

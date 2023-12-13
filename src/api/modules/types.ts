@@ -48,3 +48,8 @@ export interface IProgressRequest {
 export interface IProgressDelete {
   progressId: number
 }
+
+export interface ICreatedQuizResponse {
+  quizId: string
+  userId: string
+}
