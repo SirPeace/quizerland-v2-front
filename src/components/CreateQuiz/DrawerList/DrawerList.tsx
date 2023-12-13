@@ -14,18 +14,23 @@ import {
 
 import { useContext } from 'react'
 
-import { useWatch } from 'react-hook-form'
+import { addQuestion as addQuestionAction } from '@/redux/quizForm/quizFormSlice'
+import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
-import CreateQuizContext from '../context'
+import { QuizFormContext } from '../QuizFormContext'
 
 const DrawerList = (): JSX.Element => {
-  const { submit, setActiveTab, form } = useContext(CreateQuizContext)
+  const { submit, activeTab, setActiveTab } = useContext(QuizFormContext)
 
-  // useWatch() вместо getValues(), т.к. нам надо следить за добавлением новых вопросов и ре-рендерить список при изменениях
-  const questions = useWatch({
-    control: form.control,
-    name: 'questions',
-  })
+  const { questions } = useAppSelector(({ quizFormState }) => quizFormState)
+  const dispatch = useAppDispatch()
+
+  function addQuestion(): void {
+    const newActiveTab = questions.length
+
+    dispatch(addQuestionAction())
+    setActiveTab(newActiveTab)
+  }
 
   return (
     <Box
@@ -36,6 +41,7 @@ const DrawerList = (): JSX.Element => {
         <List>
           <ListItem disablePadding>
             <ListItemButton
+              selected={activeTab === -1}
               onClick={() => {
                 setActiveTab(-1)
               }}
@@ -48,43 +54,32 @@ const DrawerList = (): JSX.Element => {
           </ListItem>
         </List>
         <Divider className="mx-3" />
-        <div className="p-2">
+        <div className="my-4 px-2">
           <Button
             variant="contained"
-            startIcon={<AddToPhotosIcon />}
-            fullWidth
+            color="secondary"
+            className="w-full"
             onClick={() => {
-              setActiveTab(0)
+              addQuestion()
             }}
-            className="bg-purple-500"
           >
+            <AddToPhotosIcon fontSize={'small'} className="mr-4" />
             Новый вопрос
           </Button>
         </div>
-
-        <List>
-          {questions.length === 0 ? (
-            <ListItemText
-              primary={'Вопросы не добавлены'}
-              className="text-center"
-            />
-          ) : (
-            questions.map((question, idx) => (
-              <ListItem key={idx} disablePadding>
-                <ListItemButton
-                  onClick={() => {
-                    setActiveTab(idx)
-                  }}
-                >
-                  <ListItemText
-                    primary={`№ ${idx + 1}: "${
-                      question.text.length > 0 ? question.text : '___'
-                    }"`}
-                  />
-                </ListItemButton>
-              </ListItem>
-            ))
-          )}
+        <List className="py-0">
+          {questions.map((question, idx) => (
+            <ListItem key={idx} disablePadding>
+              <ListItemButton
+                selected={idx === activeTab}
+                onClick={() => {
+                  setActiveTab(idx)
+                }}
+              >
+                <ListItemText>{`${idx + 1}. ${question.title}`}</ListItemText>
+              </ListItemButton>
+            </ListItem>
+          ))}
         </List>
       </div>
 
