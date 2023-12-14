@@ -53,3 +53,15 @@ export interface ICreatedQuizResponse {
   quizId: string
   userId: string
 }
+
+export interface ICreateQuizRequest {
+  title: string
+  description: string
+  questions: ICreateQuestionRequest[]
+}
+
+export interface ICreateQuestionRequest {
+  text: string
+  rightAnswerIndex: number
+  answers: string[]
+}

@@ -33,3 +33,13 @@ export const questionFormSchema = zod.object({
 // Типы сущностей, хранимые в RHF
 export type TQuizDescriptionForm = zod.infer<typeof quizDescriptionFormSchema>
 export type TQuestionForm = zod.infer<typeof questionFormSchema>
+
+// type TQuizSchema = {
+//   title: string;
+//   description: string;
+//   questions: {
+//       text: string;
+//       answers: string[];
+//       rightAnswerIndex?: number | undefined;
+//   }[];
+// }

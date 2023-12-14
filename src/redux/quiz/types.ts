@@ -2,7 +2,10 @@ export interface IQuiz {
   currentQuestionIndex: number
   rightAttempts: number
   isFinished: boolean
+  isPreview: boolean
   progressId: string
+  createdAt: string
+  updatedAt: string
 
   id: string
   userId: string

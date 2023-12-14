@@ -1,6 +1,7 @@
 'use client'
 
 import { AxiosError } from 'axios'
+
 import { useEffect, useState } from 'react'
 
 import { match } from 'ts-pattern'
@@ -9,12 +10,13 @@ import { getQuiz } from '@/api/modules/quizzes'
 import Loader from '@/components/Loader'
 import GoToHomePageButton from '@/components/Navigation/GoToHomePageButton/GoToHomePageButton'
 import QuestionCard from '@/components/Quiz/QuestionCard/QuestionCard'
-import QuizResultCard from '@/components/Quiz/QuizResultCard/QuizResultCard'
+import QuizPreviewCard from '@/components/Quiz/QuizPreviewCard/QuizPreviewCard'
 
-import { resetState, setupState } from '@/redux/quiz/quizSlice'
+import { resetState, setIsPreview, setupState } from '@/redux/quiz/quizSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 import type { Metadata } from 'next'
+import type { FC } from 'react'
 
 interface Props {
   params: {
@@ -30,19 +32,21 @@ export async function generateMetadata({
   }
 }
 
-const QuizPage = ({ params: { quiz: quizId } }: Props): JSX.Element => {
+const QuizPage: FC<Props> = ({ params: { quiz: quizId } }) => {
   const {
     quizTitle,
     currentQuestion,
     currentQuestionIndex,
     questionsLength,
     isFinished,
+    isPreview,
   } = useAppSelector(({ quizState }) => {
     const currentQuestionIndex = quizState.currentQuestionIndex
     const currentQuestion = quizState.questions[currentQuestionIndex]
     const questionsLength = quizState.questions.length
     const quizTitle = quizState.title
     const isFinished = quizState.isFinished
+    const isPreview = quizState.isPreview
 
     return {
       currentQuestion,
@@ -50,6 +54,7 @@ const QuizPage = ({ params: { quiz: quizId } }: Props): JSX.Element => {
       quizTitle,
       currentQuestionIndex,
       isFinished,
+      isPreview,
     }
   })
 
@@ -61,6 +66,7 @@ const QuizPage = ({ params: { quiz: quizId } }: Props): JSX.Element => {
     void getQuiz(quizId)
       .then(quiz => {
         dispatch(setupState(quiz))
+        dispatch(setIsPreview(true))
       })
       .catch(err => {
         if (err instanceof AxiosError) {
@@ -88,7 +94,8 @@ const QuizPage = ({ params: { quiz: quizId } }: Props): JSX.Element => {
                 <Loader />
               </div>
             ))
-            .with(isFinished, () => <QuizResultCard />)
+            .with(isPreview, () => <QuizPreviewCard />)
+            .with(isFinished, () => <QuizPreviewCard />)
             .otherwise(() => (
               <QuestionCard
                 question={currentQuestion}

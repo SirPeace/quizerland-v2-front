@@ -87,7 +87,6 @@ const QuizQuestionForm = (): JSX.Element => {
 
     const { unsubscribe } = watch(debounce(watchForm, 500))
 
-    // return unsubscribe
     return () => {
       unsubscribe()
     }

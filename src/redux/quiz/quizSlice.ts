@@ -60,13 +60,8 @@ export const quizSlice = createSlice({
       state.rightAttempts += 1
     },
 
-    resetRightAttempts: state => {
-      // const activeQuiz = state.quizzes.find(
-      //   quiz => quiz.id === state.activeQuizId,
-      // )
-      // if (activeQuiz !== undefined) {
-      //   activeQuiz.rightAttempts = 0
-      // }
+    setIsPreview: (state, action: PayloadAction<boolean>) => {
+      state.isPreview = action.payload
     },
   },
 })
@@ -77,6 +72,6 @@ export const {
   goToNextQuestion,
   resetCurrentQuestion,
   setRightAttempts,
-  resetRightAttempts,
+  setIsPreview,
 } = quizSlice.actions
 export default quizSlice.reducer

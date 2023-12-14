@@ -7,7 +7,6 @@ import FormHelperText from '@mui/material/FormHelperText'
 
 import RadioGroup from '@mui/material/RadioGroup'
 
-import { AxiosError, AxiosResponse } from 'axios'
 import { useMemo, useState } from 'react'
 
 import { match } from 'ts-pattern'
