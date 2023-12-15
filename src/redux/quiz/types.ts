@@ -5,7 +5,6 @@ export interface IQuiz {
   isPreview: boolean
   progressId: string
   createdAt: string
-  updatedAt: string
 
   id: string
   userId: string

@@ -19,6 +19,7 @@ export interface IQuizzesItem {
 export interface IQuizResponse {
   quizItem: {
     id: string
+    userId: string
     title: string
     description: string
     questions: Array<{
@@ -26,6 +27,7 @@ export interface IQuizResponse {
       rightAnswerIndex: number
       answers: string[]
     }>
+    createdAt: string
   }
   progress: IProgressResponse
 }
@@ -49,11 +51,6 @@ export interface IProgressDelete {
   progressId: number
 }
 
-export interface ICreatedQuizResponse {
-  quizId: string
-  userId: string
-}
-
 export interface ICreateQuizRequest {
   title: string
   description: string
@@ -64,4 +61,8 @@ export interface ICreateQuestionRequest {
   text: string
   rightAnswerIndex: number
   answers: string[]
+}
+
+export interface ICreatedQuizIdResponse {
+  quizId: string
 }

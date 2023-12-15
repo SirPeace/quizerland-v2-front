@@ -35,9 +35,11 @@ export const quizSlice = createSlice({
       state.progressId = action.payload.progress.id
 
       state.id = action.payload.quizItem.id
+      state.userId = action.payload.quizItem.userId
       state.title = action.payload.quizItem.title
       state.description = action.payload.quizItem.description
       state.questions = questions
+      state.createdAt = action.payload.quizItem.createdAt
     },
 
     resetState: () => quizState,

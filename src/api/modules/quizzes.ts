@@ -1,10 +1,8 @@
-import type { IQuizFormState } from '@/redux/quizForm/types'
-
 import httpClient from '../httpClient'
 
 import type {
   ICreateQuizRequest,
-  ICreatedQuizResponse,
+  ICreatedQuizIdResponse,
   IQuizResponse,
   IQuizzesResponse,
 } from './types'
@@ -13,8 +11,8 @@ import type { AxiosResponse } from 'axios'
 
 export const createQuiz = async (
   quizData: ICreateQuizRequest,
-): Promise<ICreatedQuizResponse> => {
-  const { data } = await httpClient.post<ICreatedQuizResponse>(
+): Promise<ICreatedQuizIdResponse> => {
+  const { data } = await httpClient.post<ICreatedQuizIdResponse>(
     '/api/quizzes',
     quizData,
   )

@@ -25,6 +25,8 @@ import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
 
+import { useCallback, type FC } from 'react'
+
 import {
   deleteQuizProgress,
   getNextIncompleteQuiz,
@@ -32,8 +34,9 @@ import {
 import { resetCurrentQuestion, setIsPreview } from '@/redux/quiz/quizSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
+import { getFormattedDate } from '@/utils/getFormattedDate'
+
 import type { Metadata } from 'next'
-import type { FC } from 'react'
 
 interface Props {
   params: {
@@ -68,6 +71,7 @@ const QuizPreviewCard: FC = () => {
     quizDescription,
     questionsCount,
     currentQuestion,
+    createdAt,
   } = useAppSelector(({ quizState }) => {
     const quiz = quizState
     const questionsCount = quiz.questions.length ?? 0
@@ -77,6 +81,7 @@ const QuizPreviewCard: FC = () => {
     const quizTitle = quiz.title
     const quizDescription = quiz.description
     const currentQuestion = quiz.currentQuestionIndex
+    const createdAt = quiz.createdAt
 
     return {
       wrongAnswersCount,
@@ -87,12 +92,15 @@ const QuizPreviewCard: FC = () => {
       quizDescription,
       questionsCount,
       currentQuestion,
+      createdAt,
     }
   })
 
   const dispatch = useAppDispatch()
 
   const router = useRouter()
+
+  const quizCreationDate = getFormattedDate(createdAt)
 
   const goToNextQuiz = async (): Promise<void> => {
     try {
@@ -139,7 +147,7 @@ const QuizPreviewCard: FC = () => {
           </IconButton>
         }
         title={`Автор теста: ${userNickname} ( email: ${userEmail} ) .`}
-        subheader="Дата создания теста: 14 Сентября 2016 ."
+        subheader={`Дата создания теста: ${quizCreationDate} .`}
       />
 
       <CardContent>

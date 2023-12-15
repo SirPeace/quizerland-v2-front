@@ -1,6 +1,7 @@
 'use client'
 
 import { AxiosError } from 'axios'
+import { useRouter } from 'next/navigation'
 import { createContext, useState } from 'react'
 
 import { createQuiz } from '@/api/modules/quizzes'
@@ -22,6 +23,7 @@ export const QuizFormContext = createContext<ICreateQuizContext>({
 })
 
 const QuizFormContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState(-1)
 
   const { title, description, questions } = useAppSelector(
@@ -48,8 +50,11 @@ const QuizFormContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
     console.log(createdQuizForm)
 
     try {
-      const createdQuizInfo = await createQuiz(createdQuizForm)
-      console.log(createdQuizInfo)
+      const { quizId } = await createQuiz(createdQuizForm)
+
+      router.push(`/quizzes/${quizId}`)
+
+      console.log(quizId)
     } catch (err: any) {
       if (err instanceof AxiosError) {
         const error = err.response?.data?.message
