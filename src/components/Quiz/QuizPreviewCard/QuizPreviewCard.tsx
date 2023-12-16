@@ -1,31 +1,23 @@
 'use client'
 
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined'
-
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import PersonIcon from '@mui/icons-material/Person'
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined'
-import {
-  CardActions,
-  Button,
-  Divider,
-  FormControlLabel,
-  RadioGroup,
-} from '@mui/material'
-
 import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
+import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import CardHeader from '@mui/material/CardHeader'
+import Divider from '@mui/material/Divider'
+import FormControlLabel from '@mui/material/FormControlLabel'
 import IconButton from '@mui/material/IconButton'
+import RadioGroup from '@mui/material/RadioGroup'
 import Typography from '@mui/material/Typography'
 import { red } from '@mui/material/colors'
-
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
-import * as React from 'react'
-
-import { useCallback, type FC } from 'react'
 
 import {
   deleteQuizProgress,
@@ -33,10 +25,10 @@ import {
 } from '@/api/modules/quizzes'
 import { resetCurrentQuestion, setIsPreview } from '@/redux/quiz/quizSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
-
 import { getFormattedDate } from '@/utils/getFormattedDate'
 
 import type { Metadata } from 'next'
+import type { FC } from 'react'
 
 interface Props {
   params: {
@@ -54,53 +46,28 @@ export async function generateMetadata({
 
 const QuizPreviewCard: FC = () => {
   // TODO User для карточки пока как заглушка, переделать на реального юзера создавшего тест
-  const { userNickname, userEmail } = useAppSelector(({ authState }) => {
-    const user = authState.user
-    const userNickname = user?.nickname
-    const userEmail = user?.email
+  const { user } = useAppSelector(({ authState }) => authState)
 
-    return { userNickname, userEmail }
-  })
+  const { correctAnswersCount, wrongAnswersCount, quiz, questionsCount } =
+    useAppSelector(({ quizState }) => {
+      const { questions, ...quiz } = quizState
+      const questionsCount = questions.length ?? 0
+      const correctAnswersCount = quizState.rightAttempts ?? 0
+      const wrongAnswersCount = questionsCount - correctAnswersCount
 
-  const {
-    correctAnswersCount,
-    wrongAnswersCount,
-    quiz,
-    isFinished,
-    quizTitle,
-    quizDescription,
-    questionsCount,
-    currentQuestion,
-    createdAt,
-  } = useAppSelector(({ quizState }) => {
-    const quiz = quizState
-    const questionsCount = quiz.questions.length ?? 0
-    const correctAnswersCount = quiz.rightAttempts ?? 0
-    const wrongAnswersCount = questionsCount - correctAnswersCount
-    const isFinished = quiz.isFinished
-    const quizTitle = quiz.title
-    const quizDescription = quiz.description
-    const currentQuestion = quiz.currentQuestionIndex
-    const createdAt = quiz.createdAt
-
-    return {
-      wrongAnswersCount,
-      correctAnswersCount,
-      quiz,
-      isFinished,
-      quizTitle,
-      quizDescription,
-      questionsCount,
-      currentQuestion,
-      createdAt,
-    }
-  })
+      return {
+        quiz,
+        questionsCount,
+        wrongAnswersCount,
+        correctAnswersCount,
+      }
+    })
 
   const dispatch = useAppDispatch()
 
   const router = useRouter()
 
-  const quizCreationDate = getFormattedDate(createdAt)
+  const quizCreationDate = getFormattedDate(quiz.createdAt)
 
   const goToNextQuiz = async (): Promise<void> => {
     try {
@@ -118,11 +85,11 @@ const QuizPreviewCard: FC = () => {
   }
 
   const restartQuiz = async (): Promise<void> => {
+    dispatch(resetCurrentQuestion())
     dispatch(setIsPreview(false))
+
     try {
       await deleteQuizProgress(quiz.id)
-
-      dispatch(resetCurrentQuestion())
     } catch (err: any) {
       if (err instanceof AxiosError) {
         const error = err.response?.data?.message
@@ -146,7 +113,7 @@ const QuizPreviewCard: FC = () => {
             <MoreVertIcon />
           </IconButton>
         }
-        title={`Автор теста: ${userNickname} ( email: ${userEmail} ) .`}
+        title={`Автор теста: ${user?.nickname} ( email: ${user?.email} ) .`}
         subheader={`Дата создания теста: ${quizCreationDate} .`}
       />
 
@@ -157,7 +124,7 @@ const QuizPreviewCard: FC = () => {
           component="div"
           className="text-left indent-2"
         >
-          {quizTitle}
+          {quiz.title}
         </Typography>
 
         <Divider />
@@ -167,12 +134,12 @@ const QuizPreviewCard: FC = () => {
           color="text.secondary"
           className="indent-2 text-justify my-[1rem]"
         >
-          {quizDescription}
+          {quiz.description}
         </Typography>
 
         <Divider />
 
-        {!isFinished ? (
+        {!quiz.isFinished ? (
           <div className="flex justify-between mt-[1rem]">
             <Typography
               variant="body1"
@@ -187,9 +154,9 @@ const QuizPreviewCard: FC = () => {
               color="text.secondary"
               className="indent-2 text-justify"
             >
-              {currentQuestion === 0
-                ? 'Прогресс: Тест не пройден'
-                : `Прогресс: ${currentQuestion}-й вопрос`}
+              {quiz.currentQuestionIndex === 0
+                ? 'Вы ещё на начинали проходить этот тест'
+                : `Прогресс: ${quiz.currentQuestionIndex + 1}-й вопрос`}
             </Typography>
           </div>
         ) : (
@@ -231,7 +198,7 @@ const QuizPreviewCard: FC = () => {
       </CardContent>
 
       <CardActions>
-        {!isFinished ? (
+        {!quiz.isFinished ? (
           <div className="flex ml-auto">
             <Button
               size="medium"

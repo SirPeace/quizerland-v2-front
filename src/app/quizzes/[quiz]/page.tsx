@@ -1,9 +1,7 @@
 'use client'
 
 import { AxiosError } from 'axios'
-
-import { useEffect, useState } from 'react'
-
+import { useEffect, useState, type FC } from 'react'
 import { match } from 'ts-pattern'
 
 import { getQuiz } from '@/api/modules/quizzes'
@@ -16,7 +14,6 @@ import { resetState, setIsPreview, setupState } from '@/redux/quiz/quizSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 import type { Metadata } from 'next'
-import type { FC } from 'react'
 
 interface Props {
   params: {
@@ -33,30 +30,19 @@ export async function generateMetadata({
 }
 
 const QuizPage: FC<Props> = ({ params: { quiz: quizId } }) => {
-  const {
-    quizTitle,
-    currentQuestion,
-    currentQuestionIndex,
-    questionsLength,
-    isFinished,
-    isPreview,
-  } = useAppSelector(({ quizState }) => {
-    const currentQuestionIndex = quizState.currentQuestionIndex
-    const currentQuestion = quizState.questions[currentQuestionIndex]
-    const questionsLength = quizState.questions.length
-    const quizTitle = quizState.title
-    const isFinished = quizState.isFinished
-    const isPreview = quizState.isPreview
+  const { quiz, currentQuestion, questionsLength } = useAppSelector(
+    ({ quizState }) => {
+      const { questions, ...quiz } = quizState
+      const currentQuestion = questions[quiz.currentQuestionIndex]
+      const questionsLength = questions.length
 
-    return {
-      currentQuestion,
-      questionsLength,
-      quizTitle,
-      currentQuestionIndex,
-      isFinished,
-      isPreview,
-    }
-  })
+      return {
+        currentQuestion,
+        questionsLength,
+        quiz,
+      }
+    },
+  )
 
   const [quizIdError, setQuizIdError] = useState<string>()
 
@@ -66,7 +52,6 @@ const QuizPage: FC<Props> = ({ params: { quiz: quizId } }) => {
     void getQuiz(quizId)
       .then(quiz => {
         dispatch(setupState(quiz))
-        dispatch(setIsPreview(true))
       })
       .catch(err => {
         if (err instanceof AxiosError) {
@@ -76,6 +61,7 @@ const QuizPage: FC<Props> = ({ params: { quiz: quizId } }) => {
           setQuizIdError('Произошла ошибка, обратитесь в тех. поддержку')
         }
       })
+
     return () => {
       dispatch(resetState())
     }
@@ -83,7 +69,7 @@ const QuizPage: FC<Props> = ({ params: { quiz: quizId } }) => {
 
   return (
     <div className="flex flex-col items-stretch max-w-4xl min-h-screen mx-auto pb-1">
-      <h1 className="text-center pt-16 my-0">{quizTitle}</h1>
+      <h1 className="text-center pt-16 my-0">{quiz.title}</h1>
       <div className="mt-[10%] mb-auto">
         <GoToHomePageButton />
         <div className="mx-4 mt-3">
@@ -94,12 +80,12 @@ const QuizPage: FC<Props> = ({ params: { quiz: quizId } }) => {
                 <Loader />
               </div>
             ))
-            .with(isPreview, () => <QuizPreviewCard />)
-            .with(isFinished, () => <QuizPreviewCard />)
+            .with(quiz.isPreview, () => <QuizPreviewCard />)
+            .with(quiz.isFinished, () => <QuizPreviewCard />)
             .otherwise(() => (
               <QuestionCard
                 question={currentQuestion}
-                questionIndex={currentQuestionIndex}
+                questionIndex={quiz.currentQuestionIndex}
                 questionsLength={questionsLength}
               />
             ))}

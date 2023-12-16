@@ -50,11 +50,8 @@ const QuizFormContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
     console.log(createdQuizForm)
 
     try {
-      const { quizId } = await createQuiz(createdQuizForm)
-
-      router.push(`/quizzes/${quizId}`)
-
-      console.log(quizId)
+      const { id } = await createQuiz(createdQuizForm)
+      router.push(`/quizzes/${id}`)
     } catch (err: any) {
       if (err instanceof AxiosError) {
         const error = err.response?.data?.message

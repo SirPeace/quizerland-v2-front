@@ -63,6 +63,6 @@ export interface ICreateQuestionRequest {
   answers: string[]
 }
 
-export interface ICreatedQuizIdResponse {
-  quizId: string
+export interface ICreateQuizResponse {
+  id: string
 }
