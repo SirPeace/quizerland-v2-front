@@ -2,7 +2,7 @@ import httpClient from '../httpClient'
 
 import type {
   ICreateQuizRequest,
-  ICreatedQuizIdResponse,
+  ICreateQuizResponse,
   IQuizResponse,
   IQuizzesResponse,
 } from './types'
@@ -11,8 +11,8 @@ import type { AxiosResponse } from 'axios'
 
 export const createQuiz = async (
   quizData: ICreateQuizRequest,
-): Promise<ICreatedQuizIdResponse> => {
-  const { data } = await httpClient.post<ICreatedQuizIdResponse>(
+): Promise<ICreateQuizResponse> => {
+  const { data } = await httpClient.post<ICreateQuizResponse>(
     '/api/quizzes',
     quizData,
   )

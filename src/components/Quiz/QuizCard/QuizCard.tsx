@@ -5,9 +5,6 @@ import { useRouter } from 'next/navigation'
 
 import type { IQuizzesItem } from '@/api/modules/types'
 
-import { setIsPreview } from '@/redux/quiz/quizSlice'
-import { useAppDispatch } from '@/redux/reduxHooks'
-
 import type { FC } from 'react'
 
 interface IQuizProps {
@@ -16,8 +13,6 @@ interface IQuizProps {
   itemStyle?: React.CSSProperties
 }
 const Quiz: FC<IQuizProps> = ({ quiz, itemStyle, orderNumber }) => {
-  const dispatch = useAppDispatch()
-
   const router = useRouter()
 
   return (
@@ -57,7 +52,6 @@ const Quiz: FC<IQuizProps> = ({ quiz, itemStyle, orderNumber }) => {
           variant="contained"
           size="small"
           onClick={() => {
-            dispatch(setIsPreview(true))
             router.push(`/quizzes/${quiz.id}`)
           }}
         >

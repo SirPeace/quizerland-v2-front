@@ -4,7 +4,7 @@ const quizState: IQuiz = {
   currentQuestionIndex: 0,
   rightAttempts: 0,
   isFinished: false,
-  isPreview: false,
+  isPreview: true,
   progressId: '',
   createdAt: '',
 
