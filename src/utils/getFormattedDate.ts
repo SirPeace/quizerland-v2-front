@@ -1,5 +1,19 @@
+import dayjs from 'dayjs'
+import ru from 'dayjs/locale/ru'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
 export const getFormattedDate = (dateDB: string): string => {
-  const months = [
+  dayjs.extend(relativeTime)
+  const receivedDate = dayjs(dateDB).locale(ru)
+
+  const dayOfTheWeek = receivedDate.format('dddd')
+  const monthDate = receivedDate.date()
+  const monthOfYear = receivedDate.month()
+  const year = receivedDate.year()
+  const hour = receivedDate.hour()
+  const minute = receivedDate.minute()
+
+  const customMonths = [
     'января',
     'февраля',
     'марта',
@@ -14,21 +28,18 @@ export const getFormattedDate = (dateDB: string): string => {
     'декабря',
   ]
 
-  const d = new Date(dateDB)
-
-  const date = d.getDate()
-  const month = d.getMonth()
-  const year = d.getFullYear()
-
   let formattedMonth = '[месяц]'
 
-  for (let i = 0; i < months.length; i++) {
-    if (i === month) {
-      formattedMonth = months[i]
+  for (let i = 0; i < customMonths.length; i++) {
+    if (monthOfYear === i) {
+      formattedMonth = customMonths[i]
     }
   }
 
-  const newDate = `${date} ${formattedMonth} ${year} года`
+  const detailsDate = `${hour}:${minute}, ${dayOfTheWeek}, ${monthDate} ${formattedMonth} ${year} года`
+  const timeSinceInception = dayjs(dateDB).locale(ru).fromNow()
 
-  return newDate
+  const detailsDateQuizCreation = `${timeSinceInception}, ${detailsDate} `
+
+  return detailsDateQuizCreation
 }

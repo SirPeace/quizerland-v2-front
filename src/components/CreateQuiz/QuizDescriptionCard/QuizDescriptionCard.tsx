@@ -23,6 +23,7 @@ export default function QuizDescriptionForm(): JSX.Element {
   const dispatch = useAppDispatch()
 
   const { control, reset } = useForm<TQuizDescriptionForm>({
+    mode: 'onChange',
     resolver: zodResolver(quizDescriptionFormSchema),
   })
 
