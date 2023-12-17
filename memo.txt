@@ -5,9 +5,9 @@
  $ npm install @mui/material @emotion/react @emotion/styled
  $ npm install @mui/icons-material
 
------ 
+-----
 
-# Установка Redux : 
+# Установка Redux :
 
  Вместе с проектом :
 
@@ -33,7 +33,7 @@
 
 	// layout.tsx - добавить id :
 
-		id='__next'	
+		id='__next'
 
 -----
 
@@ -58,7 +58,7 @@
 
 -----
 
-# ts-pattern - библиотека сопоставления шаблонов в TypeScript 
+# ts-pattern - библиотека сопоставления шаблонов в TypeScript
 
   $ npm i ts-pattern
 
@@ -92,25 +92,25 @@ export const metadata: Metadata = {
 -----
 
 # ZOD - Проверка схемы с помощью статического вывода типов :
- 
+
  $ npm i zod
  $ npm i @hookform/resolvers
 
  $ npm i zod @hookform/resolvers
 
------ 
+-----
 
 # hookform/devtools - инструмент работы с формами :
 
- $ npm install -D @hookform/devtools 
+ $ npm install -D @hookform/devtools
 
------ 
+-----
 
-# lodash - использовал для создания задержки обработки данных функции watch из react-hook-form: 
+# lodash - использовал для создания задержки обработки данных функции watch из react-hook-form:
 
  $ npm i lodash-es
 
------ 
+-----
 
 # Виртуализация списков
 
@@ -122,3 +122,13 @@ $ npm i -D @types/react-window
 # Коллекция современных, безопасных для сервера хуков React - от команды ui.dev
 
 $ npm i @uidotdev/usehooks
+
+-----
+
+# Устанвка pnpm
+
+Выполнить, чтобы включить pnpm: corepack enable
+Удалить node_modules и package-lock.json
+Выполнить: pnpm i
+
+-----
