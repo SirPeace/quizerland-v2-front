@@ -13,10 +13,11 @@ import { IconButton } from '@mui/material'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 
+import { useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -30,11 +31,23 @@ import { useAppDispatch } from '@/redux/reduxHooks'
 
 import { registrationSchema } from '../types'
 
+import {
+  boxFormRegDesktopStyle,
+  boxFormRegLaptopStyle,
+  containerRegDesktopStyle,
+  containerRegLaptopStyle,
+  headerTitleRegDesktopStyle,
+  headerTitleRegLaptopStyle,
+} from './styles'
+
 import type { TRegistrationSchema } from '../types'
 
 import type { SubmitHandler } from 'react-hook-form'
 
 const RegistrationForm = (): JSX.Element => {
+  const theme = useTheme()
+  const isNotMobile = useMediaQuery(theme.breakpoints.up('sm'))
+
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
@@ -81,19 +94,40 @@ const RegistrationForm = (): JSX.Element => {
   }
 
   return (
-    <Card raised className="flex flex-col items-center p-10 rounded-xl">
-      <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-        <PersonAddIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5">
-        Регистрация
-      </Typography>
+    <div
+      className={
+        isNotMobile
+          ? `${containerRegDesktopStyle}`
+          : `${containerRegLaptopStyle}`
+      }
+    >
+      <div
+        className={
+          isNotMobile
+            ? `${headerTitleRegDesktopStyle}`
+            : `${headerTitleRegLaptopStyle}`
+        }
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+          <PersonAddIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Регистрация
+        </Typography>
+      </div>
+
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full mt-8"
+        className={
+          isNotMobile ? `${boxFormRegDesktopStyle}` : `${boxFormRegLaptopStyle}`
+        }
       >
-        <div className="mb-8">
+        <div
+          className={
+            isNotMobile ? 'flex flex-col my-auto' : 'px-[1rem] my-auto'
+          }
+        >
           <Box className="flex items-end">
             <AccountCircleIcon
               sx={{ color: 'action.active', mr: 1, mb: 0.5 }}
@@ -192,7 +226,11 @@ const RegistrationForm = (): JSX.Element => {
           </div>
         </div>
 
-        <div className="mt-2">
+        <div
+          className={
+            isNotMobile ? 'w-full mt-[2rem]' : 'w-full fixed bottom-1 pr-6'
+          }
+        >
           <Button
             type="submit"
             disabled={isSubmitting}
@@ -216,7 +254,7 @@ const RegistrationForm = (): JSX.Element => {
           </Button>
         </div>
       </Box>
-    </Card>
+    </div>
   )
 }
 

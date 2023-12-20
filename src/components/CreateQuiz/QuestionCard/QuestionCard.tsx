@@ -41,6 +41,7 @@ const QuizQuestionForm = (): JSX.Element => {
   const dispatch = useAppDispatch()
 
   const { control, formState, reset, watch } = useForm<TQuestionForm>({
+    mode: 'onChange',
     resolver: zodResolver(questionFormSchema),
     defaultValues: {
       title: question?.title ?? '',
@@ -133,10 +134,17 @@ const QuizQuestionForm = (): JSX.Element => {
           control={control}
           name="rightAnswerId"
           render={({ field }) => (
-            <RadioGroup {...field} className="space-y-4">
+            <RadioGroup
+              {...field}
+              onChange={(event, value) => {
+                field.onChange(Number(value))
+              }}
+              value={field.value}
+              className="space-y-4"
+            >
               {answerFields.map((answerField, idx) => (
                 <div key={answerField.id} className="flex w-full">
-                  <Radio value={idx} className="mr-1" />
+                  <Radio value={idx} className="mr-1 mb-auto" />
 
                   <Controller
                     control={control}
