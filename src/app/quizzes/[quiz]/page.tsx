@@ -1,5 +1,7 @@
 'use client'
 
+import { useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import { AxiosError } from 'axios'
 
 import { useEffect, useState } from 'react'
@@ -33,6 +35,9 @@ export async function generateMetadata({
 }
 
 const QuizPage: FC<Props> = ({ params: { quiz: quizId } }) => {
+  const theme = useTheme()
+  const isNotMobile = useMediaQuery(theme.breakpoints.up('sm'))
+
   const { currentQuestion, questionsLength, quiz } = useAppSelector(
     ({ quizState }) => {
       const { questions, ...quiz } = quizState
@@ -71,9 +76,8 @@ const QuizPage: FC<Props> = ({ params: { quiz: quizId } }) => {
   }, [dispatch, quizId])
 
   return (
-    <div className="flex flex-col items-stretch max-w-4xl min-h-screen mx-auto pb-1">
-      <h1 className="text-center pt-16 my-0">{quiz.title}</h1>
-      <div className="mt-[10%] mb-auto">
+    <div className="flex flex-col items-stretch max-w-4xl min-w-screen min-h-screen mx-auto">
+      <div className={isNotMobile ? 'pt-[13%] mb-auto px-[0.5rem]' : ''}>
         <GoToHomePageButton />
         <div className="mx-4 mt-3">
           {match<boolean>(true)

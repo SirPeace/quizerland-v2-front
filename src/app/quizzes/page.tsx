@@ -21,7 +21,7 @@ import { useAppSelector, useAppDispatch } from '@/redux/reduxHooks'
 const neucha = Neucha({ subsets: ['cyrillic'], weight: '400', preload: true })
 const pacifico = Pacifico({ subsets: ['latin'], weight: '400', preload: true })
 
-let LIST_ITEM_HEIGHT: 200 | 270 // px
+let LIST_ITEM_HEIGHT: 210 | 270 // px
 const LIST_PADDING_X = 16 // px
 const LIST_PADDING_RIGHT = LIST_PADDING_X + 16 // px
 const LIST_PADDING_Y = 24 // px
@@ -55,7 +55,7 @@ const QuizzesPage = (): JSX.Element => {
   const theme = useTheme()
   const isNotMobile = useMediaQuery(theme.breakpoints.up('sm'))
 
-  LIST_ITEM_HEIGHT = isNotMobile ? 200 : 270
+  LIST_ITEM_HEIGHT = isNotMobile ? 210 : 270
 
   const dispatch = useAppDispatch()
   const { height } = useWindowSize()
