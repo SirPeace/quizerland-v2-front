@@ -13,9 +13,9 @@ export const lightTheme = createTheme({
   palette: {
     mode: 'light',
     secondary: {
-      main: grey[300],
-      dark: grey[300],
-      light: grey[300],
+      main: grey[100],
+      dark: grey[200],
+      light: '#fff',
       contrastText: '#222',
     },
   },

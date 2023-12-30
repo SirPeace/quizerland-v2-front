@@ -8,7 +8,12 @@ import { debounce } from 'lodash-es'
 import { type ChangeEvent, useContext, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { updateQuizDescription } from '@/redux/quizForm/quizFormSlice'
+import { getQuizDescriptionFormAndStoreErrorsDiff } from '@/redux/quizForm/helpers'
+import {
+  setQuizDescriptionErrors,
+  updateQuizDescription,
+} from '@/redux/quizForm/quizFormSlice'
+import type { TQuizDescriptionFormErrors } from '@/redux/quizForm/types'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 import { QuizFormContext } from '../QuizFormContext'
@@ -22,16 +27,36 @@ export default function QuizDescriptionForm(): JSX.Element {
   )
   const dispatch = useAppDispatch()
 
-  const { control, reset } = useForm<TQuizDescriptionForm>({
-    mode: 'onChange',
-    resolver: zodResolver(quizDescriptionFormSchema),
-  })
+  const { control, reset, formState, setError } = useForm<TQuizDescriptionForm>(
+    {
+      mode: 'onChange',
+      resolver: zodResolver(quizDescriptionFormSchema),
+    },
+  )
+
+  useEffect(() => {
+    const errorsDiff = getQuizDescriptionFormAndStoreErrorsDiff(
+      formState.errors,
+      quizDescription.errors,
+    )
+
+    if (Object.keys(errorsDiff).length > 0) {
+      dispatch(setQuizDescriptionErrors(formState.errors))
+    }
+  }, [formState, quizDescription.errors, dispatch])
 
   useEffect(() => {
     reset({
       title: quizDescription.title,
       description: quizDescription.description,
     })
+
+    if (quizDescription.errors !== undefined) {
+      let errorKey: keyof TQuizDescriptionFormErrors
+      for (errorKey in quizDescription.errors) {
+        setError(errorKey, { message: quizDescription.errors[errorKey] })
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reset])
 

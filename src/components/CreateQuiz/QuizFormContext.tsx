@@ -47,11 +47,9 @@ const QuizFormContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const submit = async (): Promise<void> => {
     const createdQuizForm = { title, description, questions }
-    console.log(createdQuizForm)
 
     try {
       const { id } = await createQuiz(createdQuizForm)
-
       router.push(`/quizzes/${id}`)
     } catch (err: any) {
       if (err instanceof AxiosError) {

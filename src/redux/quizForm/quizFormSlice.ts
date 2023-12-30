@@ -1,8 +1,19 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
+import type {
+  TQuestionForm,
+  TQuizDescriptionForm,
+} from '@/components/CreateQuiz/schema'
+
+import {
+  questionFormErrorsToStoreErrors,
+  quizDescriptionFormErrorsToStoreErrors,
+} from './helpers'
 import quizFormState, { defaultQuestion } from './initialState'
 
-import type { IQuizDescription } from './types'
+import type { IQuizDescriptionForm } from './types'
+
+import type { FieldErrors } from 'react-hook-form'
 
 export interface PartialQuestion {
   title?: string | undefined
@@ -21,6 +32,10 @@ interface IRemoveAnswerPayload {
   questionIndex: number
   answerIndex: number
 }
+interface ISetQuestionErrorsPayload {
+  questionIndex: number
+  errors: FieldErrors<TQuestionForm>
+}
 
 export const quizFormSlice = createSlice({
   name: 'quizForm',
@@ -28,7 +43,7 @@ export const quizFormSlice = createSlice({
   reducers: {
     updateQuizDescription(
       state,
-      { payload }: PayloadAction<Partial<IQuizDescription>>,
+      { payload }: PayloadAction<Partial<IQuizDescriptionForm>>,
     ) {
       state.quizDescription = {
         ...state.quizDescription,
@@ -76,6 +91,23 @@ export const quizFormSlice = createSlice({
 
       state.questions[questionIndex].answers.splice(answerIndex, 1)
     },
+
+    setQuestionErrors(
+      state,
+      { payload }: PayloadAction<ISetQuestionErrorsPayload>,
+    ) {
+      const question = state.questions[payload.questionIndex]
+
+      question.errors = questionFormErrorsToStoreErrors(payload.errors)
+    },
+
+    setQuizDescriptionErrors(
+      state,
+      { payload }: PayloadAction<FieldErrors<TQuizDescriptionForm>>,
+    ) {
+      state.quizDescription.errors =
+        quizDescriptionFormErrorsToStoreErrors(payload)
+    },
   },
 })
 
@@ -85,5 +117,7 @@ export const {
   updateQuizDescription,
   appendAnswer,
   removeAnswer,
+  setQuestionErrors,
+  setQuizDescriptionErrors,
 } = quizFormSlice.actions
 export default quizFormSlice.reducer

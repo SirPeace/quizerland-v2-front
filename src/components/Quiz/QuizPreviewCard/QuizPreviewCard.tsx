@@ -4,23 +4,21 @@ import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import PersonIcon from '@mui/icons-material/Person'
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined'
-import Divider from '@mui/material/Divider'
-import RadioGroup from '@mui/material/RadioGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import CardActions from '@mui/material/CardActions'
-import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
+import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import CardHeader from '@mui/material/CardHeader'
+import Divider from '@mui/material/Divider'
+import FormControlLabel from '@mui/material/FormControlLabel'
 import IconButton from '@mui/material/IconButton'
+import RadioGroup from '@mui/material/RadioGroup'
 import Typography from '@mui/material/Typography'
 import { red } from '@mui/material/colors'
 
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
-
-import type { FC } from 'react'
 
 import {
   deleteQuizProgress,
@@ -31,6 +29,8 @@ import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 import { getFormattedDate } from '@/utils/getFormattedDate'
 
 import type { Metadata } from 'next'
+import type { FC } from 'react'
+
 interface Props {
   params: {
     quiz: string

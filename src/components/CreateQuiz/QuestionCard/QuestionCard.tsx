@@ -1,30 +1,28 @@
 'use client'
 
 import { DevTool } from '@hookform/devtools'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import { Box, Button, Card, TextField, Radio, RadioGroup } from '@mui/material'
-
 import IconButton from '@mui/material/IconButton'
 import InputAdornment from '@mui/material/InputAdornment'
 import { debounce, isEqual } from 'lodash-es'
 import { useContext, useEffect, useCallback } from 'react'
-
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 
+import { getQuestionFormAndStoreErrorsDiff } from '@/redux/quizForm/helpers'
 import {
   type PartialQuestion,
   appendAnswer,
   removeAnswer,
   updateQuestion,
+  setQuestionErrors,
 } from '@/redux/quizForm/quizFormSlice'
-
+import type { TQuestionFormErrors } from '@/redux/quizForm/types'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 import { QuizFormContext } from '../QuizFormContext'
-
 import { type TQuestionForm, questionFormSchema } from '../schema'
 
 const QuizQuestionForm = (): JSX.Element => {
@@ -33,21 +31,25 @@ const QuizQuestionForm = (): JSX.Element => {
   //* =======================================
   const { activeTab: questionIndex } = useContext(QuizFormContext)
 
-  const { question } = useAppSelector(({ quizFormState }) => {
+  const { question, storeErrors } = useAppSelector(({ quizFormState }) => {
     const question = quizFormState.questions[questionIndex]
+    const storeErrors = quizFormState.questions[questionIndex].errors
 
-    return { question }
+    return { question, storeErrors }
   })
   const dispatch = useAppDispatch()
 
-  const { control, formState, reset, watch } = useForm<TQuestionForm>({
-    resolver: zodResolver(questionFormSchema),
-    defaultValues: {
-      title: question?.title ?? '',
-      rightAnswerId: question?.rightAnswerId ?? 0,
-      answers: [{ text: '' }, { text: '' }, { text: '' }],
+  const { control, formState, reset, watch, setError } = useForm<TQuestionForm>(
+    {
+      mode: 'onChange',
+      resolver: zodResolver(questionFormSchema),
+      defaultValues: {
+        title: question?.title ?? '',
+        rightAnswerId: question?.rightAnswerId ?? 0,
+        answers: [{ text: '' }, { text: '' }, { text: '' }],
+      },
     },
-  })
+  )
   const {
     fields: answerFields,
     append: appendFormAnswer,
@@ -85,6 +87,13 @@ const QuizQuestionForm = (): JSX.Element => {
       answers: question.answers,
     })
 
+    if (storeErrors !== undefined) {
+      let errorKey: keyof TQuestionFormErrors
+      for (errorKey in storeErrors) {
+        setError(errorKey, { message: storeErrors[errorKey] })
+      }
+    }
+
     const { unsubscribe } = watch(debounce(watchForm, 500))
 
     return () => {
@@ -92,6 +101,22 @@ const QuizQuestionForm = (): JSX.Element => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questionIndex])
+
+  useEffect(() => {
+    const errorsDiff = getQuestionFormAndStoreErrorsDiff(
+      formState.errors,
+      storeErrors,
+    )
+
+    if (Object.keys(errorsDiff).length > 0) {
+      dispatch(
+        setQuestionErrors({
+          questionIndex,
+          errors: formState.errors,
+        }),
+      )
+    }
+  }, [formState, storeErrors, dispatch, questionIndex])
 
   //* =======================================
   //*                METHODS
