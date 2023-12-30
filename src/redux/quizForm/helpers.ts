@@ -7,6 +7,9 @@ import type { TQuestionFormErrors, TQuizDescriptionFormErrors } from './types'
 
 import type { FieldErrors } from 'react-hook-form'
 
+// ==============================
+//     Quiz description form
+// ==============================
 export function quizDescriptionFormErrorsToStoreErrors(
   formStateErrors: FieldErrors<TQuizDescriptionForm>,
 ): TQuizDescriptionFormErrors {
@@ -26,6 +29,29 @@ export function quizDescriptionFormErrorsToStoreErrors(
   return storeErrors
 }
 
+export function getQuizDescriptionFormAndStoreErrorsDiff(
+  formStateErrors: FieldErrors<TQuizDescriptionForm>,
+  storeErrors: TQuizDescriptionFormErrors,
+): TQuizDescriptionFormErrors {
+  const sanitizedFormStateErrors =
+    quizDescriptionFormErrorsToStoreErrors(formStateErrors)
+
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  const diff = {} as TQuizDescriptionFormErrors
+
+  let k: keyof TQuizDescriptionFormErrors
+  for (k in sanitizedFormStateErrors) {
+    if (sanitizedFormStateErrors[k] !== storeErrors[k]) {
+      diff[k] = sanitizedFormStateErrors[k]
+    }
+  }
+
+  return diff
+}
+
+// ==============================
+//         Question form
+// ==============================
 export function questionFormErrorsToStoreErrors(
   formStateErrors: FieldErrors<TQuestionForm>,
 ): TQuestionFormErrors {
@@ -54,7 +80,7 @@ export function questionFormErrorsToStoreErrors(
   return storeErrors
 }
 
-export function getQuizDescriptionFormAndStoreErrorsDiff(
+export function getQuestionFormAndStoreErrorsDiff(
   formStateErrors: FieldErrors<TQuestionForm>,
   storeErrors: TQuestionFormErrors,
 ): TQuestionFormErrors {
@@ -65,26 +91,6 @@ export function getQuizDescriptionFormAndStoreErrorsDiff(
   const diff = {} as TQuestionFormErrors
 
   let k: keyof TQuestionFormErrors
-  for (k in sanitizedFormStateErrors) {
-    if (sanitizedFormStateErrors[k] !== storeErrors[k]) {
-      diff[k] = sanitizedFormStateErrors[k]
-    }
-  }
-
-  return diff
-}
-
-export function getQuestionFormAndStoreErrorsDiff(
-  formStateErrors: FieldErrors<TQuizDescriptionForm>,
-  storeErrors: TQuizDescriptionFormErrors,
-): TQuizDescriptionFormErrors {
-  const sanitizedFormStateErrors =
-    quizDescriptionFormErrorsToStoreErrors(formStateErrors)
-
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  const diff = {} as TQuizDescriptionFormErrors
-
-  let k: keyof TQuizDescriptionFormErrors
   for (k in sanitizedFormStateErrors) {
     if (sanitizedFormStateErrors[k] !== storeErrors[k]) {
       diff[k] = sanitizedFormStateErrors[k]

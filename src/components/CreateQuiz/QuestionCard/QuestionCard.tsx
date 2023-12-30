@@ -39,8 +39,8 @@ const QuizQuestionForm = (): JSX.Element => {
   })
   const dispatch = useAppDispatch()
 
-  const { control, formState, reset, watch, setError } = useForm<TQuestionForm>(
-    {
+  const { control, formState, getValues, reset, watch, setError } =
+    useForm<TQuestionForm>({
       mode: 'onChange',
       resolver: zodResolver(questionFormSchema),
       defaultValues: {
@@ -48,8 +48,8 @@ const QuizQuestionForm = (): JSX.Element => {
         rightAnswerId: question?.rightAnswerId ?? 0,
         answers: [{ text: '' }, { text: '' }, { text: '' }],
       },
-    },
-  )
+    })
+
   const {
     fields: answerFields,
     append: appendFormAnswer,
@@ -132,6 +132,9 @@ const QuizQuestionForm = (): JSX.Element => {
     dispatch(removeAnswer({ questionIndex, answerIndex }))
   }
 
+  const isRightAnswer = (idx: number): boolean =>
+    getValues('rightAnswerId') === idx
+
   return (
     <Card raised className="py-5 px-5 rounded-xl mx-3">
       <DevTool control={control} placement="top-right" />
@@ -158,10 +161,21 @@ const QuizQuestionForm = (): JSX.Element => {
           control={control}
           name="rightAnswerId"
           render={({ field }) => (
-            <RadioGroup {...field} className="space-y-4">
+            <RadioGroup
+              {...field}
+              className="space-y-2"
+              onChange={e => {
+                field.onChange(Number(e.target.value))
+              }}
+            >
               {answerFields.map((answerField, idx) => (
-                <div key={answerField.id} className="flex w-full">
-                  <Radio value={idx} className="mr-1" />
+                <div
+                  key={answerField.id}
+                  className={`flex items-start w-full space-x-1 p-2 rounded-md ${
+                    isRightAnswer(idx) ? 'bg-green-50' : ''
+                  }`}
+                >
+                  <Radio value={idx} color="success" />
 
                   <Controller
                     control={control}
@@ -175,6 +189,7 @@ const QuizQuestionForm = (): JSX.Element => {
                         size="small"
                         error={undefined !== error}
                         helperText={error?.message}
+                        color={isRightAnswer(idx) ? 'success' : 'primary'}
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="end">
