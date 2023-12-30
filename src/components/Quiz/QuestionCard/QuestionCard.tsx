@@ -1,6 +1,6 @@
 'use client'
 
-import { Divider, FormControlLabel } from '@mui/material'
+import { Divider, FormControlLabel, Paper } from '@mui/material'
 import Button from '@mui/material/Button'
 import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
@@ -11,8 +11,7 @@ import { useMemo, useState } from 'react'
 
 import { match } from 'ts-pattern'
 
-import { nextQuestion, setRightAttempts } from '@/redux/quiz/quizSlice'
-import type { IAnswer } from '@/redux/quiz/types'
+import { goToNextQuestion, setRightAttempts } from '@/redux/quiz/quizSlice'
 import { useAppDispatch } from '@/redux/reduxHooks'
 
 import {
@@ -30,14 +29,15 @@ import type {
 
 const QuestionCard = ({
   question,
+  questionIndex,
   questionsLength,
 }: IQuestionCardProps): JSX.Element => {
   const dispatch = useAppDispatch()
 
-  const [selected, setSelected] = useState<IAnswer | null>(null)
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number>()
   const [attempts, setAttempts] = useState<Record<number, boolean>>({})
 
-  const correctAnswer = useMemo(() => question.correctAnswerId, [question])
+  const correctAnswer = useMemo(() => question.correctAnswerIndex, [question])
   const isSelectedAnswerCorrect = useMemo(
     () => Object.values(attempts).includes(true),
     [attempts],
@@ -61,10 +61,10 @@ const QuestionCard = ({
       }))
   }, [attempts, isSelectedAnswerCorrect])
 
-  const getStylesForAnswer = (answer: IAnswer): IFormControlStyles => {
-    const isSelected = selected?.id === answer.id
-    const isAttempted = Object.hasOwn(attempts, answer.id)
-    const isCorrect = attempts[answer.id]
+  const getStylesForAnswer = (answerIndex: number): IFormControlStyles => {
+    const isSelected = selectedAnswerIndex === answerIndex
+    const isAttempted = Object.hasOwn(attempts, answerIndex)
+    const isCorrect = attempts[answerIndex]
 
     return match<boolean>(true)
       .with(!isSelected && !isAttempted, () => defaultAnswerStyles)
@@ -74,13 +74,13 @@ const QuestionCard = ({
   }
 
   function checkAnswer(): void {
-    if (selected === null) return
+    if (selectedAnswerIndex === undefined) return
 
-    const isCorrectAnswer = selected.id === correctAnswer
+    const isCorrectAnswer = selectedAnswerIndex === correctAnswer
 
     setAttempts(attempts => ({
       ...attempts,
-      [selected.id]: isCorrectAnswer,
+      [selectedAnswerIndex]: isCorrectAnswer,
     }))
 
     if (isCorrectAnswer) {
@@ -91,15 +91,15 @@ const QuestionCard = ({
       }
 
       setTimeout(() => {
-        setSelected(null)
+        setSelectedAnswerIndex(undefined)
         setAttempts({})
-        dispatch(nextQuestion())
+        dispatch(goToNextQuestion())
       }, 2000)
     }
   }
 
   return (
-    <>
+    <Paper elevation={8} className="rounded-xl">
       <h3 className="m-0 p-3">{question.text}</h3>
 
       <Divider className="mx-2" />
@@ -107,21 +107,21 @@ const QuestionCard = ({
       <form>
         <FormControl className="w-full p-3" variant="standard">
           <RadioGroup>
-            {question.answers.map(answer => (
+            {question.answers.map((answer, idx) => (
               <Button
-                key={answer.id}
+                key={idx}
                 className="normal-case disabled:opacity-60"
                 disabled={
-                  isSelectedAnswerCorrect || Object.hasOwn(attempts, answer.id)
+                  isSelectedAnswerCorrect || Object.hasOwn(attempts, idx)
                 }
               >
                 <FormControlLabel
-                  value={answer.id}
-                  control={getStylesForAnswer(answer).icon}
+                  value={idx}
+                  control={getStylesForAnswer(idx).icon}
                   label={answer.text}
-                  className={`w-full m-0 ${getStylesForAnswer(answer).text}`}
+                  className={`w-full m-0 ${getStylesForAnswer(idx).text}`}
                   onClick={() => {
-                    setSelected(answer)
+                    setSelectedAnswerIndex(idx)
                   }}
                 />
               </Button>
@@ -135,12 +135,13 @@ const QuestionCard = ({
           </FormHelperText>
           <div className="flex justify-between">
             <p className="text-sm font-semibold pl-5 text-gray-400">
-              вопрос {question.id} из {questionsLength}
+              вопрос {questionIndex + 1} из {questionsLength}
             </p>
             <Button
               className="w-40 h-10 my-auto text"
               size="small"
               variant="contained"
+              disabled={isSelectedAnswerCorrect}
               onClick={checkAnswer}
             >
               Проверить ответ
@@ -148,7 +149,7 @@ const QuestionCard = ({
           </div>
         </FormControl>
       </form>
-    </>
+    </Paper>
   )
 }
 export default QuestionCard

@@ -111,3 +111,14 @@ export const metadata: Metadata = {
  $ npm i lodash-es
 
 ----- 
+
+# Виртуализация списков
+
+$ npm i react-window
+$ npm i -D @types/react-window
+
+-----
+
+# Коллекция современных, безопасных для сервера хуков React - от команды ui.dev
+
+$ npm i @uidotdev/usehooks

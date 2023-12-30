@@ -22,7 +22,7 @@ import { useState } from 'react'
 
 import { useForm } from 'react-hook-form'
 
-import { registerUser, getAuthUser } from '@/api/modules/auth'
+import { registerUser } from '@/api/modules/auth'
 
 import { setUser } from '@/redux/auth/authSlice'
 import { useAppDispatch } from '@/redux/reduxHooks'
