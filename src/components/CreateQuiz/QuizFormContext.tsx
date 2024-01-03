@@ -6,9 +6,16 @@ import { createContext, useState } from 'react'
 
 import { createQuiz } from '@/api/modules/quizzes'
 import type { ICreateQuestionRequest } from '@/api/modules/types'
-import { useAppSelector } from '@/redux/reduxHooks'
+import { parseServerErrors } from '@/redux/quizForm/helpers'
+import {
+  clearQuizForm,
+  setQuestionsErrors,
+  setQuizDescriptionErrors,
+} from '@/redux/quizForm/quizFormSlice'
+import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 import type { Dispatch, FC, SetStateAction, ReactNode } from 'react'
+import type { ZodIssue } from 'zod'
 
 export interface ICreateQuizContext {
   /** `[-1] => описание теста | [>= 0] => индекс вопроса` */
@@ -26,6 +33,7 @@ const QuizFormContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState(-1)
 
+  const dispatch = useAppDispatch()
   const { title, description, questions } = useAppSelector(
     ({ quizFormState }) => {
       const title = quizFormState.quizDescription.title
@@ -50,11 +58,22 @@ const QuizFormContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
     try {
       const { id } = await createQuiz(createdQuizForm)
+
+      dispatch(clearQuizForm())
       router.push(`/quizzes/${id}`)
     } catch (err: any) {
       if (err instanceof AxiosError) {
-        const error = err.response?.data?.message
-        console.error(error)
+        const responseData = err.response?.data
+
+        const responseErrors = responseData?.errors as ZodIssue[] | null
+        if (responseErrors !== null) {
+          const formErrors = parseServerErrors(responseErrors)
+
+          dispatch(setQuizDescriptionErrors(formErrors.quizDescription))
+          dispatch(setQuestionsErrors(formErrors.questions))
+        }
+
+        console.error(responseData?.message)
       } else {
         console.error('Произошла ошибка, обратитесь в тех. поддержку')
       }

@@ -1,6 +1,6 @@
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos'
 import DescriptionIcon from '@mui/icons-material/Description'
-
+import ErrorIcon from '@mui/icons-material/Error'
 import {
   Box,
   Divider,
@@ -11,7 +11,6 @@ import {
   ListItemText,
   Button,
 } from '@mui/material'
-
 import { useContext } from 'react'
 
 import { addQuestion as addQuestionAction } from '@/redux/quizForm/quizFormSlice'
@@ -22,7 +21,9 @@ import { QuizFormContext } from '../QuizFormContext'
 const DrawerList = (): JSX.Element => {
   const { submit, activeTab, setActiveTab } = useContext(QuizFormContext)
 
-  const { questions } = useAppSelector(({ quizFormState }) => quizFormState)
+  const { quizDescription, questions } = useAppSelector(
+    ({ quizFormState }) => quizFormState,
+  )
   const dispatch = useAppDispatch()
 
   function addQuestion(): void {
@@ -31,6 +32,11 @@ const DrawerList = (): JSX.Element => {
     dispatch(addQuestionAction())
     setActiveTab(newActiveTab)
   }
+
+  const questionHasError = (idx: number): boolean =>
+    Object.keys(questions[idx].errors).length > 0
+
+  const quizDescriptionHasError = Object.keys(quizDescription.errors).length > 0
 
   return (
     <Box
@@ -42,40 +48,42 @@ const DrawerList = (): JSX.Element => {
           <ListItem disablePadding>
             <ListItemButton
               selected={activeTab === -1}
+              className={
+                quizDescriptionHasError && activeTab !== -1 ? 'bg-red-50' : ''
+              }
               onClick={() => {
                 setActiveTab(-1)
               }}
             >
-              <ListItemIcon>
-                <DescriptionIcon />
+              <ListItemIcon className="inline-flex items-center">
+                {quizDescriptionHasError && (
+                  <ErrorIcon fontSize="small" color="error" className="mr-2" />
+                )}
+                <DescriptionIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText primary={'Описание теста'} />
             </ListItemButton>
           </ListItem>
         </List>
+
         <Divider className="mx-3" />
-        <div className="my-4 px-2">
-          <Button
-            variant="contained"
-            color="secondary"
-            className="w-full"
-            onClick={() => {
-              addQuestion()
-            }}
-          >
-            <AddToPhotosIcon fontSize={'small'} className="mr-4" />
-            Новый вопрос
-          </Button>
-        </div>
+
         <List className="py-0">
           {questions.map((question, idx) => (
             <ListItem key={idx} disablePadding>
               <ListItemButton
                 selected={idx === activeTab}
+                className={
+                  questionHasError(idx) && idx !== activeTab ? 'bg-red-50' : ''
+                }
                 onClick={() => {
                   setActiveTab(idx)
                 }}
               >
+                {questionHasError(idx) && (
+                  <ErrorIcon fontSize="small" color="error" className="mr-2" />
+                )}
+
                 <ListItemText>{`${idx + 1}. ${question.title}`}</ListItemText>
               </ListItemButton>
             </ListItem>
@@ -83,9 +91,22 @@ const DrawerList = (): JSX.Element => {
         </List>
       </div>
 
-      <Button variant="contained" onClick={submit} className="m-2">
-        Создать тест
-      </Button>
+      <div className="space-y-3 p-3">
+        <Button
+          variant="contained"
+          color="secondary"
+          className="w-full"
+          onClick={() => {
+            addQuestion()
+          }}
+        >
+          <AddToPhotosIcon fontSize="small" className="mr-4" />
+          Добавить вопрос
+        </Button>
+        <Button variant="contained" onClick={submit} className="w-full">
+          Создать тест
+        </Button>
+      </div>
     </Box>
   )
 }

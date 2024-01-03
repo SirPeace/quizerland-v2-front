@@ -1,38 +1,41 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, Card, CardActions, Box } from '@mui/material'
+import { Card, Box } from '@mui/material'
 import TextField from '@mui/material/TextField'
 
 import { debounce } from 'lodash-es'
-import { type ChangeEvent, useContext, useEffect } from 'react'
+import { type ChangeEvent, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { getQuizDescriptionFormAndStoreErrorsDiff } from '@/redux/quizForm/helpers'
 import {
-  setQuizDescriptionErrors,
+  setQuizDescriptionFieldErrors,
   updateQuizDescription,
 } from '@/redux/quizForm/quizFormSlice'
 import type { TQuizDescriptionFormErrors } from '@/redux/quizForm/types'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
-import { QuizFormContext } from '../QuizFormContext'
 import { type TQuizDescriptionForm, quizDescriptionFormSchema } from '../schema'
 
 export default function QuizDescriptionForm(): JSX.Element {
-  const { setActiveTab } = useContext(QuizFormContext)
-
   const { quizDescription } = useAppSelector(
     ({ quizFormState }) => quizFormState,
   )
   const dispatch = useAppDispatch()
 
-  const { control, reset, formState, setError } = useForm<TQuizDescriptionForm>(
-    {
+  const { control, reset, formState, setError, clearErrors } =
+    useForm<TQuizDescriptionForm>({
       mode: 'onChange',
       resolver: zodResolver(quizDescriptionFormSchema),
-    },
-  )
+    })
+
+  useEffect(() => {
+    reset({
+      title: quizDescription.title,
+      description: quizDescription.description,
+    })
+  }, [])
 
   useEffect(() => {
     const errorsDiff = getQuizDescriptionFormAndStoreErrorsDiff(
@@ -41,24 +44,20 @@ export default function QuizDescriptionForm(): JSX.Element {
     )
 
     if (Object.keys(errorsDiff).length > 0) {
-      dispatch(setQuizDescriptionErrors(formState.errors))
+      dispatch(setQuizDescriptionFieldErrors(formState.errors))
     }
-  }, [formState, quizDescription.errors, dispatch])
+  }, [formState])
 
   useEffect(() => {
-    reset({
-      title: quizDescription.title,
-      description: quizDescription.description,
-    })
-
     if (quizDescription.errors !== undefined) {
       let errorKey: keyof TQuizDescriptionFormErrors
       for (errorKey in quizDescription.errors) {
         setError(errorKey, { message: quizDescription.errors[errorKey] })
       }
+    } else {
+      clearErrors()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reset])
+  }, [quizDescription.errors])
 
   const onInput = debounce(
     (
@@ -73,10 +72,6 @@ export default function QuizDescriptionForm(): JSX.Element {
     },
     500,
   )
-
-  function goToQuestion(): void {
-    setActiveTab(prev => prev + 1)
-  }
 
   return (
     <Card raised className="py-5 px-5 rounded-xl mx-3">
@@ -119,18 +114,6 @@ export default function QuizDescriptionForm(): JSX.Element {
             />
           )}
         />
-
-        <CardActions className="p-0 mt-5 justify-center">
-          <Button
-            onClick={goToQuestion}
-            type="button"
-            size="small"
-            variant="contained"
-            className="m-0"
-          >
-            Перейти к добавлению вопросов
-          </Button>
-        </CardActions>
       </Box>
     </Card>
   )

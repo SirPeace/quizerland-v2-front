@@ -15,20 +15,11 @@ import QuizPreviewCard from '@/components/Quiz/QuizPreviewCard/QuizPreviewCard'
 import { resetState, setIsPreview, setupState } from '@/redux/quiz/quizSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
-import type { Metadata } from 'next'
 import type { FC } from 'react'
 
 interface Props {
   params: {
     quiz: string
-  }
-}
-
-export async function generateMetadata({
-  params: { quiz },
-}: Props): Promise<Metadata> {
-  return {
-    title: `${quiz} | Quizerland`,
   }
 }
 

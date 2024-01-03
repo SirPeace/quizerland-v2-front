@@ -17,7 +17,7 @@ import {
   appendAnswer,
   removeAnswer,
   updateQuestion,
-  setQuestionErrors,
+  setQuestionFieldErrors,
 } from '@/redux/quizForm/quizFormSlice'
 import type { TQuestionFormErrors } from '@/redux/quizForm/types'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
@@ -39,7 +39,7 @@ const QuizQuestionForm = (): JSX.Element => {
   })
   const dispatch = useAppDispatch()
 
-  const { control, formState, getValues, reset, watch, setError } =
+  const { control, formState, getValues, reset, watch, setError, clearErrors } =
     useForm<TQuestionForm>({
       mode: 'onChange',
       resolver: zodResolver(questionFormSchema),
@@ -87,13 +87,6 @@ const QuizQuestionForm = (): JSX.Element => {
       answers: question.answers,
     })
 
-    if (storeErrors !== undefined) {
-      let errorKey: keyof TQuestionFormErrors
-      for (errorKey in storeErrors) {
-        setError(errorKey, { message: storeErrors[errorKey] })
-      }
-    }
-
     const { unsubscribe } = watch(debounce(watchForm, 500))
 
     return () => {
@@ -110,13 +103,24 @@ const QuizQuestionForm = (): JSX.Element => {
 
     if (Object.keys(errorsDiff).length > 0) {
       dispatch(
-        setQuestionErrors({
+        setQuestionFieldErrors({
           questionIndex,
           errors: formState.errors,
         }),
       )
     }
-  }, [formState, storeErrors, dispatch, questionIndex])
+  }, [formState])
+
+  useEffect(() => {
+    if (storeErrors !== undefined) {
+      let errorKey: keyof TQuestionFormErrors
+      for (errorKey in storeErrors) {
+        setError(errorKey, { message: storeErrors[errorKey] })
+      }
+    } else {
+      clearErrors()
+    }
+  }, [storeErrors])
 
   //* =======================================
   //*                METHODS

@@ -1,4 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { cloneDeep } from 'lodash-es'
 
 import type {
   TQuestionForm,
@@ -6,12 +7,16 @@ import type {
 } from '@/components/CreateQuiz/schema'
 
 import {
-  questionFormErrorsToStoreErrors,
-  quizDescriptionFormErrorsToStoreErrors,
+  parseQuestionFormFieldErrors,
+  parseQuizDescriptionFormFieldErrors,
 } from './helpers'
 import quizFormState, { defaultQuestion } from './initialState'
 
-import type { IQuizDescriptionForm } from './types'
+import type {
+  IQuizDescriptionForm,
+  TQuestionFormErrors,
+  TQuizDescriptionFormErrors,
+} from './types'
 
 import type { FieldErrors } from 'react-hook-form'
 
@@ -92,22 +97,40 @@ export const quizFormSlice = createSlice({
       state.questions[questionIndex].answers.splice(answerIndex, 1)
     },
 
-    setQuestionErrors(
+    setQuestionFieldErrors(
       state,
       { payload }: PayloadAction<ISetQuestionErrorsPayload>,
     ) {
       const question = state.questions[payload.questionIndex]
 
-      question.errors = questionFormErrorsToStoreErrors(payload.errors)
+      question.errors = parseQuestionFormFieldErrors(payload.errors)
     },
 
-    setQuizDescriptionErrors(
+    setQuizDescriptionFieldErrors(
       state,
       { payload }: PayloadAction<FieldErrors<TQuizDescriptionForm>>,
     ) {
       state.quizDescription.errors =
-        quizDescriptionFormErrorsToStoreErrors(payload)
+        parseQuizDescriptionFormFieldErrors(payload)
     },
+
+    setQuestionsErrors(
+      state,
+      { payload }: PayloadAction<TQuestionFormErrors[]>,
+    ) {
+      payload.forEach((errors, idx) => {
+        state.questions[idx].errors = errors
+      })
+    },
+
+    setQuizDescriptionErrors(
+      state,
+      { payload }: PayloadAction<TQuizDescriptionFormErrors>,
+    ) {
+      state.quizDescription.errors = payload
+    },
+
+    clearQuizForm: () => cloneDeep(quizFormState),
   },
 })
 
@@ -117,7 +140,10 @@ export const {
   updateQuizDescription,
   appendAnswer,
   removeAnswer,
-  setQuestionErrors,
+  setQuestionFieldErrors,
+  setQuizDescriptionFieldErrors,
+  setQuestionsErrors,
   setQuizDescriptionErrors,
+  clearQuizForm,
 } = quizFormSlice.actions
 export default quizFormSlice.reducer

@@ -3,8 +3,8 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import authReducer from './auth/authSlice'
 import quizReducer from './quiz/quizSlice'
 import quizFormReducer, {
-  setQuestionErrors,
-  setQuizDescriptionErrors,
+  setQuestionFieldErrors,
+  setQuizDescriptionFieldErrors,
 } from './quizForm/quizFormSlice'
 import quizzesReducer from './quizzes/quizzesSlice'
 
@@ -20,7 +20,10 @@ export const store = configureStore({
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [setQuestionErrors.type, setQuizDescriptionErrors.type],
+        ignoredActions: [
+          setQuestionFieldErrors.type,
+          setQuizDescriptionFieldErrors.type,
+        ],
       },
     }),
 })
