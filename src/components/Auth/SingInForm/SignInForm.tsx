@@ -13,12 +13,11 @@ import Alert from '@mui/material/Alert'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import Checkbox from '@mui/material/Checkbox'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+import { useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -32,9 +31,21 @@ import { useAppDispatch } from '@/redux/reduxHooks'
 
 import { singInSchema, type TSingInSchema } from '../types'
 
+import {
+  boxFormDesktopStyle,
+  boxFormLaptopStyle,
+  containerDesktopStyle,
+  containerLaptopStyle,
+  headerTitleDesktopStyle,
+  headerTitleLaptopStyle,
+} from './styles'
+
 import type { SubmitHandler } from 'react-hook-form'
 
 const SignInForm = (): JSX.Element => {
+  const theme = useTheme()
+  const isNotMobile = useMediaQuery(theme.breakpoints.up('sm'))
+
   const [showPassword, setShowPassword] = useState(false)
   const [errorMessage, setErrorMessage] = useState<undefined | string>()
 
@@ -74,19 +85,29 @@ const SignInForm = (): JSX.Element => {
   }
 
   return (
-    <Card raised className="flex flex-col items-center p-10 rounded-xl">
-      <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-        <HowToRegIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5">
-        Авторизация
-      </Typography>
+    <div className={isNotMobile ? containerDesktopStyle : containerLaptopStyle}>
+      <div
+        className={
+          isNotMobile ? headerTitleDesktopStyle : headerTitleLaptopStyle
+        }
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+          <HowToRegIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Авторизация
+        </Typography>
+      </div>
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full mt-8"
+        className={isNotMobile ? boxFormDesktopStyle : boxFormLaptopStyle}
       >
-        <div>
+        <div
+          className={
+            isNotMobile ? 'flex flex-col my-auto' : 'px-[1rem] my-auto'
+          }
+        >
           <Box className="flex items-end">
             <AlternateEmailIcon
               sx={{ color: 'action.active', mr: 1, mb: 0.5 }}
@@ -112,7 +133,7 @@ const SignInForm = (): JSX.Element => {
             </p>
           </div>
 
-          <Box className="flex items-end">
+          <Box className="flex items-end pt-[1rem]">
             <LockIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
             <TextField
               {...register('password')}
@@ -139,20 +160,20 @@ const SignInForm = (): JSX.Element => {
           </div>
         </div>
 
-        <FormControlLabel
-          control={<Checkbox color="primary" />}
-          label="Запомнить меня"
-        />
-
         {undefined !== errorMessage && (
           <Alert icon={<ErrorOutlineIcon />} color="error" className="my-4">
             {errorMessage}
           </Alert>
         )}
 
-        <div className="mt-2">
+        <div
+          className={
+            isNotMobile ? 'w-full mt-[2rem]' : 'w-full fixed bottom-1 pr-6'
+          }
+        >
           <Button
             type="submit"
+            size="large"
             disabled={isSubmitting}
             variant="contained"
             className="w-full mt-2 mb-2"
@@ -163,6 +184,7 @@ const SignInForm = (): JSX.Element => {
           <Button
             type="button"
             variant="text"
+            size="large"
             className="w-full mt-2 mb-2 normal-case"
             onClick={() => {
               router.push('auth/registration')
@@ -172,7 +194,7 @@ const SignInForm = (): JSX.Element => {
           </Button>
         </div>
       </Box>
-    </Card>
+    </div>
   )
 }
 

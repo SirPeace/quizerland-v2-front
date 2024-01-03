@@ -2,7 +2,12 @@ import dayjs from 'dayjs'
 import ru from 'dayjs/locale/ru'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
-export const getFormattedDate = (dateDB: string): string => {
+export const getFormattedDate = (
+  dateDB: string,
+): {
+  day: string
+  date: string
+} => {
   dayjs.extend(relativeTime)
   const receivedDate = dayjs(dateDB).locale(ru)
 
@@ -36,10 +41,11 @@ export const getFormattedDate = (dateDB: string): string => {
     }
   }
 
-  const detailsDate = `${hour}:${minute}, ${dayOfTheWeek}, ${monthDate} ${formattedMonth} ${year} года`
+  const detailsDate = `${monthDate} ${formattedMonth} ${year} года`
   const timeSinceInception = dayjs(dateDB).locale(ru).fromNow()
 
-  const detailsDateQuizCreation = `${timeSinceInception}, ${detailsDate} `
+  const detailsDayCreation = `${timeSinceInception}, ${hour}:${minute},`
+  const detailsDateCreation = `${detailsDate} `
 
-  return detailsDateQuizCreation
+  return { day: detailsDayCreation, date: detailsDateCreation }
 }

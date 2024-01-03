@@ -16,6 +16,8 @@ import IconButton from '@mui/material/IconButton'
 import RadioGroup from '@mui/material/RadioGroup'
 import Typography from '@mui/material/Typography'
 import { red } from '@mui/material/colors'
+import { useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
@@ -28,9 +30,10 @@ import { resetCurrentQuestion, setIsPreview } from '@/redux/quiz/quizSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 import { getFormattedDate } from '@/utils/getFormattedDate'
 
+import { containerDesktopStyle, containerLaptopStyle } from './styles'
+
 import type { Metadata } from 'next'
 import type { FC } from 'react'
-
 interface Props {
   params: {
     quiz: string
@@ -46,6 +49,9 @@ export async function generateMetadata({
 }
 
 const QuizPreviewCard: FC = () => {
+  const theme = useTheme()
+  const isNotMobile = useMediaQuery(theme.breakpoints.up('sm'))
+
   const { user } = useAppSelector(({ authState }) => authState)
 
   const { correctAnswersCount, wrongAnswersCount, quiz, questionsCount } =
@@ -101,46 +107,68 @@ const QuizPreviewCard: FC = () => {
   }
 
   return (
-    <Card raised className="py-2 px-2 text-left rounded-xl">
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            <PersonIcon />
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={`Автор теста: ${user?.nickname} ( email: ${user?.email} ) .`}
-        subheader={`Дата создания теста: ${quizCreationDate} .`}
-      />
+    <div className={isNotMobile ? containerDesktopStyle : containerLaptopStyle}>
+      <div>
+        <CardHeader
+          avatar={
+            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+              <PersonIcon />
+            </Avatar>
+          }
+          action={
+            <IconButton aria-label="settings">
+              <MoreVertIcon />
+            </IconButton>
+          }
+          title={
+            <>
+              <Typography variant="body1">
+                Автор теста: {user?.nickname}
+              </Typography>
+              <Typography variant="body2">Email: {user?.email}</Typography>
+            </>
+          }
+        />
+        <div className="flex flex-col">
+          <Typography variant="subtitle2" className="ml-[1rem] ">
+            Дата создания теста: {quizCreationDate.date}
+          </Typography>
+          <Typography variant="subtitle2" className="ml-[1rem] ">
+            Детали: {quizCreationDate.day}
+          </Typography>
+        </div>
+      </div>
 
       <CardContent>
-        <Typography
-          gutterBottom
-          variant="h5"
-          component="div"
-          className="text-left indent-2"
-        >
-          {quiz.title}
-        </Typography>
+        <div className="border-solid border border-slate-300 px-[1rem] mb-[1rem] rounded-md">
+          <Typography
+            gutterBottom
+            variant={isNotMobile ? 'h5' : 'h6'}
+            component="div"
+            className="text-left indent-2 pt-2"
+          >
+            {quiz.title}
+          </Typography>
 
-        <Divider />
+          <Divider />
 
-        <Typography
-          variant="body1"
-          color="text.secondary"
-          className="indent-2 text-justify my-[1rem]"
-        >
-          {quiz.description}
-        </Typography>
-
-        <Divider />
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            className="indent-2 text-justify my-[1rem]"
+          >
+            {quiz.description}
+          </Typography>
+        </div>
 
         {!quiz.isFinished ? (
-          <div className="flex justify-between mt-[1rem]">
+          <div
+            className={
+              isNotMobile
+                ? 'flex justify-between mt-[1rem]'
+                : 'flex flex-col items-center'
+            }
+          >
             <Typography
               variant="body1"
               color="text.secondary"
@@ -155,22 +183,26 @@ const QuizPreviewCard: FC = () => {
               className="indent-2 text-justify"
             >
               {quiz.currentQuestionIndex === 0
-                ? 'Прогресс: Тест не пройден'
+                ? 'Прогресс: Вы не проходили этот тест'
                 : `Прогресс: ${quiz.currentQuestionIndex + 1}-й вопрос`}
             </Typography>
           </div>
         ) : (
-          <>
+          <div className={isNotMobile ? '' : 'flex flex-col'}>
             <Typography
               gutterBottom
               variant="h6"
               component="div"
-              className="mt-[0.5rem] indent-2"
+              className={
+                isNotMobile
+                  ? 'mt-[0.5rem] ml-[1rem] text-gray-500'
+                  : 'mt-[0.5rem] text-gray-500 text-center'
+              }
             >
               Результат теста
             </Typography>
 
-            <RadioGroup className="mx-4 mt-4">
+            <RadioGroup className={isNotMobile ? 'mx-4 mt-2 ' : 'mx-auto'}>
               <FormControlLabel
                 control={
                   <HighlightOffOutlinedIcon
@@ -178,10 +210,10 @@ const QuizPreviewCard: FC = () => {
                     sx={{ margin: '9px' }}
                   />
                 }
-                className="text-red-400"
+                className="text-red-400 cursor-auto"
                 label={`Неверные ответы : ${wrongAnswersCount}`}
               />
-              <div className="h-2" />
+
               <FormControlLabel
                 control={
                   <VerifiedOutlinedIcon
@@ -193,15 +225,19 @@ const QuizPreviewCard: FC = () => {
                 label={`Правильные ответы : ${correctAnswersCount}`}
               />
             </RadioGroup>
-          </>
+          </div>
         )}
       </CardContent>
 
-      <CardActions>
+      <CardActions className={isNotMobile ? '' : 'flex flex-col'}>
         {!quiz.isFinished ? (
-          <div className="flex ml-auto">
+          <div
+            className={isNotMobile ? 'flex ml-auto' : 'w-full fixed bottom-0'}
+          >
             <Button
-              size="medium"
+              size={isNotMobile ? 'medium' : 'large'}
+              variant={isNotMobile ? 'text' : 'contained'}
+              fullWidth={!isNotMobile}
               className="mr-[0.5rem]"
               onClick={() => {
                 dispatch(setIsPreview(false))
@@ -211,17 +247,29 @@ const QuizPreviewCard: FC = () => {
             </Button>
           </div>
         ) : (
-          <>
-            <Button size="medium" className="mr-3" onClick={restartQuiz}>
+          <div className={isNotMobile ? '' : 'w-full'}>
+            <Button
+              size={isNotMobile ? 'medium' : 'large'}
+              fullWidth={!isNotMobile}
+              variant={isNotMobile ? 'text' : 'contained'}
+              className={isNotMobile ? 'mr-3' : ' bg-orange-500'}
+              onClick={restartQuiz}
+            >
               Повторить
             </Button>
-            <Button size="medium" onClick={goToNextQuiz}>
+            <Button
+              size={isNotMobile ? 'medium' : 'large'}
+              fullWidth={!isNotMobile}
+              variant={isNotMobile ? 'text' : 'contained'}
+              className={isNotMobile ? 'mr-3' : 'mt-1'}
+              onClick={goToNextQuiz}
+            >
               К следующему тесту
             </Button>
-          </>
+          </div>
         )}
       </CardActions>
-    </Card>
+    </div>
   )
 }
 

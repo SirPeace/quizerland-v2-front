@@ -1,6 +1,8 @@
 import { Divider, Paper } from '@mui/material'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+import { useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import { useRouter } from 'next/navigation'
 
 import type { IQuizzesItem } from '@/api/modules/types'
@@ -13,6 +15,9 @@ interface IQuizProps {
   itemStyle?: React.CSSProperties
 }
 const Quiz: FC<IQuizProps> = ({ quiz, itemStyle, orderNumber }) => {
+  const theme = useTheme()
+  const isNotMobile = useMediaQuery(theme.breakpoints.up('sm'))
+
   const router = useRouter()
 
   return (
@@ -21,7 +26,13 @@ const Quiz: FC<IQuizProps> = ({ quiz, itemStyle, orderNumber }) => {
       className="bg-white rounded-xl"
       style={itemStyle ?? {}}
     >
-      <div className="flex justify-between p-3">
+      <div
+        className={
+          isNotMobile
+            ? 'flex justify-between p-3'
+            : 'flex flex-col-reverse text-center justify-between p-3'
+        }
+      >
         <Typography
           gutterBottom
           variant="h6"
@@ -42,7 +53,13 @@ const Quiz: FC<IQuizProps> = ({ quiz, itemStyle, orderNumber }) => {
         {quiz.description}
       </p>
 
-      <div className="flex justify-between px-4">
+      <div
+        className={
+          isNotMobile
+            ? 'flex justify-between px-4'
+            : 'flex flex-col justify-between px-4'
+        }
+      >
         <p className="text-sm font-semibold text-gray-400 ">
           тест из {`${quiz.questionsCount}`} вопросов
         </p>

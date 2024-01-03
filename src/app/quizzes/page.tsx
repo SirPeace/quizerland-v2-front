@@ -1,6 +1,8 @@
 'use client'
 
 import CircularProgress from '@mui/material/CircularProgress'
+import { useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import { useWindowSize, useIntersectionObserver } from '@uidotdev/usehooks'
 import { Neucha, Pacifico } from 'next/font/google'
 
@@ -19,8 +21,8 @@ import { useAppSelector, useAppDispatch } from '@/redux/reduxHooks'
 const neucha = Neucha({ subsets: ['cyrillic'], weight: '400', preload: true })
 const pacifico = Pacifico({ subsets: ['latin'], weight: '400', preload: true })
 
-const LIST_ITEM_HEIGHT = 215 // px
-const LIST_PADDING_X = 8 // px
+let LIST_ITEM_HEIGHT: 210 | 270 // px
+const LIST_PADDING_X = 16 // px
 const LIST_PADDING_RIGHT = LIST_PADDING_X + 16 // px
 const LIST_PADDING_Y = 24 // px
 const LIST_MARGIN_TOP = 112 // px
@@ -50,6 +52,11 @@ const Loader = ({ onIntersect, ...props }: LoaderProps): JSX.Element => {
 }
 
 const QuizzesPage = (): JSX.Element => {
+  const theme = useTheme()
+  const isNotMobile = useMediaQuery(theme.breakpoints.up('sm'))
+
+  LIST_ITEM_HEIGHT = isNotMobile ? 210 : 270
+
   const dispatch = useAppDispatch()
   const { height } = useWindowSize()
   const { quizzes, quizzesTotalCount } = useAppSelector(
@@ -70,15 +77,16 @@ const QuizzesPage = (): JSX.Element => {
   // =======================================
 
   useEffect(() => {
-    getQuizzes(0)
-      .then(data => {
-        dispatch(setQuizzes(data.quizzes))
-        dispatch(setQuizzesTotalCount(data.quizzesTotalCount))
-      })
-      .catch((err: any) => {
-        console.error('Что-то пошло не так...', err)
-      })
-  }, [dispatch])
+    quizzes.length === 0 &&
+      getQuizzes(0)
+        .then(data => {
+          dispatch(setQuizzes(data.quizzes))
+          dispatch(setQuizzesTotalCount(data.quizzesTotalCount))
+        })
+        .catch((err: any) => {
+          console.error('Что-то пошло не так...', err)
+        })
+  }, [dispatch, quizzes.length])
 
   // =======================================
   //  Повторный запрос IntersectionObserver
@@ -99,15 +107,32 @@ const QuizzesPage = (): JSX.Element => {
 
   return (
     <div className="max-w-4xl min-h-screen mx-auto text-center">
-      <h1 className="py-8 my-0 bg-white z-10">
-        <span className={`sm:text-3xl text-2xl ${neucha.className}`}>
+      <h1
+        className={
+          isNotMobile
+            ? 'py-8 my-0 bg-white z-10'
+            : 'flex flex-col pt-[2rem] pb-[1rem] my-0 bg-white z-10'
+        }
+      >
+        <span
+          className={
+            isNotMobile
+              ? `text-3xl ${neucha.className}`
+              : `text-xl  ${neucha.className}`
+          }
+        >
           Добро пожаловать в{' '}
         </span>
-        <span className={`sm:text-4xl text-3xl ${pacifico.className}`}>
+        <span
+          className={
+            isNotMobile
+              ? `text-4xl ${pacifico.className}`
+              : `text-3xl  ${pacifico.className}`
+          }
+        >
           Quizerland
         </span>
       </h1>
-
       {match(quizzesCount)
         .with(0, () => <p>Нет ни одного теста. Создайте что-нибудь.</p>)
         .otherwise(count => (
