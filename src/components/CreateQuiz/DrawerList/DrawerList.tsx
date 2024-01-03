@@ -10,8 +10,9 @@ import {
   ListItemIcon,
   ListItemText,
   Button,
+  Typography,
 } from '@mui/material'
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 
 import { addQuestion as addQuestionAction } from '@/redux/quizForm/quizFormSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
@@ -26,6 +27,11 @@ const DrawerList = (): JSX.Element => {
   )
   const dispatch = useAppDispatch()
 
+  const questionsErrors = useMemo<boolean[]>(
+    () => questions.map(q => Object.keys(q.errors).length > 0),
+    [questions],
+  )
+
   function addQuestion(): void {
     const newActiveTab = questions.length
 
@@ -33,10 +39,10 @@ const DrawerList = (): JSX.Element => {
     setActiveTab(newActiveTab)
   }
 
-  const questionHasError = (idx: number): boolean =>
-    Object.keys(questions[idx].errors).length > 0
-
   const quizDescriptionHasError = Object.keys(quizDescription.errors).length > 0
+
+  const formHasErrors =
+    questionsErrors.includes(true) || quizDescriptionHasError
 
   return (
     <Box
@@ -74,13 +80,13 @@ const DrawerList = (): JSX.Element => {
               <ListItemButton
                 selected={idx === activeTab}
                 className={
-                  questionHasError(idx) && idx !== activeTab ? 'bg-red-50' : ''
+                  questionsErrors[idx] && idx !== activeTab ? 'bg-red-50' : ''
                 }
                 onClick={() => {
                   setActiveTab(idx)
                 }}
               >
-                {questionHasError(idx) && (
+                {questionsErrors[idx] && (
                   <ErrorIcon fontSize="small" color="error" className="mr-2" />
                 )}
 
@@ -103,9 +109,22 @@ const DrawerList = (): JSX.Element => {
           <AddToPhotosIcon fontSize="small" className="mr-4" />
           Добавить вопрос
         </Button>
-        <Button variant="contained" onClick={submit} className="w-full">
+        <Button
+          variant="contained"
+          disabled={formHasErrors}
+          onClick={submit}
+          className="w-full"
+        >
           Создать тест
         </Button>
+
+        {formHasErrors && (
+          <div className="mt-4 text-center">
+            <Typography color="red" variant="caption">
+              Форма заполнена неверно
+            </Typography>
+          </div>
+        )}
       </div>
     </Box>
   )
