@@ -6,7 +6,6 @@ import PersonIcon from '@mui/icons-material/Person'
 import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import CardHeader from '@mui/material/CardHeader'
@@ -18,7 +17,6 @@ import Typography from '@mui/material/Typography'
 import { red } from '@mui/material/colors'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
-
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 
@@ -32,21 +30,7 @@ import { getFormattedDate } from '@/utils/getFormattedDate'
 
 import { containerDesktopStyle, containerLaptopStyle } from './styles'
 
-import type { Metadata } from 'next'
 import type { FC } from 'react'
-interface Props {
-  params: {
-    quiz: string
-  }
-}
-
-export async function generateMetadata({
-  params: { quiz },
-}: Props): Promise<Metadata> {
-  return {
-    title: `${quiz} | Quizerland`,
-  }
-}
 
 const QuizPreviewCard: FC = () => {
   const theme = useTheme()

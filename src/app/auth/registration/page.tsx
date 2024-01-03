@@ -1,11 +1,6 @@
+'use client'
+
 import RegistrationForm from '@/components/Auth/RegistrationForm/RegistrationForm'
-
-import type { Metadata } from 'next'
-
-export const metadata: Metadata = {
-  title: 'Регистрация | Quizerland',
-  description: 'Страница регистрации пользователя',
-}
 
 const RegistrationPage = (): JSX.Element => (
   <div className="bg-slate-100 w-full">
