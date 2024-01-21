@@ -7,12 +7,14 @@ import quizFormReducer, {
   setQuizDescriptionFieldErrors,
 } from './quizForm/quizFormSlice'
 import quizzesReducer from './quizzes/quizzesSlice'
+import uiReducer from './ui/uiSlice'
 
 const rootReducer = combineReducers({
   quizFormState: quizFormReducer,
   quizState: quizReducer,
   authState: authReducer,
   quizzesState: quizzesReducer,
+  uiState: uiReducer,
 })
 
 export const store = configureStore({

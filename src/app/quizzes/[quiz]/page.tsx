@@ -3,21 +3,16 @@
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { AxiosError } from 'axios'
-
-import { useEffect, useState } from 'react'
-
+import { useEffect, useState, type FC } from 'react'
 import { match } from 'ts-pattern'
 
 import { getQuiz } from '@/api/modules/quizzes'
 import Loader from '@/components/Loader'
-import GoToHomePageButton from '@/components/Navigation/GoToHomePageButton/GoToHomePageButton'
+import GoToHomePageButton from '@/components/Navigation/GoToHomePageButton'
 import QuestionCard from '@/components/Quiz/QuestionCard/QuestionCard'
 import QuizPreviewCard from '@/components/Quiz/QuizPreviewCard/QuizPreviewCard'
-
 import { resetState, setIsPreview, setupState } from '@/redux/quiz/quizSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
-
-import type { FC } from 'react'
 
 interface Props {
   params: {

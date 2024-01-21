@@ -1,6 +1,6 @@
 'use client'
 
-import { DevTool } from '@hookform/devtools'
+// import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
@@ -22,8 +22,8 @@ import {
 import type { TQuestionFormErrors } from '@/redux/quizForm/types'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
-import { QuizFormContext } from '../QuizFormContext'
-import { type TQuestionForm, questionFormSchema } from '../schema'
+import { QuizFormContext } from './QuizFormContext'
+import { type TQuestionForm, questionFormSchema } from './schema'
 
 const QuizQuestionForm = (): JSX.Element => {
   //* =======================================
@@ -141,7 +141,7 @@ const QuizQuestionForm = (): JSX.Element => {
 
   return (
     <Card raised className="py-5 px-5 rounded-xl mx-3">
-      <DevTool control={control} placement="top-right" />
+      {/* <DevTool control={control} placement="top-right" /> */}
       <Box component="form">
         <Controller
           control={control}

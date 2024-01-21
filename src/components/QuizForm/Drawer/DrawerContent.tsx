@@ -20,7 +20,13 @@ import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 import { QuizFormContext } from '../QuizFormContext'
 
 const DrawerList = (): JSX.Element => {
-  const { submit, activeTab, setActiveTab } = useContext(QuizFormContext)
+  const {
+    submit,
+    activeTab,
+    setActiveTab,
+    mobileDrawerOpen,
+    setMobileDrawerOpen,
+  } = useContext(QuizFormContext)
 
   const { quizDescription, questions } = useAppSelector(
     ({ quizFormState }) => quizFormState,
@@ -37,6 +43,13 @@ const DrawerList = (): JSX.Element => {
 
     dispatch(addQuestionAction())
     setActiveTab(newActiveTab)
+  }
+
+  function openTab(index: number): void {
+    setActiveTab(index)
+    if (mobileDrawerOpen) {
+      setMobileDrawerOpen(false)
+    }
   }
 
   const quizDescriptionHasError = Object.keys(quizDescription.errors).length > 0
@@ -58,7 +71,7 @@ const DrawerList = (): JSX.Element => {
                 quizDescriptionHasError && activeTab !== -1 ? 'bg-red-50' : ''
               }
               onClick={() => {
-                setActiveTab(-1)
+                openTab(-1)
               }}
             >
               <ListItemIcon className="inline-flex items-center">
@@ -83,7 +96,7 @@ const DrawerList = (): JSX.Element => {
                   questionsErrors[idx] && idx !== activeTab ? 'bg-red-50' : ''
                 }
                 onClick={() => {
-                  setActiveTab(idx)
+                  openTab(idx)
                 }}
               >
                 {questionsErrors[idx] && (

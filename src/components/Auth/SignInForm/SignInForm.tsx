@@ -1,32 +1,33 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail'
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
-import HowToRegIcon from '@mui/icons-material/HowToReg'
-import LockIcon from '@mui/icons-material/Lock'
-import LoginIcon from '@mui/icons-material/Login'
-import Visibility from '@mui/icons-material/Visibility'
-import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import Alert from '@mui/material/Alert'
-import Avatar from '@mui/material/Avatar'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import IconButton from '@mui/material/IconButton'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
+import {
+  AlternateEmail,
+  ErrorOutline,
+  HowToReg,
+  Lock,
+  Login,
+  Visibility,
+  VisibilityOff,
+} from '@mui/icons-material'
+import {
+  Alert,
+  Avatar,
+  Box,
+  Button,
+  IconButton,
+  TextField,
+  Typography,
+} from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-
-import { useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 
 import { login } from '@/api/modules/auth'
 import { setUser } from '@/redux/auth/authSlice'
-
 import { useAppDispatch } from '@/redux/reduxHooks'
 
 import { singInSchema, type TSingInSchema } from '../types'
@@ -39,8 +40,6 @@ import {
   headerTitleDesktopStyle,
   headerTitleLaptopStyle,
 } from './styles'
-
-import type { SubmitHandler } from 'react-hook-form'
 
 const SignInForm = (): JSX.Element => {
   const theme = useTheme()
@@ -92,7 +91,7 @@ const SignInForm = (): JSX.Element => {
         }
       >
         <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-          <HowToRegIcon />
+          <HowToReg />
         </Avatar>
         <Typography component="h1" variant="h5">
           Авторизация
@@ -109,9 +108,7 @@ const SignInForm = (): JSX.Element => {
           }
         >
           <Box className="flex items-end">
-            <AlternateEmailIcon
-              sx={{ color: 'action.active', mr: 1, mb: 0.5 }}
-            />
+            <AlternateEmail sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
             <TextField
               {...register('email', {
                 required: 'Укажите адрес электронной почты!',
@@ -134,7 +131,7 @@ const SignInForm = (): JSX.Element => {
           </div>
 
           <Box className="flex items-end pt-[1rem]">
-            <LockIcon sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
+            <Lock sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
             <TextField
               {...register('password')}
               type={showPassword ? 'text' : 'password'}
@@ -161,7 +158,7 @@ const SignInForm = (): JSX.Element => {
         </div>
 
         {undefined !== errorMessage && (
-          <Alert icon={<ErrorOutlineIcon />} color="error" className="my-4">
+          <Alert icon={<ErrorOutline />} color="error" className="my-4">
             {errorMessage}
           </Alert>
         )}
@@ -177,7 +174,7 @@ const SignInForm = (): JSX.Element => {
             disabled={isSubmitting}
             variant="contained"
             className="w-full mt-2 mb-2"
-            startIcon={<LoginIcon />}
+            startIcon={<Login />}
           >
             Войти
           </Button>

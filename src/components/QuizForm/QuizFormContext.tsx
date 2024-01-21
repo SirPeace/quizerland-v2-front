@@ -18,12 +18,16 @@ import type { Dispatch, FC, SetStateAction, ReactNode } from 'react'
 import type { ZodIssue } from 'zod'
 
 export interface ICreateQuizContext {
+  mobileDrawerOpen: boolean
+  setMobileDrawerOpen: Dispatch<SetStateAction<boolean>>
   /** `[-1] => описание теста | [>= 0] => индекс вопроса` */
   activeTab: number
   setActiveTab: Dispatch<SetStateAction<number>>
   submit: () => void
 }
 export const QuizFormContext = createContext<ICreateQuizContext>({
+  mobileDrawerOpen: false,
+  setMobileDrawerOpen: () => {},
   activeTab: 0,
   setActiveTab: () => {},
   submit: () => {},
@@ -31,7 +35,9 @@ export const QuizFormContext = createContext<ICreateQuizContext>({
 
 const QuizFormContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const router = useRouter()
+
   const [activeTab, setActiveTab] = useState(-1)
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false)
 
   const dispatch = useAppDispatch()
   const { title, description, questions } = useAppSelector(
@@ -81,6 +87,8 @@ const QuizFormContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   }
 
   const formContext: ICreateQuizContext = {
+    mobileDrawerOpen,
+    setMobileDrawerOpen,
     activeTab,
     setActiveTab,
     submit,

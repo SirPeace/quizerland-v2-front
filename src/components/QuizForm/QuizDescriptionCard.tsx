@@ -16,7 +16,7 @@ import {
 import type { TQuizDescriptionFormErrors } from '@/redux/quizForm/types'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
-import { type TQuizDescriptionForm, quizDescriptionFormSchema } from '../schema'
+import { type TQuizDescriptionForm, quizDescriptionFormSchema } from './schema'
 
 export default function QuizDescriptionForm(): JSX.Element {
   const { quizDescription } = useAppSelector(

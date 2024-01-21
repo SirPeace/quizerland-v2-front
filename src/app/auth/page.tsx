@@ -1,6 +1,6 @@
 'use client'
 
-import SignInForm from '@/components/Auth/SingInForm/SignInForm'
+import SignInForm from '@/components/Auth/SignInForm/SignInForm'
 
 const AuthPage = (): JSX.Element => (
   <div className="w-full bg-slate-100">

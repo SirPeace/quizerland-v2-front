@@ -4,9 +4,10 @@ import './globals.css'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import { Inter } from 'next/font/google'
 
-import Drawer from '@/components/Navigation/Drawer/Drawer'
+import Drawer from '@/components/Navigation/Drawer'
+import Snackbar from '@/components/Navigation/Snackbar'
 import { ReduxProvider } from '@/redux/ReduxProvider'
-import { lightTheme } from '@/theme/themes'
+import { lightTheme } from '@/theme/themeConfig'
 import AuthWrapper from '@/wrappers/AuthWrapper'
 
 const inter = Inter({ subsets: ['cyrillic'], preload: true })
@@ -31,6 +32,7 @@ export default function RootLayout({
       <ReduxProvider>
         <body id="__next" className={inter.className}>
           <CssBaseline />
+          <Snackbar />
 
           <AuthWrapper>
             <Drawer />
