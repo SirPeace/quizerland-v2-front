@@ -1,16 +1,23 @@
 'use client'
 
 import './globals.css'
-import { CssBaseline, ThemeProvider } from '@mui/material'
+import { Box, CssBaseline, ThemeProvider, styled } from '@mui/material'
 import { Inter } from 'next/font/google'
 
-import Drawer from '@/components/Navigation/Drawer'
 import Snackbar from '@/components/Navigation/Snackbar'
+import NavigationMenu from '@/components/v2/Navigation/NavigationMenu'
 import { ReduxProvider } from '@/redux/ReduxProvider'
 import { lightTheme } from '@/theme/themeConfig'
 import AuthWrapper from '@/wrappers/AuthWrapper'
 
 const inter = Inter({ subsets: ['cyrillic'], preload: true })
+
+const AppContainer = styled('div')({
+  display: 'flex',
+  '& main': {
+    flexGrow: 1,
+  },
+})
 
 export default function RootLayout({
   children,
@@ -32,14 +39,16 @@ export default function RootLayout({
       <ReduxProvider>
         <body id="__next" className={inter.className}>
           <CssBaseline />
-          <Snackbar />
+          <ThemeProvider theme={lightTheme}>
+            <AuthWrapper>
+              <AppContainer>
+                <NavigationMenu />
+                <main>{children}</main>
+              </AppContainer>
+            </AuthWrapper>
 
-          <AuthWrapper>
-            <Drawer />
-            <ThemeProvider theme={lightTheme}>
-              <main className="text-gray-700">{children}</main>
-            </ThemeProvider>
-          </AuthWrapper>
+            <Snackbar />
+          </ThemeProvider>
         </body>
       </ReduxProvider>
     </html>
