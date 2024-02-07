@@ -2,10 +2,20 @@
 
 import { grey } from '@mui/material/colors'
 import { createTheme } from '@mui/material/styles'
-import { Pacifico } from 'next/font/google'
+import { Mulish, Pacifico, Russo_One } from 'next/font/google'
 
 const pacificoFont = Pacifico({
   subsets: ['latin'],
+  weight: '400',
+  preload: true,
+})
+const russoOneFont = Russo_One({
+  subsets: ['latin', 'cyrillic'],
+  weight: '400',
+  preload: true,
+})
+const mulishFont = Mulish({
+  subsets: ['latin', 'cyrillic'],
   weight: '400',
   preload: true,
 })
@@ -43,6 +53,32 @@ export const lightTheme = createTheme({
       lineHeight: 1.7,
       top: '-10%',
       margin: 0,
+    },
+    h2: {
+      ...russoOneFont.style,
+      fontSize: 32,
+      margin: 0,
+    },
+    h3: {
+      ...russoOneFont.style,
+      fontSize: 22,
+      margin: 0,
+    },
+    button: {
+      ...russoOneFont.style,
+      fontSize: 16,
+    },
+    subtitle1: {
+      ...russoOneFont.style,
+      fontSize: 16,
+    },
+    body1: {
+      ...mulishFont.style,
+      fontSize: 16,
+    },
+    caption: {
+      ...mulishFont.style,
+      fontSize: 14,
     },
   },
 })

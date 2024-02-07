@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const singInSchema = z.object({
+export const signInSchema = z.object({
   email: z
     .string()
     .min(1, 'Поле обязательное для заполнения!')
@@ -10,7 +10,7 @@ export const singInSchema = z.object({
     .min(8, 'Пароль должен содержать не менее 8 символов!')
     .max(32, 'Пароль не может иметь более 32 символов!'),
 })
-export type TSingInSchema = z.infer<typeof singInSchema>
+export type TSignInSchema = z.infer<typeof signInSchema>
 
 export const registrationSchema = z
   .object({

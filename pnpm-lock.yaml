@@ -77,6 +77,9 @@ dependencies:
   ts-pattern:
     specifier: ^5.0.5
     version: 5.0.6
+  use-resize-observer:
+    specifier: ^9.1.0
+    version: 9.1.0(react-dom@18.2.0)(react@18.2.0)
   zod:
     specifier: ^3.22.4
     version: 3.22.4
@@ -419,6 +422,10 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
+    dev: false
+
+  /@juggle/resize-observer@3.4.0:
+    resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
     dev: false
 
   /@mui/base@5.0.0-beta.27(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0):
@@ -3689,6 +3696,17 @@ packages:
       dequal: 2.0.3
       react: 18.2.0
     dev: true
+
+  /use-resize-observer@9.1.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-R25VqO9Wb3asSD4eqtcxk8sJalvIOYBqS8MNZlpDSQ4l4xMQxC/J7Id9HoTqPq8FwULIn0PVW+OAqF2dyYbjow==}
+    peerDependencies:
+      react: 16.8.0 - 18
+      react-dom: 16.8.0 - 18
+    dependencies:
+      '@juggle/resize-observer': 3.4.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /use-sync-external-store@1.2.0(react@18.2.0):
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
