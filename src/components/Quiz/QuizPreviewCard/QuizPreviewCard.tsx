@@ -26,7 +26,7 @@ import {
 } from '@/api/modules/quizzes'
 import { resetCurrentQuestion, setIsPreview } from '@/redux/quiz/quizSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
-import { getFormattedDate } from '@/utils/getFormattedDate'
+import { getFormattedDate } from '@/utils/date'
 
 import { containerDesktopStyle, containerLaptopStyle } from './styles'
 

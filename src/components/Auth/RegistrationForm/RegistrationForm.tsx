@@ -30,6 +30,8 @@ import { registerUser } from '@/api/modules/auth'
 import { setUser } from '@/redux/auth/authSlice'
 import { useAppDispatch } from '@/redux/reduxHooks'
 
+import { registrationSchema, type TRegistrationSchema } from '../types'
+
 import {
   boxFormRegDesktopStyle,
   boxFormRegLaptopStyle,
@@ -38,7 +40,6 @@ import {
   headerTitleRegDesktopStyle,
   headerTitleRegLaptopStyle,
 } from './styles'
-import { registrationSchema, type TRegistrationSchema } from '../types'
 
 const RegistrationForm = (): JSX.Element => {
   const theme = useTheme()
