@@ -26,6 +26,7 @@ export const store = configureStore({
           setQuestionFieldErrors.type,
           setQuizDescriptionFieldErrors.type,
         ],
+        ignoredPaths: ['uiState.snackbar'],
       },
     }),
 })

@@ -1,5 +1,5 @@
 import { useRouter, usePathname } from 'next/navigation'
-import { useEffect, useMemo } from 'react'
+import { useLayoutEffect, useMemo } from 'react'
 
 import { getAuthUser } from '@/api/modules/auth'
 import LoadingPage from '@/app/loading'
@@ -33,7 +33,7 @@ const AuthWrapper: FC<PropsWithChildren> = ({ children: childPage }) => {
   }, [pathname, isLoggedIn])
 
   // TODO: Переделать на actions
-  useEffect(() => {
+  useLayoutEffect(() => {
     void getAuthUser()
       .then(user => {
         dispatch(setUser(user))
@@ -41,9 +41,9 @@ const AuthWrapper: FC<PropsWithChildren> = ({ children: childPage }) => {
       .catch(() => {
         dispatch(unsetUser())
       })
-  }, [dispatch])
+  }, [])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isLoggedIn === false && !canViewPage) {
       router.replace('/auth')
     }

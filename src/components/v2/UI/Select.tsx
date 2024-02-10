@@ -1,7 +1,7 @@
-import { styled } from '@mui/material'
 import MUISelect, {
   type SelectProps as MUISelectProps,
 } from '@mui/material/Select'
+import { styled } from '@mui/material/styles'
 import React from 'react'
 import { match } from 'ts-pattern'
 

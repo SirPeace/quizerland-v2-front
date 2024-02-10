@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import LoginIcon from '@mui/icons-material/Login'
+import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Box, { type BoxProps } from '@mui/material/Box'
@@ -11,16 +11,15 @@ import TextField from '@mui/material/TextField'
 import { styled } from '@mui/material/styles'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { useForm, Controller, type SubmitHandler } from 'react-hook-form'
+import { useForm, type SubmitHandler, Controller } from 'react-hook-form'
 
-import { login } from '@/api/modules/auth'
+import { registerUser } from '@/api/modules/auth'
 import Button from '@/components/v2/UI/Button'
 import useError from '@/hooks/useError'
 import { setUser } from '@/redux/auth/authSlice'
 import { useAppDispatch } from '@/redux/reduxHooks'
-import { getMessageFromError } from '@/utils/error'
 
-import { signInSchema, type TSignInSchema } from './validation'
+import { registrationSchema, type TRegistrationSchema } from './validation'
 
 const FormControl = styled('div')(({ theme }) => ({
   marginBottom: theme.spacing(2),
@@ -38,35 +37,40 @@ const ActionsWrapper = styled('div')(({ theme }) => ({
   },
 }))
 
-const SignInForm = (props: BoxProps): JSX.Element => {
+const RegistrationForm = (props: BoxProps): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const { setErrorSnackbar } = useError()
+
   const router = useRouter()
   const dispatch = useAppDispatch()
-  const { setErrorSnackbar } = useError()
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { isSubmitting },
-  } = useForm<TSignInSchema>({
-    resolver: zodResolver(signInSchema),
+  } = useForm<TRegistrationSchema>({
+    resolver: zodResolver(registrationSchema),
     defaultValues: {
+      nickname: '',
       email: '',
       password: '',
+      confirmPassword: '',
     },
   })
 
-  const onSubmit: SubmitHandler<TSignInSchema> = async data => {
+  const onSubmit: SubmitHandler<TRegistrationSchema> = async (
+    data,
+  ): Promise<void> => {
+    const { confirmPassword, ...formData } = data
     try {
-      // Запрос к db, авторизация пользователя
-      const { data: verifiedUser } = await login(data)
-      // Сохранение верифицированного пользователя в redux
-      dispatch(setUser(verifiedUser))
-
+      const { data } = await registerUser(formData)
+      dispatch(setUser(data))
       router.push('/quizzes')
+      reset()
     } catch (err: any) {
-      const message = getMessageFromError(err)
-      setErrorSnackbar(message ?? 'Произошла ошибка, попробуйте позже', {
+      setErrorSnackbar(err, {
         position: { vertical: 'bottom', horizontal: 'center' },
       })
     }
@@ -77,18 +81,34 @@ const SignInForm = (props: BoxProps): JSX.Element => {
       <FormControl>
         <Controller
           control={control}
+          name="nickname"
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              type="text"
+              label="Псевдоним пользователя"
+              placeholder="happy_little_accident"
+              fullWidth
+              autoFocus
+              error={undefined !== error}
+              helperText={error?.message}
+            />
+          )}
+        />
+      </FormControl>
+
+      <FormControl>
+        <Controller
+          control={control}
           name="email"
-          render={({ fieldState: { error }, field }) => (
+          render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
               type="email"
-              label="Email"
-              autoComplete="current-email"
-              placeholder="test@test.ru"
+              label="Адрес электронной почты"
+              fullWidth
               error={undefined !== error}
               helperText={error?.message}
-              fullWidth
-              autoFocus
             />
           )}
         />
@@ -98,12 +118,11 @@ const SignInForm = (props: BoxProps): JSX.Element => {
         <Controller
           control={control}
           name="password"
-          render={({ fieldState: { error }, field }) => (
+          render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
               type={showPassword ? 'text' : 'password'}
               label="Пароль"
-              autoComplete="current-password"
               fullWidth
               error={undefined !== error}
               helperText={error?.message}
@@ -123,6 +142,38 @@ const SignInForm = (props: BoxProps): JSX.Element => {
         />
       </FormControl>
 
+      <FormControl>
+        <Controller
+          control={control}
+          name="confirmPassword"
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              type={showConfirmPassword ? 'text' : 'password'}
+              label="Подтвердите пароль"
+              fullWidth
+              error={undefined !== error}
+              helperText={error?.message}
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    onClick={() => {
+                      setShowConfirmPassword(show => !show)
+                    }}
+                  >
+                    {showConfirmPassword ? (
+                      <VisibilityOffIcon />
+                    ) : (
+                      <VisibilityIcon />
+                    )}
+                  </IconButton>
+                ),
+              }}
+            />
+          )}
+        />
+      </FormControl>
+
       <ActionsWrapper>
         <Button
           type="submit"
@@ -130,20 +181,20 @@ const SignInForm = (props: BoxProps): JSX.Element => {
           size="large"
           fullWidth
           disabled={isSubmitting}
-          startIcon={<LoginIcon />}
+          startIcon={<PersonAddAltRoundedIcon />}
         >
-          Войти
+          Зарегистрироваться
         </Button>
         <Link
           onClick={() => {
-            router.push('auth/registration')
+            router.push('/auth')
           }}
         >
-          Нет аккаунта? Заведите новый.
+          Вернуться на страницу авторизации
         </Link>
       </ActionsWrapper>
     </Box>
   )
 }
 
-export default SignInForm
+export default RegistrationForm

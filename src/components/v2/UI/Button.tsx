@@ -1,5 +1,5 @@
-import { styled } from '@mui/material'
 import MUIButton, { type ButtonProps } from '@mui/material/Button'
+import { styled } from '@mui/material/styles'
 import React from 'react'
 
 const StyledButton = styled(MUIButton)(({ theme }) => ({

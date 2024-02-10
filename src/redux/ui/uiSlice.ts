@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import type { AlertProps, SnackbarProps } from '@mui/material'
+import type { SnackbarProps } from '@mui/material/Snackbar'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface UIState {
@@ -8,11 +8,8 @@ export interface UIState {
     message: string
     duration?: SnackbarProps['autoHideDuration']
     position?: SnackbarProps['anchorOrigin']
-    icon?: AlertProps['icon']
-    alert?: {
-      color: AlertProps['color']
-      variant?: AlertProps['variant']
-    }
+    icon?: JSX.Element
+    variant?: 'default' | 'success' | 'error'
   }
 }
 const initialState: UIState = {
