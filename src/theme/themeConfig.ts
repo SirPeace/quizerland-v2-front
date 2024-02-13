@@ -2,13 +2,8 @@
 
 import { grey } from '@mui/material/colors'
 import { createTheme } from '@mui/material/styles'
-import { Mulish, Pacifico, Russo_One } from 'next/font/google'
+import { Mulish, Russo_One } from 'next/font/google'
 
-const pacificoFont = Pacifico({
-  subsets: ['latin'],
-  weight: '400',
-  preload: true,
-})
 const russoOneFont = Russo_One({
   subsets: ['latin', 'cyrillic'],
   weight: '400',
@@ -41,17 +36,17 @@ export const lightTheme = createTheme({
       light: '#fff',
       contrastText: '#222',
     },
+    info: {
+      main: '#219EBC',
+      dark: '#219EBC',
+      light: '#219EBC',
+      contrastText: '#fff',
+    },
   },
   typography: {
     h1: {
-      ...pacificoFont.style,
-      fontSize: 40,
-      background: '-webkit-linear-gradient(#FFB703, #FB8500)',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
-      position: 'relative',
-      lineHeight: 1.7,
-      top: '-10%',
+      ...russoOneFont.style,
+      fontSize: 38,
       margin: 0,
     },
     h2: {

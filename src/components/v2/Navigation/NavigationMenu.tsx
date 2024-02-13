@@ -1,21 +1,28 @@
+'use client'
+
 import FactCheckIcon from '@mui/icons-material/FactCheck'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import PostAddIcon from '@mui/icons-material/PostAdd'
-import {
-  Avatar,
-  Box,
-  List,
-  ListItem,
-  ListItemButton,
-  MenuItem,
-  Typography,
-  styled,
-} from '@mui/material'
+import Avatar from '@mui/material/Avatar'
+import Box from '@mui/material/Box'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import MenuItem from '@mui/material/MenuItem'
+import Typography from '@mui/material/Typography'
+import { styled } from '@mui/material/styles'
+import { Pacifico } from 'next/font/google'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import Card from '@/components/v2/UI/Card'
 import Select from '@/components/v2/UI/Select'
+
+const pacificoFont = Pacifico({
+  subsets: ['latin'],
+  weight: '400',
+  preload: true,
+})
 
 const AsideWrapper = styled('aside')(({ theme }) => ({
   display: 'flex',
@@ -23,7 +30,7 @@ const AsideWrapper = styled('aside')(({ theme }) => ({
   width: 300,
   overflow: 'hidden',
   padding: theme.spacing(2),
-  borderRight: '1px solid rgba(0, 0, 0, 0.1)',
+  borderRight: '1px solid rgba(0, 0, 0, 0.15)',
 }))
 
 const Header = styled('header')(({ theme }) => ({
@@ -31,8 +38,17 @@ const Header = styled('header')(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }))
 
-const LogoHeading = styled('h1')(({ theme }) => ({
-  ...theme.typography.h1,
+const LogoHeading = styled('strong')(({ theme }) => ({
+  ...pacificoFont.style,
+  display: 'block',
+  fontSize: 40,
+  background: '-webkit-linear-gradient(#FFB703, #FB8500)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  position: 'relative',
+  lineHeight: 1.7,
+  top: '-10%',
+  margin: 0,
   textAlign: 'center',
   left: -7,
   userSelect: 'none',

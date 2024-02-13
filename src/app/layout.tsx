@@ -33,7 +33,7 @@ export default function RootLayout({
         <ThemeProvider theme={lightTheme}>
           <body id="__next" className={inter.className}>
             <AuthWrapper>
-              <main>{children}</main>
+              <div>{children}</div>
             </AuthWrapper>
 
             <Snackbar />
