@@ -24,10 +24,16 @@ const pacificoFont = Pacifico({
   preload: true,
 })
 
+export const navigationMenuWidth = 300
+
 const AsideWrapper = styled('aside')(({ theme }) => ({
+  position: 'fixed',
+  top: 0,
+  bottom: 0,
   display: 'flex',
+  flexShrink: 0,
   flexDirection: 'column',
-  width: 300,
+  width: navigationMenuWidth,
   overflow: 'hidden',
   padding: theme.spacing(2),
   borderRight: '1px solid rgba(0, 0, 0, 0.15)',

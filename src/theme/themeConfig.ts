@@ -11,7 +11,7 @@ const russoOneFont = Russo_One({
 })
 const mulishFont = Mulish({
   subsets: ['latin', 'cyrillic'],
-  weight: '400',
+  weight: ['400', '800'],
   preload: true,
 })
 
@@ -34,7 +34,7 @@ export const lightTheme = createTheme({
       main: grey[800],
       dark: grey[900],
       light: '#fff',
-      contrastText: '#222',
+      contrastText: '#fff',
     },
     info: {
       main: '#219EBC',

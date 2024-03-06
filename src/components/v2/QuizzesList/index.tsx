@@ -1,16 +1,15 @@
 import Box, { type BoxProps } from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
+import { styled } from '@mui/material/styles'
 import { useIntersectionObserver } from '@uidotdev/usehooks'
-import { useRef, useCallback, useEffect, type HTMLProps } from 'react'
-import useResizeObserver from 'use-resize-observer'
+import { useRef, useEffect, type HTMLProps } from 'react'
 
 import { getQuizzes } from '@/api/modules/quizzes'
 import useError from '@/hooks/useError'
 import { setQuizzes } from '@/redux/quizzes/quizzesSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
-const QUIZ_CARD_WIDTH = 450
-const QUIZ_CARD_HEIGHT = 320
+import QuizzesListItem from './QuizzesListItem'
 
 interface LoaderProps extends HTMLProps<HTMLDivElement> {
   onIntersect: () => void
@@ -37,7 +36,13 @@ const IntersectingLoader = (props: LoaderProps): JSX.Element => {
   )
 }
 
-function QuizzesInfiniteGrid(props: BoxProps): JSX.Element {
+const QuizzesGrid = styled(Box)(({ theme }) => ({
+  display: 'grid',
+  gridTemplateColumns: '1fr '.repeat(3),
+  gap: theme.spacing(3),
+}))
+
+function QuizzesList(props: BoxProps): JSX.Element {
   const { quizzes, quizzesTotalCount } = useAppSelector(
     ({ quizzesState }) => quizzesState,
   )
@@ -46,12 +51,14 @@ function QuizzesInfiniteGrid(props: BoxProps): JSX.Element {
   const { setErrorSnackbar } = useError()
 
   const currentPage = useRef(0)
-  const listWrapperRef = useRef<HTMLDivElement>()
 
-  const { width: listWrapperWidth = 0, height: listWrapperHeight = 0 } =
-    useResizeObserver({ ref: listWrapperRef.current })
+  useEffect(() => {
+    void fetchQuizzes(0)
+  }, [])
 
-  const fetchQuizzes = useCallback(async (page: number) => {
+  const canLoadMoreQuizzes = (quizzesTotalCount ?? 0) > quizzes.length
+
+  async function fetchQuizzes(page: number): Promise<void> {
     try {
       const response = await getQuizzes(page)
       dispatch(
@@ -63,23 +70,23 @@ function QuizzesInfiniteGrid(props: BoxProps): JSX.Element {
     } catch (error) {
       setErrorSnackbar(error)
     }
-  }, [])
-
-  useEffect(() => {
-    void fetchQuizzes(0)
-  }, [])
-
-  const onLastItemIntersect = (): void => {
-    void fetchQuizzes(++currentPage.current)
   }
 
-  const canLoadMoreQuizzes = (quizzesTotalCount ?? 0) > quizzes.length
-
   return (
-    <Box {...props} ref={listWrapperRef}>
-      smth
-    </Box>
+    <QuizzesGrid {...props}>
+      {quizzes.map(quiz => (
+        <QuizzesListItem quiz={quiz} key={quiz.id} />
+      ))}
+
+      {canLoadMoreQuizzes && (
+        <IntersectingLoader
+          onIntersect={() => {
+            void fetchQuizzes(++currentPage.current)
+          }}
+        />
+      )}
+    </QuizzesGrid>
   )
 }
 
-export default QuizzesInfiniteGrid
+export default QuizzesList

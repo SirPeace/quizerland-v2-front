@@ -3,7 +3,7 @@
 import { styled } from '@mui/material/styles'
 
 import MainLayout from '@/components/v2/Layouts/MainLayout'
-import QuizzesInfiniteGrid from '@/components/v2/QuizzesInfiniteGrid'
+import QuizzesList from '@/components/v2/QuizzesList'
 
 const Container = styled('div')(({ theme }) => ({
   padding: theme.spacing(4, 4, 0, 4),
@@ -26,7 +26,7 @@ function QuizzesPage(): JSX.Element {
         <Heading>
           Ваша подборка тестов, <b>@logged_in_user</b>
         </Heading>
-        <QuizzesInfiniteGrid sx={{ flexGrow: 1 }} />
+        <QuizzesList sx={{ flexGrow: 1 }} />
       </Container>
     </MainLayout>
   )

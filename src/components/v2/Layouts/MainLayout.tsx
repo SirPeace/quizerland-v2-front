@@ -1,17 +1,18 @@
 import Box, { type BoxProps } from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 
-import NavigationMenu from '../Navigation/NavigationMenu'
+import NavigationMenu, {
+  navigationMenuWidth,
+} from '@/components/v2/Navigation/NavigationMenu'
 
-const StyledMainLayout = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  height: '100dvh',
+const StyledMainLayout = styled(Box)({
+  minHeight: '100dvh',
   backgroundColor: '#FCFCFC',
 
-  '& > main': {
-    flexGrow: 1,
+  '> main': {
+    marginLeft: navigationMenuWidth,
   },
-}))
+})
 
 function MainLayout({ children, ...props }: BoxProps): JSX.Element {
   return (
