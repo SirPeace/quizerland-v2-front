@@ -17,6 +17,7 @@ import { useState } from 'react'
 
 import Card from '@/components/v2/UI/Card'
 import Select from '@/components/v2/UI/Select'
+import { useAppSelector } from '@/redux/reduxHooks'
 
 const pacificoFont = Pacifico({
   subsets: ['latin'],
@@ -77,6 +78,20 @@ const LoginBadge = styled(Card)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
+
+  '> p': {
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    margin: 0,
+
+    '> em': {
+      color: theme.palette.info.main,
+      fontStyle: 'normal',
+      fontWeight: 700,
+    },
+  },
 }))
 
 const navigationLinks = [
@@ -108,6 +123,8 @@ const themes = [
 ]
 
 function NavigationMenu(): JSX.Element {
+  const { user } = useAppSelector(({ authState }) => authState)
+
   const router = useRouter()
 
   const [theme, setTheme] = useState('system')
@@ -159,8 +176,24 @@ function NavigationMenu(): JSX.Element {
           ))}
         </ThemePaletteSelect>
         <LoginBadge>
-          <Avatar sx={theme => ({ marginRight: theme.spacing(2) })} />
-          <p>Вы неавторизованы</p>
+          {user === undefined ? (
+            <>
+              <Avatar sx={theme => ({ marginRight: theme.spacing(2) })} />
+              <span>Вы неавторизованы</span>
+            </>
+          ) : (
+            <>
+              <Avatar
+                sx={theme => ({ marginRight: theme.spacing(2) })}
+                src={`https://api.dicebear.com/8.x/bottts-neutral/svg?seed=${user.nickname}`}
+              />
+              <p>
+                <span>Пользователь:</span>
+                <br />
+                <em>@{user.nickname}</em>
+              </p>
+            </>
+          )}
         </LoginBadge>
       </Footer>
     </AsideWrapper>

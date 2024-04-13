@@ -1,12 +1,12 @@
 import Box, { type BoxProps } from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import { styled } from '@mui/material/styles'
-import { useIntersectionObserver } from '@uidotdev/usehooks'
+import { useIntersectionObserver, useMeasure } from '@uidotdev/usehooks'
 import { useRef, useEffect, type HTMLProps } from 'react'
 
 import { getQuizzes } from '@/api/modules/quizzes'
 import useError from '@/hooks/useError'
-import { setQuizzes } from '@/redux/quizzes/quizzesSlice'
+import { appendQuizzes } from '@/redux/quizzes/quizzesSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 import QuizzesListItem from './QuizzesListItem'
@@ -38,9 +38,10 @@ const IntersectingLoader = (props: LoaderProps): JSX.Element => {
 
 const QuizzesGrid = styled(Box)(({ theme }) => ({
   display: 'grid',
-  gridTemplateColumns: '1fr '.repeat(3),
   gap: theme.spacing(3),
 }))
+
+const gridItemWidth = 400
 
 function QuizzesList(props: BoxProps): JSX.Element {
   const { quizzes, quizzesTotalCount } = useAppSelector(
@@ -52,17 +53,21 @@ function QuizzesList(props: BoxProps): JSX.Element {
 
   const currentPage = useRef(0)
 
+  const [gridRef, { width: gridWidth }] = useMeasure()
+
   useEffect(() => {
     void fetchQuizzes(0)
   }, [])
 
   const canLoadMoreQuizzes = (quizzesTotalCount ?? 0) > quizzes.length
 
+  const gridColumnsCount = Math.floor((gridWidth ?? gridItemWidth) / gridItemWidth)
+
   async function fetchQuizzes(page: number): Promise<void> {
     try {
       const response = await getQuizzes(page)
       dispatch(
-        setQuizzes({
+        appendQuizzes({
           quizzes: response.quizzes,
           totalCount: response.quizzesTotalCount,
         }),
@@ -73,7 +78,11 @@ function QuizzesList(props: BoxProps): JSX.Element {
   }
 
   return (
-    <QuizzesGrid {...props}>
+    <QuizzesGrid
+      ref={gridRef}
+      style={{ gridTemplateColumns: '1fr '.repeat(gridColumnsCount) }}
+      {...props}
+    >
       {quizzes.map(quiz => (
         <QuizzesListItem quiz={quiz} key={quiz.id} />
       ))}
