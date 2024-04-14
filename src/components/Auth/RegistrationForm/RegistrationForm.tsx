@@ -11,14 +11,7 @@ import {
   Visibility,
   VisibilityOff,
 } from '@mui/icons-material'
-import {
-  Avatar,
-  Box,
-  Button,
-  TextField,
-  Typography,
-  IconButton,
-} from '@mui/material'
+import { Avatar, Box, Button, TextField, Typography, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { AxiosError } from 'axios'
@@ -67,9 +60,7 @@ const RegistrationForm = (): JSX.Element => {
     resolver: zodResolver(registrationSchema),
   })
 
-  const onSubmit: SubmitHandler<TRegistrationSchema> = async (
-    data,
-  ): Promise<void> => {
+  const onSubmit: SubmitHandler<TRegistrationSchema> = async (data): Promise<void> => {
     const { confirmPassword, ...userDataRegistration } = data
     try {
       // Запрос к db, регистрация пользователя
@@ -91,19 +82,9 @@ const RegistrationForm = (): JSX.Element => {
   }
 
   return (
-    <div
-      className={
-        isNotMobile
-          ? `${containerRegDesktopStyle}`
-          : `${containerRegLaptopStyle}`
-      }
-    >
+    <div className={isNotMobile ? `${containerRegDesktopStyle}` : `${containerRegLaptopStyle}`}>
       <div
-        className={
-          isNotMobile
-            ? `${headerTitleRegDesktopStyle}`
-            : `${headerTitleRegLaptopStyle}`
-        }
+        className={isNotMobile ? `${headerTitleRegDesktopStyle}` : `${headerTitleRegLaptopStyle}`}
       >
         <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
           <PersonAdd />
@@ -116,15 +97,9 @@ const RegistrationForm = (): JSX.Element => {
       <Box
         component="form"
         onSubmit={handleSubmit(onSubmit)}
-        className={
-          isNotMobile ? `${boxFormRegDesktopStyle}` : `${boxFormRegLaptopStyle}`
-        }
+        className={isNotMobile ? `${boxFormRegDesktopStyle}` : `${boxFormRegLaptopStyle}`}
       >
-        <div
-          className={
-            isNotMobile ? 'flex flex-col my-auto' : 'px-[1rem] my-auto'
-          }
-        >
+        <div className={isNotMobile ? 'flex flex-col my-auto' : 'px-[1rem] my-auto'}>
           <Box className="flex items-end">
             <AccountCircle sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
             <TextField
@@ -190,9 +165,7 @@ const RegistrationForm = (): JSX.Element => {
           </div>
 
           <Box className="flex items-end">
-            <EnhancedEncryption
-              sx={{ color: 'action.active', mr: 1, mb: 0.5 }}
-            />
+            <EnhancedEncryption sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
             <TextField
               {...register('confirmPassword')}
               type={showConfirmPassword ? 'text' : 'password'}
@@ -212,18 +185,12 @@ const RegistrationForm = (): JSX.Element => {
 
           <div>
             <p className="mt-0.5 pl-8 text-xs text-red-600 h-4">
-              {errors.confirmPassword !== undefined
-                ? errors.confirmPassword.message
-                : ''}
+              {errors.confirmPassword !== undefined ? errors.confirmPassword.message : ''}
             </p>
           </div>
         </div>
 
-        <div
-          className={
-            isNotMobile ? 'w-full mt-[2rem]' : 'w-full fixed bottom-1 pr-6'
-          }
-        >
+        <div className={isNotMobile ? 'w-full mt-[2rem]' : 'w-full fixed bottom-1 pr-6'}>
           <Button
             type="submit"
             disabled={isSubmitting}

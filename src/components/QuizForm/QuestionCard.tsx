@@ -96,10 +96,7 @@ const QuizQuestionForm = (): JSX.Element => {
   }, [questionIndex])
 
   useEffect(() => {
-    const errorsDiff = getQuestionFormAndStoreErrorsDiff(
-      formState.errors,
-      storeErrors,
-    )
+    const errorsDiff = getQuestionFormAndStoreErrorsDiff(formState.errors, storeErrors)
 
     if (Object.keys(errorsDiff).length > 0) {
       dispatch(
@@ -136,8 +133,7 @@ const QuizQuestionForm = (): JSX.Element => {
     dispatch(removeAnswer({ questionIndex, answerIndex }))
   }
 
-  const isRightAnswer = (idx: number): boolean =>
-    getValues('rightAnswerId') === idx
+  const isRightAnswer = (idx: number): boolean => getValues('rightAnswerId') === idx
 
   return (
     <Card raised className="py-5 px-5 rounded-xl mx-3">

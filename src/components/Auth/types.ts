@@ -26,9 +26,7 @@ export const registrationSchema = z
       .string()
       .min(8, 'Пароль должен содержать не менее 8 символов!')
       .max(32, 'Пароль не может иметь более 32 символов!'),
-    confirmPassword: z
-      .string()
-      .min(1, 'Поле проверки пароля не может быть пустым!'),
+    confirmPassword: z.string().min(1, 'Поле проверки пароля не может быть пустым!'),
   })
   .refine(data => data.password === data.confirmPassword, {
     message: 'Пароли должны совпадать!',

@@ -1,16 +1,5 @@
-import {
-  EditNote,
-  FormatListNumberedRtl,
-  InputOutlined,
-  Logout,
-} from '@mui/icons-material'
-import {
-  Divider,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material'
+import { EditNote, FormatListNumberedRtl, InputOutlined, Logout } from '@mui/icons-material'
+import { Divider, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import { usePathname, useRouter } from 'next/navigation'
 import { useContext, useMemo } from 'react'
 
@@ -104,20 +93,14 @@ const LinksList = (): JSX.Element => {
 
         return (
           <div key={link.pathname ?? index}>
-            <ListItem
-              className={
-                isDisabled(link.name) ? 'cursor-not-allowed' : 'cursor-default'
-              }
-            >
+            <ListItem className={isDisabled(link.name) ? 'cursor-not-allowed' : 'cursor-default'}>
               <ListItemButton
                 disabled={isDisabled(link.name)}
                 onClick={() => {
                   handleLinkClick(link)
                 }}
               >
-                <ListItemIcon
-                  className={`m-auto ${isActive && 'text-blue-700'}`}
-                >
+                <ListItemIcon className={`m-auto ${isActive && 'text-blue-700'}`}>
                   {link.icon}
                 </ListItemIcon>
                 <ListItemText
@@ -127,9 +110,7 @@ const LinksList = (): JSX.Element => {
               </ListItemButton>
             </ListItem>
 
-            {link.name === 'Создание тестов' && (
-              <Divider className="w-64 mx-auto my-2" />
-            )}
+            {link.name === 'Создание тестов' && <Divider className="w-64 mx-auto my-2" />}
           </div>
         )
       })}

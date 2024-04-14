@@ -13,11 +13,7 @@ interface IQuizListItemProps {
   orderNumber: number
   itemStyle?: React.CSSProperties
 }
-const QuizListItem: FC<IQuizListItemProps> = ({
-  quiz,
-  itemStyle,
-  orderNumber,
-}) => {
+const QuizListItem: FC<IQuizListItemProps> = ({ quiz, itemStyle, orderNumber }) => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
@@ -31,10 +27,7 @@ const QuizListItem: FC<IQuizListItemProps> = ({
     >
       <section>
         <div
-          className={
-            'flex justify-between p-3 ' +
-            (isMobile ? 'flex-col-reverse text-center' : '')
-          }
+          className={'flex justify-between p-3 ' + (isMobile ? 'flex-col-reverse text-center' : '')}
         >
           <Typography
             gutterBottom
@@ -62,9 +55,7 @@ const QuizListItem: FC<IQuizListItemProps> = ({
         </p>
       </section>
 
-      <section
-        className={'flex justify-between px-4 ' + (isMobile ? 'flex-col' : '')}
-      >
+      <section className={'flex justify-between px-4 ' + (isMobile ? 'flex-col' : '')}>
         <p className="text-sm font-semibold text-gray-400 ">
           тест из {`${quiz.questionsCount}`} вопросов
         </p>

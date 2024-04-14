@@ -60,10 +60,7 @@ const Snackbar = (): JSX.Element => {
     }
   }, [snackbar])
 
-  const closeSnackbar = (
-    event: React.SyntheticEvent | Event,
-    reason?: string,
-  ): void => {
+  const closeSnackbar = (event: React.SyntheticEvent | Event, reason?: string): void => {
     if (reason === 'clickaway') {
       return
     }
@@ -89,10 +86,7 @@ const Snackbar = (): JSX.Element => {
             {snackbarState?.message}
           </Typography>
         </section>
-        <IconButton
-          onClick={closeSnackbar}
-          sx={theme => ({ ml: theme.spacing(1) })}
-        >
+        <IconButton onClick={closeSnackbar} sx={theme => ({ ml: theme.spacing(1) })}>
           <CloseIcon />
         </IconButton>
       </StyledSnackbarCard>

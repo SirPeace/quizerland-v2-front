@@ -20,17 +20,10 @@ import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 import { QuizFormContext } from '../QuizFormContext'
 
 const DrawerList = (): JSX.Element => {
-  const {
-    submit,
-    activeTab,
-    setActiveTab,
-    mobileDrawerOpen,
-    setMobileDrawerOpen,
-  } = useContext(QuizFormContext)
+  const { submit, activeTab, setActiveTab, mobileDrawerOpen, setMobileDrawerOpen } =
+    useContext(QuizFormContext)
 
-  const { quizDescription, questions } = useAppSelector(
-    ({ quizFormState }) => quizFormState,
-  )
+  const { quizDescription, questions } = useAppSelector(({ quizFormState }) => quizFormState)
   const dispatch = useAppDispatch()
 
   const questionsErrors = useMemo<boolean[]>(
@@ -54,22 +47,16 @@ const DrawerList = (): JSX.Element => {
 
   const quizDescriptionHasError = Object.keys(quizDescription.errors).length > 0
 
-  const formHasErrors =
-    questionsErrors.includes(true) || quizDescriptionHasError
+  const formHasErrors = questionsErrors.includes(true) || quizDescriptionHasError
 
   return (
-    <Box
-      sx={{ mt: { sm: 10, xs: 0 } }}
-      className="flex flex-col justify-between h-full"
-    >
+    <Box sx={{ mt: { sm: 10, xs: 0 } }} className="flex flex-col justify-between h-full">
       <div>
         <List>
           <ListItem disablePadding>
             <ListItemButton
               selected={activeTab === -1}
-              className={
-                quizDescriptionHasError && activeTab !== -1 ? 'bg-red-50' : ''
-              }
+              className={quizDescriptionHasError && activeTab !== -1 ? 'bg-red-50' : ''}
               onClick={() => {
                 openTab(-1)
               }}
@@ -92,9 +79,7 @@ const DrawerList = (): JSX.Element => {
             <ListItem key={idx} disablePadding>
               <ListItemButton
                 selected={idx === activeTab}
-                className={
-                  questionsErrors[idx] && idx !== activeTab ? 'bg-red-50' : ''
-                }
+                className={questionsErrors[idx] && idx !== activeTab ? 'bg-red-50' : ''}
                 onClick={() => {
                   openTab(idx)
                 }}
@@ -122,12 +107,7 @@ const DrawerList = (): JSX.Element => {
           <AddToPhotosIcon fontSize="small" className="mr-4" />
           Добавить вопрос
         </Button>
-        <Button
-          variant="contained"
-          disabled={formHasErrors}
-          onClick={submit}
-          className="w-full"
-        >
+        <Button variant="contained" disabled={formHasErrors} onClick={submit} className="w-full">
           Создать тест
         </Button>
 

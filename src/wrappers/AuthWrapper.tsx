@@ -22,9 +22,7 @@ const AuthWrapper: FC<PropsWithChildren> = ({ children: childPage }) => {
       return true
     }
 
-    const guardedPath = guardedPaths.find(pathPattern =>
-      pathPattern.test(pathname),
-    )
+    const guardedPath = guardedPaths.find(pathPattern => pathPattern.test(pathname))
     if (undefined === guardedPath) {
       return true
     }

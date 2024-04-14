@@ -40,24 +40,20 @@ const QuizFormContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false)
 
   const dispatch = useAppDispatch()
-  const { title, description, questions } = useAppSelector(
-    ({ quizFormState }) => {
-      const title = quizFormState.quizDescription.title
-      const description = quizFormState.quizDescription.description
-      const questions = quizFormState.questions.map<ICreateQuestionRequest>(
-        question => {
-          const questionItem: ICreateQuestionRequest = {
-            text: question.title,
-            rightAnswerIndex: Number(question.rightAnswerId),
-            answers: question.answers.map<string>(answer => answer.text),
-          }
-          return questionItem
-        },
-      )
+  const { title, description, questions } = useAppSelector(({ quizFormState }) => {
+    const title = quizFormState.quizDescription.title
+    const description = quizFormState.quizDescription.description
+    const questions = quizFormState.questions.map<ICreateQuestionRequest>(question => {
+      const questionItem: ICreateQuestionRequest = {
+        text: question.title,
+        rightAnswerIndex: Number(question.rightAnswerId),
+        answers: question.answers.map<string>(answer => answer.text),
+      }
+      return questionItem
+    })
 
-      return { title, description, questions }
-    },
-  )
+    return { title, description, questions }
+  })
 
   const submit = async (): Promise<void> => {
     const createdQuizForm = { title, description, questions }
@@ -94,11 +90,7 @@ const QuizFormContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
     submit,
   }
 
-  return (
-    <QuizFormContext.Provider value={formContext}>
-      {children}
-    </QuizFormContext.Provider>
-  )
+  return <QuizFormContext.Provider value={formContext}>{children}</QuizFormContext.Provider>
 }
 
 export default QuizFormContextProvider

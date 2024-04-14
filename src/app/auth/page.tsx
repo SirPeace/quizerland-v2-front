@@ -41,11 +41,7 @@ function AuthPage(): JSX.Element {
       />
 
       <StyledCard>
-        <Typography
-          variant="h2"
-          component="h2"
-          sx={t => ({ mb: t.spacing(4) })}
-        >
+        <Typography variant="h2" component="h2" sx={t => ({ mb: t.spacing(4) })}>
           Авторизация
         </Typography>
         <SignInForm sx={{ width: 450 }} />

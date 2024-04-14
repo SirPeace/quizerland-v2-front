@@ -1,22 +1,12 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { cloneDeep } from 'lodash-es'
 
-import type {
-  TQuestionForm,
-  TQuizDescriptionForm,
-} from '@/components/CreateQuiz/schema'
+import type { TQuestionForm, TQuizDescriptionForm } from '@/components/CreateQuiz/schema'
 
-import {
-  parseQuestionFormFieldErrors,
-  parseQuizDescriptionFormFieldErrors,
-} from './helpers'
+import { parseQuestionFormFieldErrors, parseQuizDescriptionFormFieldErrors } from './helpers'
 import quizFormState, { defaultQuestion } from './initialState'
 
-import type {
-  IQuizDescriptionForm,
-  TQuestionFormErrors,
-  TQuizDescriptionFormErrors,
-} from './types'
+import type { IQuizDescriptionForm, TQuestionFormErrors, TQuizDescriptionFormErrors } from './types'
 
 import type { FieldErrors } from 'react-hook-form'
 
@@ -46,10 +36,7 @@ export const quizFormSlice = createSlice({
   name: 'quizForm',
   initialState: quizFormState,
   reducers: {
-    updateQuizDescription(
-      state,
-      { payload }: PayloadAction<Partial<IQuizDescriptionForm>>,
-    ) {
+    updateQuizDescription(state, { payload }: PayloadAction<Partial<IQuizDescriptionForm>>) {
       state.quizDescription = {
         ...state.quizDescription,
         ...payload,
@@ -64,8 +51,7 @@ export const quizFormSlice = createSlice({
       const question = state.questions[payload.index]
 
       const title = payloadQuestion.title ?? question.title
-      const rightAnswerId =
-        payloadQuestion.rightAnswerId ?? question.rightAnswerId
+      const rightAnswerId = payloadQuestion.rightAnswerId ?? question.rightAnswerId
       const answers =
         payloadQuestion.answers?.map((payloadAnswer, idx) => {
           const answer = question.answers[idx]
@@ -97,10 +83,7 @@ export const quizFormSlice = createSlice({
       state.questions[questionIndex].answers.splice(answerIndex, 1)
     },
 
-    setQuestionFieldErrors(
-      state,
-      { payload }: PayloadAction<ISetQuestionErrorsPayload>,
-    ) {
+    setQuestionFieldErrors(state, { payload }: PayloadAction<ISetQuestionErrorsPayload>) {
       const question = state.questions[payload.questionIndex]
 
       question.errors = parseQuestionFormFieldErrors(payload.errors)
@@ -110,23 +93,16 @@ export const quizFormSlice = createSlice({
       state,
       { payload }: PayloadAction<FieldErrors<TQuizDescriptionForm>>,
     ) {
-      state.quizDescription.errors =
-        parseQuizDescriptionFormFieldErrors(payload)
+      state.quizDescription.errors = parseQuizDescriptionFormFieldErrors(payload)
     },
 
-    setQuestionsErrors(
-      state,
-      { payload }: PayloadAction<TQuestionFormErrors[]>,
-    ) {
+    setQuestionsErrors(state, { payload }: PayloadAction<TQuestionFormErrors[]>) {
       payload.forEach((errors, idx) => {
         state.questions[idx].errors = errors
       })
     },
 
-    setQuizDescriptionErrors(
-      state,
-      { payload }: PayloadAction<TQuizDescriptionFormErrors>,
-    ) {
+    setQuizDescriptionErrors(state, { payload }: PayloadAction<TQuizDescriptionFormErrors>) {
       state.quizDescription.errors = payload
     },
 

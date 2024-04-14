@@ -10,15 +10,7 @@ import {
   Visibility,
   VisibilityOff,
 } from '@mui/icons-material'
-import {
-  Alert,
-  Avatar,
-  Box,
-  Button,
-  IconButton,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Alert, Avatar, Box, Button, IconButton, TextField, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { AxiosError } from 'axios'
@@ -63,9 +55,7 @@ const SignInForm = (): JSX.Element => {
     resolver: zodResolver(singInSchema),
   })
 
-  const onSubmit: SubmitHandler<TSingInSchema> = async (
-    data,
-  ): Promise<void> => {
+  const onSubmit: SubmitHandler<TSingInSchema> = async (data): Promise<void> => {
     try {
       // Запрос к db, авторизация пользователя
       const { data: verifiedUser } = await login(data)
@@ -85,11 +75,7 @@ const SignInForm = (): JSX.Element => {
 
   return (
     <div className={isNotMobile ? containerDesktopStyle : containerLaptopStyle}>
-      <div
-        className={
-          isNotMobile ? headerTitleDesktopStyle : headerTitleLaptopStyle
-        }
-      >
+      <div className={isNotMobile ? headerTitleDesktopStyle : headerTitleLaptopStyle}>
         <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
           <HowToReg />
         </Avatar>
@@ -102,11 +88,7 @@ const SignInForm = (): JSX.Element => {
         onSubmit={handleSubmit(onSubmit)}
         className={isNotMobile ? boxFormDesktopStyle : boxFormLaptopStyle}
       >
-        <div
-          className={
-            isNotMobile ? 'flex flex-col my-auto' : 'px-[1rem] my-auto'
-          }
-        >
+        <div className={isNotMobile ? 'flex flex-col my-auto' : 'px-[1rem] my-auto'}>
           <Box className="flex items-end">
             <AlternateEmail sx={{ color: 'action.active', mr: 1, mb: 0.5 }} />
             <TextField
@@ -163,11 +145,7 @@ const SignInForm = (): JSX.Element => {
           </Alert>
         )}
 
-        <div
-          className={
-            isNotMobile ? 'w-full mt-[2rem]' : 'w-full fixed bottom-1 pr-6'
-          }
-        >
+        <div className={isNotMobile ? 'w-full mt-[2rem]' : 'w-full fixed bottom-1 pr-6'}>
           <Button
             type="submit"
             size="large"

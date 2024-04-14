@@ -40,11 +40,7 @@ function RegistrationPage(): JSX.Element {
       />
 
       <StyledCard>
-        <Typography
-          variant="h2"
-          component="h2"
-          sx={t => ({ mb: t.spacing(4) })}
-        >
+        <Typography variant="h2" component="h2" sx={t => ({ mb: t.spacing(4) })}>
           Регистрация
         </Typography>
         <RegistrationForm sx={{ width: 450 }} />

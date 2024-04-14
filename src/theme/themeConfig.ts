@@ -33,14 +33,18 @@ export const lightTheme = createTheme({
     secondary: {
       main: grey[800],
       dark: grey[900],
-      light: '#fff',
-      contrastText: '#fff',
+      light: '#FFF',
+      contrastText: '#FFF',
     },
     info: {
       main: '#219EBC',
       dark: '#219EBC',
       light: '#219EBC',
-      contrastText: '#fff',
+      contrastText: '#FFF',
+    },
+    background: {
+      default: '#FCFCFC',
+      paper: '#FFF',
     },
   },
   typography: {
@@ -57,6 +61,11 @@ export const lightTheme = createTheme({
     h3: {
       ...russoOneFont.style,
       fontSize: 22,
+      margin: 0,
+    },
+    h4: {
+      ...russoOneFont.style,
+      fontSize: 18,
       margin: 0,
     },
     button: {

@@ -8,10 +8,7 @@ import { type UIState, setSnackbar } from '@/redux/ui/uiSlice'
 import { getMessageFromError } from '@/utils/error'
 
 interface UseErrorReturn {
-  setErrorSnackbar: (
-    error: any,
-    options?: Omit<UIState['snackbar'], 'message'>,
-  ) => void
+  setErrorSnackbar: (error: any, options?: Omit<UIState['snackbar'], 'message'>) => void
 }
 function useError(): UseErrorReturn {
   const dispatch = useAppDispatch()

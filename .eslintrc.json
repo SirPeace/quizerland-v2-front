@@ -56,7 +56,7 @@
         "tabWidth": 2,
         "semi": false,
         "bracketSpacing": true,
-        "printWidth": 80,
+        "printWidth": 100,
         "endOfLine": "auto",
         "arrowParens": "avoid"
       }
@@ -64,15 +64,7 @@
     "import/order": [
       "error",
       {
-        "groups": [
-          "builtin",
-          "external",
-          "parent",
-          "sibling",
-          "index",
-          "object",
-          "type"
-        ],
+        "groups": ["builtin", "external", "parent", "sibling", "index", "object", "type"],
         "pathGroups": [
           {
             "pattern": "@/**/**",

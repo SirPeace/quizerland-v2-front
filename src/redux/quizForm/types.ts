@@ -13,14 +13,9 @@ export interface IQuizDescriptionForm {
   errors: TQuizDescriptionFormErrors
 }
 
-type TQuizDescriptionFormErrorKeys = Exclude<
-  keyof IQuizDescriptionForm,
-  'errors'
->
+type TQuizDescriptionFormErrorKeys = Exclude<keyof IQuizDescriptionForm, 'errors'>
 
-export type TQuizDescriptionFormErrors = Partial<
-  Record<TQuizDescriptionFormErrorKeys, string>
->
+export type TQuizDescriptionFormErrors = Partial<Record<TQuizDescriptionFormErrorKeys, string>>
 
 // ==============================
 //         QUESTION FORM
@@ -36,9 +31,7 @@ type TQuestionFormErrorKeys =
   | Exclude<keyof IQuestionForm, 'errors' | 'answers'>
   | `answers.${number}.text`
 
-export type TQuestionFormErrors = Partial<
-  Record<TQuestionFormErrorKeys, string>
->
+export type TQuestionFormErrors = Partial<Record<TQuestionFormErrorKeys, string>>
 
 export interface IQuestionFormAnswer {
   text: string

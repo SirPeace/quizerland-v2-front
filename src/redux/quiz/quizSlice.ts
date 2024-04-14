@@ -13,21 +13,19 @@ export const quizSlice = createSlice({
   initialState: quizState,
   reducers: {
     setupState: (state, action: PayloadAction<IQuizResponse>) => {
-      const questions = action.payload.quizItem.questions.map<IQuestion>(
-        (question, idx) => {
-          const questionItem: IQuestion = {
+      const questions = action.payload.quizItem.questions.map<IQuestion>((question, idx) => {
+        const questionItem: IQuestion = {
+          id: idx,
+          text: question.text,
+          correctAnswerIndex: question.rightAnswerIndex,
+          answers: question.answers.map<IAnswer>((answer, idx) => ({
             id: idx,
-            text: question.text,
-            correctAnswerIndex: question.rightAnswerIndex,
-            answers: question.answers.map<IAnswer>((answer, idx) => ({
-              id: idx,
-              text: answer,
-            })),
-          }
+            text: answer,
+          })),
+        }
 
-          return questionItem
-        },
-      )
+        return questionItem
+      })
 
       state.currentQuestionIndex = action.payload.progress.currentQuestionIndex
       state.rightAttempts = action.payload.progress.rightAttempts

@@ -20,10 +20,7 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 
-import {
-  deleteQuizProgress,
-  getNextIncompleteQuiz,
-} from '@/api/modules/quizzes'
+import { deleteQuizProgress, getNextIncompleteQuiz } from '@/api/modules/quizzes'
 import { resetCurrentQuestion, setIsPreview } from '@/redux/quiz/quizSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 import { getFormattedDate } from '@/utils/date'
@@ -38,8 +35,8 @@ const QuizPreviewCard: FC = () => {
 
   const { user } = useAppSelector(({ authState }) => authState)
 
-  const { correctAnswersCount, wrongAnswersCount, quiz, questionsCount } =
-    useAppSelector(({ quizState }) => {
+  const { correctAnswersCount, wrongAnswersCount, quiz, questionsCount } = useAppSelector(
+    ({ quizState }) => {
       const { questions, ...quiz } = quizState
       const questionsCount = questions.length ?? 0
       const correctAnswersCount = quizState.rightAttempts ?? 0
@@ -51,7 +48,8 @@ const QuizPreviewCard: FC = () => {
         quiz,
         questionsCount,
       }
-    })
+    },
+  )
 
   const dispatch = useAppDispatch()
 
@@ -106,9 +104,7 @@ const QuizPreviewCard: FC = () => {
           }
           title={
             <>
-              <Typography variant="body1">
-                Автор теста: {user?.nickname}
-              </Typography>
+              <Typography variant="body1">Автор теста: {user?.nickname}</Typography>
               <Typography variant="body2">Email: {user?.email}</Typography>
             </>
           }
@@ -148,24 +144,14 @@ const QuizPreviewCard: FC = () => {
         {!quiz.isFinished ? (
           <div
             className={
-              isNotMobile
-                ? 'flex justify-between mt-[1rem]'
-                : 'flex flex-col items-center'
+              isNotMobile ? 'flex justify-between mt-[1rem]' : 'flex flex-col items-center'
             }
           >
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              className="indent-2 text-justify"
-            >
+            <Typography variant="body1" color="text.secondary" className="indent-2 text-justify">
               {`Тест из ${questionsCount} вопросов`}
             </Typography>
 
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              className="indent-2 text-justify"
-            >
+            <Typography variant="body1" color="text.secondary" className="indent-2 text-justify">
               {quiz.currentQuestionIndex === 0
                 ? 'Прогресс: Вы не проходили этот тест'
                 : `Прогресс: ${quiz.currentQuestionIndex + 1}-й вопрос`}
@@ -189,22 +175,14 @@ const QuizPreviewCard: FC = () => {
             <RadioGroup className={isNotMobile ? 'mx-4 mt-2 ' : 'mx-auto'}>
               <FormControlLabel
                 control={
-                  <HighlightOffOutlinedIcon
-                    className="text-red-400"
-                    sx={{ margin: '9px' }}
-                  />
+                  <HighlightOffOutlinedIcon className="text-red-400" sx={{ margin: '9px' }} />
                 }
                 className="text-red-400 cursor-auto"
                 label={`Неверные ответы : ${wrongAnswersCount}`}
               />
 
               <FormControlLabel
-                control={
-                  <VerifiedOutlinedIcon
-                    className="text-green-700"
-                    sx={{ margin: '9px' }}
-                  />
-                }
+                control={<VerifiedOutlinedIcon className="text-green-700" sx={{ margin: '9px' }} />}
                 className="text-green-600"
                 label={`Правильные ответы : ${correctAnswersCount}`}
               />
@@ -215,9 +193,7 @@ const QuizPreviewCard: FC = () => {
 
       <CardActions className={isNotMobile ? '' : 'flex flex-col'}>
         {!quiz.isFinished ? (
-          <div
-            className={isNotMobile ? 'flex ml-auto' : 'w-full fixed bottom-0'}
-          >
+          <div className={isNotMobile ? 'flex ml-auto' : 'w-full fixed bottom-0'}>
             <Button
               size={isNotMobile ? 'medium' : 'large'}
               variant={isNotMobile ? 'text' : 'contained'}

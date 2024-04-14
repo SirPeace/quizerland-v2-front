@@ -1,7 +1,4 @@
-import type {
-  TQuestionForm,
-  TQuizDescriptionForm,
-} from '@/components/CreateQuiz/schema'
+import type { TQuestionForm, TQuizDescriptionForm } from '@/components/CreateQuiz/schema'
 
 import type { TQuestionFormErrors, TQuizDescriptionFormErrors } from './types'
 
@@ -31,8 +28,7 @@ export function parseServerErrors(serverErrors: ZodIssue[]): IQuizFormErrors {
         const answerIndex = Number(error.path[3])
 
         errors.questions[questionIndex] ??= {}
-        errors.questions[questionIndex][`answers.${answerIndex}.text`] =
-          error.message
+        errors.questions[questionIndex][`answers.${answerIndex}.text`] = error.message
       }
 
       return
@@ -73,8 +69,7 @@ export function getQuizDescriptionFormAndStoreErrorsDiff(
   formFieldErrors: FieldErrors<TQuizDescriptionForm>,
   storeErrors: TQuizDescriptionFormErrors,
 ): TQuizDescriptionFormErrors {
-  const parsedFormFieldErrors =
-    parseQuizDescriptionFormFieldErrors(formFieldErrors)
+  const parsedFormFieldErrors = parseQuizDescriptionFormFieldErrors(formFieldErrors)
 
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const diff = {} as TQuizDescriptionFormErrors
@@ -110,8 +105,7 @@ export function parseQuestionFormFieldErrors(
     if (k === 'answers') {
       formFieldErrors.answers?.forEach?.((answer, idx) => {
         const errorMessage = answer?.text?.message
-        if (errorMessage !== undefined)
-          storeErrors[`answers.${idx}.text`] = errorMessage
+        if (errorMessage !== undefined) storeErrors[`answers.${idx}.text`] = errorMessage
       })
       continue
     }

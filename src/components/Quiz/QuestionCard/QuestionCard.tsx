@@ -22,11 +22,7 @@ import {
   wrongAnswerStyles,
 } from './styles'
 
-import type {
-  IFormControlStyles,
-  IHelperText,
-  IQuestionCardProps,
-} from './types'
+import type { IFormControlStyles, IHelperText, IQuestionCardProps } from './types'
 
 const QuestionCard = ({
   question,
@@ -41,10 +37,7 @@ const QuestionCard = ({
   const [attempts, setAttempts] = useState<Record<number, boolean>>({})
 
   const correctAnswer = useMemo(() => question.correctAnswerIndex, [question])
-  const isSelectedAnswerCorrect = useMemo(
-    () => Object.values(attempts).includes(true),
-    [attempts],
-  )
+  const isSelectedAnswerCorrect = useMemo(() => Object.values(attempts).includes(true), [attempts])
   const helperText = useMemo((): IHelperText => {
     if (Object.keys(attempts).length === 0) {
       return {
@@ -122,9 +115,7 @@ const QuestionCard = ({
               <Button
                 key={idx}
                 className="normal-case disabled:opacity-60"
-                disabled={
-                  isSelectedAnswerCorrect || Object.hasOwn(attempts, idx)
-                }
+                disabled={isSelectedAnswerCorrect || Object.hasOwn(attempts, idx)}
               >
                 <FormControlLabel
                   value={idx}
@@ -139,9 +130,7 @@ const QuestionCard = ({
             ))}
           </RadioGroup>
 
-          <FormHelperText
-            className={`text-center text-base ${helperText.style}`}
-          >
+          <FormHelperText className={`text-center text-base ${helperText.style}`}>
             {helperText.text}
           </FormHelperText>
           <div className="flex justify-between">

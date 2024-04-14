@@ -11,9 +11,11 @@ export interface UIState {
     icon?: JSX.Element
     variant?: 'default' | 'success' | 'error'
   }
+  isMobileDrawerOpen: boolean
 }
 const initialState: UIState = {
   snackbar: undefined,
+  isMobileDrawerOpen: false,
 }
 
 export const uiSlice = createSlice({
@@ -23,8 +25,14 @@ export const uiSlice = createSlice({
     setSnackbar: (state, { payload }: PayloadAction<UIState['snackbar']>) => {
       state.snackbar = payload
     },
+    openMobileDrawer: state => {
+      state.isMobileDrawerOpen = true
+    },
+    closeMobileDrawer: state => {
+      state.isMobileDrawerOpen = false
+    },
   },
 })
 
-export const { setSnackbar } = uiSlice.actions
+export const { setSnackbar, openMobileDrawer, closeMobileDrawer } = uiSlice.actions
 export default uiSlice.reducer

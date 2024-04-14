@@ -4,14 +4,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import HowToRegIcon from '@mui/icons-material/HowToReg'
 import MenuIcon from '@mui/icons-material/Menu'
 import PersonOffIcon from '@mui/icons-material/PersonOff'
-import {
-  Box,
-  Divider,
-  List,
-  IconButton,
-  Typography,
-  Drawer,
-} from '@mui/material'
+import { Box, Divider, List, IconButton, Typography, Drawer } from '@mui/material'
 import { Pacifico } from 'next/font/google'
 import { useState } from 'react'
 
@@ -57,9 +50,7 @@ const SlidingDrawer = (): JSX.Element => {
         >
           <List>
             <span className="flex justify-between mb-2 h-16">
-              <span className={`text-3xl m-auto ${pacifico.className}`}>
-                Quizerland
-              </span>
+              <span className={`text-3xl m-auto ${pacifico.className}`}>Quizerland</span>
 
               <IconButton
                 onClick={closeDrawer}
@@ -75,11 +66,7 @@ const SlidingDrawer = (): JSX.Element => {
           </List>
 
           {user !== undefined ? (
-            <Box
-              sx={{ bgcolor: 'primary.main' }}
-              className="flex items-center p-4"
-              color="white"
-            >
+            <Box sx={{ bgcolor: 'primary.main' }} className="flex items-center p-4" color="white">
               <HowToRegIcon className="mr-3" />
 
               <Box>
@@ -89,17 +76,11 @@ const SlidingDrawer = (): JSX.Element => {
               </Box>
             </Box>
           ) : (
-            <Box
-              sx={{ bgcolor: 'error.main' }}
-              className="flex items-center p-4"
-              color="white"
-            >
+            <Box sx={{ bgcolor: 'error.main' }} className="flex items-center p-4" color="white">
               <PersonOffIcon className="mr-3" />
 
               <Box>
-                <Typography variant="body1">
-                  Требуется вход в систему
-                </Typography>
+                <Typography variant="body1">Требуется вход в систему</Typography>
               </Box>
             </Box>
           )}

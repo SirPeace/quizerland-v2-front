@@ -22,10 +22,7 @@ export const store = configureStore({
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [
-          setQuestionFieldErrors.type,
-          setQuizDescriptionFieldErrors.type,
-        ],
+        ignoredActions: [setQuestionFieldErrors.type, setQuizDescriptionFieldErrors.type],
         ignoredPaths: ['uiState.snackbar'],
       },
     }),

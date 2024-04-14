@@ -44,9 +44,7 @@ const QuizzesGrid = styled(Box)(({ theme }) => ({
 const gridItemWidth = 400
 
 function QuizzesList(props: BoxProps): JSX.Element {
-  const { quizzes, quizzesTotalCount } = useAppSelector(
-    ({ quizzesState }) => quizzesState,
-  )
+  const { quizzes, quizzesTotalCount } = useAppSelector(({ quizzesState }) => quizzesState)
   const dispatch = useAppDispatch()
 
   const { setErrorSnackbar } = useError()

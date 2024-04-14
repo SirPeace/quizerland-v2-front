@@ -12,8 +12,7 @@ import QuizDescriptionCard from './QuizDescriptionCard'
 import { QuizFormContext } from './QuizFormContext'
 
 const QuizForm = (): JSX.Element => {
-  const { activeTab, mobileDrawerOpen, setMobileDrawerOpen } =
-    useContext(QuizFormContext)
+  const { activeTab, mobileDrawerOpen, setMobileDrawerOpen } = useContext(QuizFormContext)
 
   return (
     <Box className="flex h-screen">

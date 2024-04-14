@@ -60,9 +60,7 @@ const RegistrationForm = (props: BoxProps): JSX.Element => {
     },
   })
 
-  const onSubmit: SubmitHandler<TRegistrationSchema> = async (
-    data,
-  ): Promise<void> => {
+  const onSubmit: SubmitHandler<TRegistrationSchema> = async (data): Promise<void> => {
     const { confirmPassword, ...formData } = data
     try {
       const { data } = await registerUser(formData)
@@ -161,11 +159,7 @@ const RegistrationForm = (props: BoxProps): JSX.Element => {
                       setShowConfirmPassword(show => !show)
                     }}
                   >
-                    {showConfirmPassword ? (
-                      <VisibilityOffIcon />
-                    ) : (
-                      <VisibilityIcon />
-                    )}
+                    {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                   </IconButton>
                 ),
               }}

@@ -1,79 +1,66 @@
 'use client'
 
+import CloseIcon from '@mui/icons-material/Close'
 import FactCheckIcon from '@mui/icons-material/FactCheck'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import PostAddIcon from '@mui/icons-material/PostAdd'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
+import MUIDrawer from '@mui/material/Drawer'
+import IconButton from '@mui/material/IconButton'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import MenuItem from '@mui/material/MenuItem'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
-import { Pacifico } from 'next/font/google'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import Logo from '@/components/v2/Logo'
 import Card from '@/components/v2/UI/Card'
 import Select from '@/components/v2/UI/Select'
-import { useAppSelector } from '@/redux/reduxHooks'
-
-const pacificoFont = Pacifico({
-  subsets: ['latin'],
-  weight: '400',
-  preload: true,
-})
+import useAdaptive from '@/hooks/useAdaptive'
+import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
+import { closeMobileDrawer } from '@/redux/ui/uiSlice'
 
 export const navigationMenuWidth = 300
 
-const AsideWrapper = styled('aside')(({ theme }) => ({
-  position: 'fixed',
-  top: 0,
-  bottom: 0,
-  display: 'flex',
-  flexShrink: 0,
-  flexDirection: 'column',
-  width: navigationMenuWidth,
-  overflow: 'hidden',
-  padding: theme.spacing(2),
-  borderRight: '1px solid rgba(0, 0, 0, 0.15)',
+const Drawer = styled(MUIDrawer)(({ theme }) => ({
+  '> .MuiDrawer-paper': {
+    display: 'flex',
+    flexShrink: 0,
+    flexDirection: 'column',
+    width: navigationMenuWidth,
+    maxWidth: '100%',
+    backgroundColor: '#FCFCFC',
+    overflow: 'hidden',
+    borderRight: '1px solid rgba(0, 0, 0, 0.15)',
+    padding: theme.spacing(2),
+  },
 }))
-
+const DrawerCloseBtn = styled(IconButton)(({ theme }) => ({
+  position: 'absolute',
+  top: theme.spacing(1),
+  right: theme.spacing(1),
+}))
 const Header = styled('header')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   marginTop: theme.spacing(1),
   marginBottom: theme.spacing(2),
 }))
-
-const LogoHeading = styled('strong')(({ theme }) => ({
-  ...pacificoFont.style,
-  display: 'block',
-  fontSize: 40,
-  background: '-webkit-linear-gradient(#FFB703, #FB8500)',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  position: 'relative',
-  lineHeight: 1.7,
-  top: '-10%',
-  margin: 0,
-  textAlign: 'center',
-  left: -7,
-  userSelect: 'none',
-}))
-
 const Footer = styled('footer')({})
-
 const ThemePaletteSelect = styled(Select)(({ theme }) => ({
   width: '100%',
   marginBottom: theme.spacing(2),
   borderRadius: 12,
 }))
-
 const ThemePaletteItem = styled(MenuItem)(({ theme }) => ({
   paddingTop: theme.spacing(2),
   paddingBottom: theme.spacing(2),
 }))
-
 const LoginBadge = styled(Card)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -124,15 +111,33 @@ const themes = [
 
 function NavigationMenu(): JSX.Element {
   const { user } = useAppSelector(({ authState }) => authState)
+  const { isMobileDrawerOpen } = useAppSelector(({ uiState }) => uiState)
+  const dispatch = useAppDispatch()
+
+  const { isMobileOrTablet, isMobile } = useAdaptive()
 
   const router = useRouter()
 
-  const [theme, setTheme] = useState('system')
+  const [colorTheme, setColorTheme] = useState('system')
+
+  function handleClose(): void {
+    dispatch(closeMobileDrawer())
+  }
 
   return (
-    <AsideWrapper>
+    <Drawer
+      variant={isMobileOrTablet ? 'temporary' : 'permanent'}
+      open={isMobileOrTablet ? isMobileDrawerOpen : true}
+      onClose={handleClose}
+    >
+      {isMobileOrTablet && (
+        <DrawerCloseBtn onClick={handleClose}>
+          <CloseIcon />
+        </DrawerCloseBtn>
+      )}
+
       <Header>
-        <LogoHeading>Quizerland</LogoHeading>
+        <Logo small={isMobile} />
       </Header>
 
       <Box component="section" sx={{ flexGrow: 1 }}>
@@ -160,17 +165,14 @@ function NavigationMenu(): JSX.Element {
       <Footer>
         <ThemePaletteSelect
           variant="solid"
-          value={theme}
+          value={colorTheme}
           onChange={e => {
-            setTheme(e.target.value as string)
+            setColorTheme(e.target.value as string)
           }}
         >
           {themes.map(theme => (
             <ThemePaletteItem key={theme.value} value={theme.value}>
-              <LightModeIcon
-                color="primary"
-                sx={theme => ({ marginRight: theme.spacing(2) })}
-              />
+              <LightModeIcon color="primary" sx={theme => ({ marginRight: theme.spacing(2) })} />
               {theme.text}
             </ThemePaletteItem>
           ))}
@@ -196,7 +198,7 @@ function NavigationMenu(): JSX.Element {
           )}
         </LoginBadge>
       </Footer>
-    </AsideWrapper>
+    </Drawer>
   )
 }
 

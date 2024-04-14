@@ -24,19 +24,17 @@ const QuizPage: FC<Props> = ({ params: { quiz: quizId } }) => {
   const theme = useTheme()
   const isNotMobile = useMediaQuery(theme.breakpoints.up('sm'))
 
-  const { currentQuestion, questionsLength, quiz } = useAppSelector(
-    ({ quizState }) => {
-      const { questions, ...quiz } = quizState
-      const currentQuestion = questions[quiz.currentQuestionIndex]
-      const questionsLength = questions.length
+  const { currentQuestion, questionsLength, quiz } = useAppSelector(({ quizState }) => {
+    const { questions, ...quiz } = quizState
+    const currentQuestion = questions[quiz.currentQuestionIndex]
+    const questionsLength = questions.length
 
-      return {
-        currentQuestion,
-        questionsLength,
-        quiz,
-      }
-    },
-  )
+    return {
+      currentQuestion,
+      questionsLength,
+      quiz,
+    }
+  })
 
   const [quizIdError, setQuizIdError] = useState<string>()
 

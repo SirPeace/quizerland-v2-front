@@ -19,16 +19,13 @@ import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 import { type TQuizDescriptionForm, quizDescriptionFormSchema } from './schema'
 
 export default function QuizDescriptionForm(): JSX.Element {
-  const { quizDescription } = useAppSelector(
-    ({ quizFormState }) => quizFormState,
-  )
+  const { quizDescription } = useAppSelector(({ quizFormState }) => quizFormState)
   const dispatch = useAppDispatch()
 
-  const { control, reset, formState, setError, clearErrors } =
-    useForm<TQuizDescriptionForm>({
-      mode: 'onChange',
-      resolver: zodResolver(quizDescriptionFormSchema),
-    })
+  const { control, reset, formState, setError, clearErrors } = useForm<TQuizDescriptionForm>({
+    mode: 'onChange',
+    resolver: zodResolver(quizDescriptionFormSchema),
+  })
 
   useEffect(() => {
     reset({
@@ -60,10 +57,7 @@ export default function QuizDescriptionForm(): JSX.Element {
   }, [quizDescription.errors])
 
   const onInput = debounce(
-    (
-      event: ChangeEvent<HTMLInputElement>,
-      field: keyof TQuizDescriptionForm,
-    ): void => {
+    (event: ChangeEvent<HTMLInputElement>, field: keyof TQuizDescriptionForm): void => {
       dispatch(
         updateQuizDescription({
           [field]: event.target.value,
@@ -82,9 +76,7 @@ export default function QuizDescriptionForm(): JSX.Element {
           render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
-              onInput={(e: ChangeEvent<HTMLInputElement>) =>
-                onInput(e, 'title')
-              }
+              onInput={(e: ChangeEvent<HTMLInputElement>) => onInput(e, 'title')}
               label="Название теста"
               multiline
               fullWidth
@@ -101,9 +93,7 @@ export default function QuizDescriptionForm(): JSX.Element {
           render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
-              onInput={(e: ChangeEvent<HTMLInputElement>) =>
-                onInput(e, 'description')
-              }
+              onInput={(e: ChangeEvent<HTMLInputElement>) => onInput(e, 'description')}
               label="Описание к тесту"
               multiline
               fullWidth
