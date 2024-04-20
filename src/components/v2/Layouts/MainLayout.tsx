@@ -11,16 +11,16 @@ const StyledMainLayout = styled(Box)({
 })
 
 function MainLayout({ children, ...props }: BoxProps): JSX.Element {
-  const { isMobileOrTablet } = useAdaptive()
+  const { isTabletOrDown } = useAdaptive()
 
   return (
     <StyledMainLayout {...props}>
       <NavigationMenu />
-      {isMobileOrTablet && <MobileHeader />}
+      {isTabletOrDown && <MobileHeader />}
       <main
         style={{
-          marginLeft: isMobileOrTablet ? 0 : navigationMenuWidth,
-          marginTop: isMobileOrTablet ? headerHeight : 0,
+          marginLeft: isTabletOrDown ? 0 : navigationMenuWidth,
+          marginTop: isTabletOrDown ? headerHeight : 0,
         }}
       >
         {children}

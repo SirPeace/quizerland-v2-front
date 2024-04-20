@@ -28,12 +28,12 @@ const Heading = styled('h1')(({ theme }) => ({
 function QuizzesPage(): JSX.Element {
   const userNickname = useAppSelector(({ authState }) => authState.user?.nickname)
 
-  const { isMobileOrTablet } = useAdaptive()
+  const { isTabletOrDown } = useAdaptive()
 
   return (
     <MainLayout>
       <Container>
-        {!isMobileOrTablet && (
+        {!isTabletOrDown && (
           <Heading>
             Ваша подборка тестов, <b>@{userNickname}</b>
           </Heading>

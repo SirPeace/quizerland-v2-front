@@ -17,7 +17,7 @@ const SolidSelect = styled(MUISelect)(({ theme }) => ({
   },
 }))
 
-interface SelectProps extends Omit<MUISelectProps, 'variant'> {
+export interface SelectProps extends Omit<MUISelectProps, 'variant'> {
   variant?: 'solid' | MUISelectProps['variant']
 }
 function Select(props: SelectProps): JSX.Element {
