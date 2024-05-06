@@ -6,7 +6,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import Box, { type BoxProps } from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
-import Link from '@mui/material/Link'
 import TextField from '@mui/material/TextField'
 import { styled } from '@mui/material/styles'
 import { useRouter } from 'next/navigation'
@@ -15,6 +14,7 @@ import { useForm, type SubmitHandler, Controller } from 'react-hook-form'
 
 import { registerUser } from '@/api/modules/auth'
 import Button from '@/components/v2/UI/Button'
+import Link from '@/components/v2/UI/Link'
 import useError from '@/hooks/useError'
 import { setUser } from '@/redux/auth/authSlice'
 import { useAppDispatch } from '@/redux/reduxHooks'
@@ -179,11 +179,7 @@ const RegistrationForm = (props: BoxProps): JSX.Element => {
         >
           Зарегистрироваться
         </Button>
-        <Link
-          onClick={() => {
-            router.push('/auth')
-          }}
-        >
+        <Link to="/auth" sx={{ mt: 2 }}>
           Вернуться на страницу авторизации
         </Link>
       </ActionsWrapper>

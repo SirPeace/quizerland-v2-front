@@ -1,10 +1,8 @@
 import axios from 'axios'
 
 const httpClient = axios.create({
-  baseURL: 'http://localhost:8000',
   responseType: 'json',
-  // cookie, автоматически прикрепляем к каждому запросу
-  withCredentials: true,
+  withCredentials: true, // автоматически прикрепляем cookie к каждому запросу
 })
 
 export default httpClient

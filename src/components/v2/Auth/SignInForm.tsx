@@ -134,7 +134,9 @@ const SignInForm = (props: BoxProps): JSX.Element => {
         >
           Войти
         </Button>
-        <Link to="/auth/registration">Нет аккаунта? Заведите новый.</Link>
+        <Link to="/auth/registration" sx={{ mt: 2 }}>
+          Нет аккаунта? Заведите новый.
+        </Link>
       </ActionsWrapper>
     </Box>
   )
