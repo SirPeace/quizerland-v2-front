@@ -1,9 +1,8 @@
 import { useRouter, usePathname } from 'next/navigation'
 import { useLayoutEffect, useMemo } from 'react'
 
-import { getAuthUser } from '@/api/modules/auth'
 import LoadingPage from '@/app/loading'
-import { setUser, unsetUser } from '@/redux/auth/authSlice'
+import { getAuthUser } from '@/redux/auth/authSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
 
 import type { FC, PropsWithChildren } from 'react'
@@ -22,23 +21,12 @@ const AuthWrapper: FC<PropsWithChildren> = ({ children: childPage }) => {
       return true
     }
 
-    const guardedPath = guardedPaths.find(pathPattern => pathPattern.test(pathname))
-    if (undefined === guardedPath) {
-      return true
-    }
-
-    return false
+    const cannotViewPage = Boolean(guardedPaths.find(pathPattern => pathPattern.test(pathname)))
+    return !cannotViewPage
   }, [pathname, isLoggedIn])
 
-  // TODO: Переделать на actions
   useLayoutEffect(() => {
-    void getAuthUser()
-      .then(user => {
-        dispatch(setUser(user))
-      })
-      .catch(() => {
-        dispatch(unsetUser())
-      })
+    void dispatch(getAuthUser())
   }, [])
 
   useLayoutEffect(() => {

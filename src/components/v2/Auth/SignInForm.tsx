@@ -12,13 +12,11 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm, Controller, type SubmitHandler } from 'react-hook-form'
 
-import { login } from '@/api/modules/auth'
 import Button from '@/components/v2/UI/Button'
 import Link from '@/components/v2/UI/Link'
 import useError from '@/hooks/useError'
-import { setUser } from '@/redux/auth/authSlice'
+import { signInUser } from '@/redux/auth/authSlice'
 import { useAppDispatch } from '@/redux/reduxHooks'
-import { getMessageFromError } from '@/utils/error'
 
 import { signInSchema, type TSignInSchema } from './validation'
 
@@ -39,9 +37,10 @@ const ActionsWrapper = styled('div')(({ theme }) => ({
 }))
 
 const SignInForm = (props: BoxProps): JSX.Element => {
-  const [showPassword, setShowPassword] = useState(false)
-  const router = useRouter()
   const dispatch = useAppDispatch()
+
+  const router = useRouter()
+
   const { setErrorSnackbar } = useError()
 
   const {
@@ -56,19 +55,17 @@ const SignInForm = (props: BoxProps): JSX.Element => {
     },
   })
 
-  const onSubmit: SubmitHandler<TSignInSchema> = async data => {
-    try {
-      // Запрос к db, авторизация пользователя
-      const { data: verifiedUser } = await login(data)
-      // Сохранение верифицированного пользователя в redux
-      dispatch(setUser(verifiedUser))
+  const [showPassword, setShowPassword] = useState(false)
 
-      router.push('/quizzes')
-    } catch (err: any) {
-      const message = getMessageFromError(err)
-      setErrorSnackbar(message ?? 'Произошла ошибка, попробуйте позже', {
-        position: { vertical: 'bottom', horizontal: 'center' },
-      })
+  const onSubmit: SubmitHandler<TSignInSchema> = async data => {
+    const result = await dispatch(signInUser(data))
+    if ('error' in result) {
+      setErrorSnackbar(
+        result.payload ?? 'Произошла непредвиденная ошибка, обратитесь в тех. поддержку',
+        {
+          position: { vertical: 'bottom', horizontal: 'center' },
+        },
+      )
     }
   }
 

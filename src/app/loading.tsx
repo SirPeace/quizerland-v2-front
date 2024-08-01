@@ -1,13 +1,24 @@
 'use client'
 
-import { Box } from '@mui/material'
+import Box from '@mui/material/Box'
+import { styled } from '@mui/material/styles'
 
-import Loader from '@/components/Loader'
+import Loader from '@/components/v2/Loader'
 
-const LoadingPage = (): JSX.Element => (
-  <Box className="w-full h-screen bg-slate-100 flex justify-center items-center">
-    <Loader />
-  </Box>
-)
+const FullPageFlexWrapper = styled(Box)({
+  width: '100%',
+  height: '100dvh',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+})
+
+function LoadingPage(): JSX.Element {
+  return (
+    <FullPageFlexWrapper>
+      <Loader />
+    </FullPageFlexWrapper>
+  )
+}
 
 export default LoadingPage

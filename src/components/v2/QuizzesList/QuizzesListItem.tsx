@@ -1,13 +1,15 @@
 import StartIcon from '@mui/icons-material/PlayArrow'
 import ShareIcon from '@mui/icons-material/Share'
 import Avatar from '@mui/material/Avatar'
-import Fab from '@mui/material/Fab'
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
 import { useRouter } from 'next/navigation'
 
 import type { IQuizzesItem } from '@/api/modules/types'
+import Button from '@/components/v2/UI/Button'
+
 import Card from '@/components/v2/UI/Card'
+import FabButton from '@/components/v2/UI/FabButton'
 import Link from '@/components/v2/UI/Link'
 import Separator from '@/components/v2/UI/Separator'
 
@@ -18,32 +20,27 @@ const QuizCard = styled(Card)(({ theme }) => ({
   padding: theme.spacing(3),
   paddingRight: theme.spacing(2),
 }))
-
 const ContentSection = styled('section')({
   flexGrow: 1,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
 })
-
 const ContentBody = styled(Typography)(({ theme }) => ({
   color: theme.palette.secondary.main,
 }))
-
 const AuthorCaption = styled(Typography)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   marginTop: theme.spacing(2),
   fontWeight: 800,
 }))
-
 const AuthorAvatar = styled(Avatar)({
   display: 'inline-block',
   width: 26,
   height: 26,
   margin: '0 4px',
 })
-
 const ActionsSection = styled('section')(({ theme }) => ({
   '> button': {
     display: 'flex',
@@ -52,29 +49,32 @@ const ActionsSection = styled('section')(({ theme }) => ({
     marginBottom: theme.spacing(1),
   },
 }))
-
-const StartBtn = styled(Fab)(({ theme }) => ({
-  boxShadow: theme.shadows[3],
-}))
-
-const ShareBtn = styled(Fab)(({ theme }) => ({
-  boxShadow: theme.shadows[3],
+const CompactActionsSection = styled('section')(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'flex-end',
+  gap: theme.spacing(2),
+  marginTop: theme.spacing(2),
 }))
 
 interface QuizzesListItemProps extends CardProps {
   quiz: IQuizzesItem
+  compact?: boolean
 }
 function QuizzesListItem(props: QuizzesListItemProps): JSX.Element {
-  const { quiz, ...cardProps } = props
+  const { quiz, compact, ...cardProps } = props
 
   const { push } = useRouter()
+
+  const quizCardSx = Object.assign(cardProps.sx ?? {}, {
+    flexDirection: compact === true ? 'column' : 'row',
+  })
 
   function onClickStart(): void {
     push(`/quizzes/${quiz.id}`)
   }
 
   return (
-    <QuizCard component="article" {...cardProps}>
+    <QuizCard component="article" {...cardProps} sx={quizCardSx}>
       <ContentSection>
         <div>
           <Typography variant="h3">{quiz.title}</Typography>
@@ -90,15 +90,28 @@ function QuizzesListItem(props: QuizzesListItemProps): JSX.Element {
         </AuthorCaption>
       </ContentSection>
 
-      <ActionsSection>
-        <StartBtn color="primary" size="small" onClick={onClickStart}>
-          <StartIcon />
-        </StartBtn>
+      {compact === true ? (
+        <CompactActionsSection>
+          <FabButton color="secondary">
+            <ShareIcon />
+          </FabButton>
 
-        <ShareBtn color="secondary" size="small">
-          <ShareIcon />
-        </ShareBtn>
-      </ActionsSection>
+          <Button color="primary" variant="contained" size="small" onClick={onClickStart}>
+            <StartIcon />
+            Начать тест
+          </Button>
+        </CompactActionsSection>
+      ) : (
+        <ActionsSection>
+          <FabButton color="primary" size="small" onClick={onClickStart}>
+            <StartIcon />
+          </FabButton>
+
+          <FabButton color="secondary" size="small">
+            <ShareIcon />
+          </FabButton>
+        </ActionsSection>
+      )}
     </QuizCard>
   )
 }

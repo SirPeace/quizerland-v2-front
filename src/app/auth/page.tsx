@@ -3,15 +3,15 @@
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
 
-import AuthLayout from '@/components/v2/Layouts/AuthLayout'
 import SignInForm from '@/components/v2/Auth/SignInForm'
+import AuthLayout from '@/components/v2/Layouts/AuthLayout'
 
-const StyledForm = styled(SignInForm)(({  theme  }) => ({
+const StyledForm = styled(SignInForm)(({ theme }) => ({
   width: 500,
 
   [theme.breakpoints.down('md')]: {
     width: '100%',
-  }
+  },
 }))
 
 function AuthPage(): JSX.Element {

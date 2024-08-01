@@ -19,7 +19,6 @@ function useError(): UseErrorReturn {
   ): void => {
     const snackbarConfig: UIState['snackbar'] = {
       message: '',
-      icon: <ReportOutlined />,
       duration: 3000,
       variant: 'error',
     }

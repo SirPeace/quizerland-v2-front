@@ -15,31 +15,29 @@ const BackgroundImage = styled(Image)({
   position: 'fixed',
   zIndex: 0,
   objectFit: 'cover',
-  objectPosition: '30% 50%'
+  objectPosition: '30% 50%',
 })
-const StyledCard = styled(Card)(({ theme }) => {
-  return {
-    position: 'relative',
-    zIndex: 1,
-    minWidth: '33.33dvw',
-    width: 600,
-    minHeight: '33.33dvw',
-    height: 600,
-    margin: theme.spacing(6),
-    padding: theme.spacing(4),
-    background: '#fff',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+const StyledCard = styled(Card)(({ theme }) => ({
+  position: 'relative',
+  zIndex: 1,
+  minWidth: '33.33dvw',
+  width: 600,
+  minHeight: '33.33dvw',
+  height: 600,
+  margin: theme.spacing(6),
+  padding: theme.spacing(4),
+  background: '#fff',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
 
-    [theme.breakpoints.down("md")]: {
-      width: '100%',
-      margin: theme.spacing(1),
-      padding: theme.spacing(2),
-    }
-  }
-})
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+    margin: theme.spacing(1),
+    padding: theme.spacing(2),
+  },
+}))
 
 function AuthLayout({ children, ...props }: BoxProps): JSX.Element {
   let { width: windowWidth, height: windowHeight } = useWindowSize()
@@ -57,9 +55,7 @@ function AuthLayout({ children, ...props }: BoxProps): JSX.Element {
         alt="Игрушка Марио, приветственно раскинувшая руки"
       />
 
-      <StyledCard>
-        {children}
-      </StyledCard>
+      <StyledCard>{children}</StyledCard>
     </PageWrapper>
   )
 }

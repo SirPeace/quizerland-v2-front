@@ -71,13 +71,8 @@ const RegistrationForm = (): JSX.Element => {
       router.push('/quizzes')
 
       reset()
-    } catch (err: any) {
-      if (err instanceof AxiosError) {
-        const error = err.response?.data?.message
-        console.error(error)
-      } else {
-        console.error('Произошла ошибка, обратитесь в тех. поддержку')
-      }
+    } catch {
+      //
     }
   }
 

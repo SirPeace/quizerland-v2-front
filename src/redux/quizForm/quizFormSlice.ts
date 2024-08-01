@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { cloneDeep } from 'lodash-es'
 
-import type { TQuestionForm, TQuizDescriptionForm } from '@/components/CreateQuiz/schema'
+import type { TQuestionForm, TQuizDescriptionForm } from '@/components/QuizForm/schema'
 
 import { parseQuestionFormFieldErrors, parseQuizDescriptionFormFieldErrors } from './helpers'
 import quizFormState, { defaultQuestion } from './initialState'

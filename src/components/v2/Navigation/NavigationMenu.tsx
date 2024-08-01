@@ -13,8 +13,6 @@ import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
 import { useRouter } from 'next/navigation'
 
-import type { ReactNode } from 'react'
-
 import Logo from '@/components/v2/Logo'
 import Card from '@/components/v2/UI/Card'
 import useAdaptive from '@/hooks/useAdaptive'
@@ -23,6 +21,8 @@ import { closeMobileDrawer } from '@/redux/ui/uiSlice'
 
 import AuthBadge from './AuthBadge'
 import ColorThemeSelect from './ColorThemeSelect'
+
+import type { ReactNode } from 'react'
 
 export const navigationMenuWidth = 300
 

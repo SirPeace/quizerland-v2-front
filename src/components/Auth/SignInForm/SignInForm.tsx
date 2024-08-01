@@ -22,7 +22,7 @@ import { login } from '@/api/modules/auth'
 import { setUser } from '@/redux/auth/authSlice'
 import { useAppDispatch } from '@/redux/reduxHooks'
 
-import { singInSchema, type TSingInSchema } from '../types'
+import { signInSchema, type TSignInSchema } from '../types'
 
 import {
   boxFormDesktopStyle,
@@ -51,11 +51,11 @@ const SignInForm = (): JSX.Element => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<TSingInSchema>({
-    resolver: zodResolver(singInSchema),
+  } = useForm<TSignInSchema>({
+    resolver: zodResolver(signInSchema),
   })
 
-  const onSubmit: SubmitHandler<TSingInSchema> = async (data): Promise<void> => {
+  const onSubmit: SubmitHandler<TSignInSchema> = async (data): Promise<void> => {
     try {
       // Запрос к db, авторизация пользователя
       const { data: verifiedUser } = await login(data)

@@ -3,15 +3,15 @@
 import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
 
-import AuthLayout from '@/components/v2/Layouts/AuthLayout'
 import RegistrationForm from '@/components/v2/Auth/RegistrationForm'
+import AuthLayout from '@/components/v2/Layouts/AuthLayout'
 
-const StyledForm = styled(RegistrationForm)(({  theme  }) => ({
+const StyledForm = styled(RegistrationForm)(({ theme }) => ({
   width: 500,
 
   [theme.breakpoints.down('md')]: {
     width: '100%',
-  }
+  },
 }))
 
 function RegistrationPage(): JSX.Element {

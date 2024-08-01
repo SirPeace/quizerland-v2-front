@@ -1,4 +1,4 @@
-﻿import LightModeIcon from '@mui/icons-material/LightMode'
+import LightModeIcon from '@mui/icons-material/LightMode'
 import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import { type ReactNode, useState } from 'react'

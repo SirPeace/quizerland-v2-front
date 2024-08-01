@@ -3,8 +3,8 @@ const nextConfig = {
   reactStrictMode: false,
   rewrites: async () => [
     {
-      source: "/api/:path*",
-      destination: process.env.API_SERVER_URL + "/api/:path*",
+      source: '/api/:path*',
+      destination: process.env.API_SERVER_URL + '/api/:path*',
     },
   ],
   images: {

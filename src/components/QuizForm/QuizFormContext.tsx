@@ -74,10 +74,8 @@ const QuizFormContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
           dispatch(setQuizDescriptionErrors(formErrors.quizDescription))
           dispatch(setQuestionsErrors(formErrors.questions))
         }
-
-        console.error(responseData?.message)
       } else {
-        console.error('Произошла ошибка, обратитесь в тех. поддержку')
+        //
       }
     }
   }

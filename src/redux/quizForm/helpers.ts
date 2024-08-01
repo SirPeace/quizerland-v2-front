@@ -1,4 +1,4 @@
-import type { TQuestionForm, TQuizDescriptionForm } from '@/components/CreateQuiz/schema'
+import type { TQuestionForm, TQuizDescriptionForm } from '@/components/QuizForm/schema'
 
 import type { TQuestionFormErrors, TQuizDescriptionFormErrors } from './types'
 

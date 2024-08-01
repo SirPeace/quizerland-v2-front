@@ -12,11 +12,10 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm, type SubmitHandler, Controller } from 'react-hook-form'
 
-import { registerUser } from '@/api/modules/auth'
 import Button from '@/components/v2/UI/Button'
 import Link from '@/components/v2/UI/Link'
 import useError from '@/hooks/useError'
-import { setUser } from '@/redux/auth/authSlice'
+import { registerUser, signInUser } from '@/redux/auth/authSlice'
 import { useAppDispatch } from '@/redux/reduxHooks'
 
 import { registrationSchema, type TRegistrationSchema } from './validation'
@@ -38,12 +37,9 @@ const ActionsWrapper = styled('div')(({ theme }) => ({
 }))
 
 const RegistrationForm = (props: BoxProps): JSX.Element => {
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const { setErrorSnackbar } = useError()
-
-  const router = useRouter()
   const dispatch = useAppDispatch()
+
+  const { setErrorSnackbar } = useError()
 
   const {
     control,
@@ -60,18 +56,19 @@ const RegistrationForm = (props: BoxProps): JSX.Element => {
     },
   })
 
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
   const onSubmit: SubmitHandler<TRegistrationSchema> = async (data): Promise<void> => {
-    const { confirmPassword, ...formData } = data
-    try {
-      const { data } = await registerUser(formData)
-      dispatch(setUser(data))
-      router.push('/quizzes')
-      reset()
-    } catch (err: any) {
-      setErrorSnackbar(err, {
+    const result = await dispatch(registerUser(data))
+    if ('error' in result) {
+      setErrorSnackbar(result.payload ?? 'Произошла ошибка, обратитесь в тех. поддержку', {
         position: { vertical: 'bottom', horizontal: 'center' },
       })
+      return
     }
+
+    reset()
   }
 
   return (

@@ -17,7 +17,6 @@ import Typography from '@mui/material/Typography'
 import { red } from '@mui/material/colors'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 
 import { deleteQuizProgress, getNextIncompleteQuiz } from '@/api/modules/quizzes'
@@ -60,15 +59,9 @@ const QuizPreviewCard: FC = () => {
   const goToNextQuiz = async (): Promise<void> => {
     try {
       const nextQuiz = await getNextIncompleteQuiz(quiz.id)
-
       router.push(`/quizzes/${nextQuiz._id}`)
-    } catch (err: any) {
-      if (err instanceof AxiosError) {
-        const error = err.response?.data?.message
-        console.error(error)
-      } else {
-        console.error('Произошла ошибка, обратитесь в тех. поддержку')
-      }
+    } catch {
+      //
     }
   }
 
@@ -78,13 +71,8 @@ const QuizPreviewCard: FC = () => {
 
     try {
       await deleteQuizProgress(quiz.id)
-    } catch (err: any) {
-      if (err instanceof AxiosError) {
-        const error = err.response?.data?.message
-        console.error(error)
-      } else {
-        console.error('Произошла ошибка, обратитесь в тех. поддержку')
-      }
+    } catch {
+      //
     }
   }
 

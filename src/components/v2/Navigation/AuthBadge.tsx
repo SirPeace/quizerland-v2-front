@@ -1,15 +1,14 @@
-﻿import Avatar from '@mui/material/Avatar'
+import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 
-import type { ReactNode } from 'react'
-
-import { logout } from '@/api/modules/auth'
 import Card from '@/components/v2/UI/Card'
 import Link from '@/components/v2/UI/Link'
 import useError from '@/hooks/useError'
+import { signOutUser } from '@/redux/auth/authSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/reduxHooks'
-import { unsetUser } from '@/redux/auth/authSlice'
+
+import type { ReactNode } from 'react'
 
 const Badge = styled(Card)(({ theme }) => ({
   display: 'flex',
@@ -38,12 +37,13 @@ export default function AuthBadge(): ReactNode {
   const { setErrorSnackbar } = useError()
 
   const userAvatarUrl =
-    user && `https://api.dicebear.com/8.x/bottts-neutral/svg?seed=${user.nickname}`
+    user !== undefined
+      ? `https://api.dicebear.com/8.x/bottts-neutral/svg?seed=${user.nickname}`
+      : ''
 
   async function handleLogout(): Promise<void> {
     try {
-      await logout()
-      dispatch(unsetUser())
+      await dispatch(signOutUser())
     } catch (err) {
       setErrorSnackbar(err)
     }
